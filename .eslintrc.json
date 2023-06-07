@@ -1,3 +1,6 @@
 {
-  "extends": "next/core-web-vitals"
+    "extends": [
+        "next/core-web-vitals",
+        "plugin:prettier/recommended" // Make this the last element so prettier config overrides other formatting rules
+    ]
 }
