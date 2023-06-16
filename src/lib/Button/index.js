@@ -50,7 +50,7 @@ const StyledButton = styled.button`
     border: none;
     outline: none;
     min-width: 100px;
-    height: 36px;
+    height: 40px;
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -135,14 +135,14 @@ Button.propTypes = {
     /**
      * 主題配色，primary、secondary 或是自己傳入色票
      */
-    // themeColor: propTypes.oneOfType([propTypes.oneOf(['primary', 'secondary']), propTypes.string]),
-    // themeColor: propTypes.oneOfType([
-    //     propTypes.oneOf(Object.keys(colors)),
-    //     propTypes.string,
-    // ]),
-    // TODO:FIX themeColor subColor 重寫
-    themeColor: 'string',
-    subColor: 'string',
+    mainColor: propTypes.oneOfType([
+        propTypes.oneOf(['primary', 'secondary']),
+        propTypes.string,
+    ]),
+    subColor: propTypes.oneOfType([
+        propTypes.oneOf(['primary', 'secondary']),
+        propTypes.string,
+    ]),
     /**
      * 禁用狀態
      */

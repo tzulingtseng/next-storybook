@@ -1,7 +1,21 @@
 /** @type {import('next').NextConfig} */
+const { i18n } = require('./next-i18next.config');
+const path = require('path');
 const nextConfig = {
-    reactStrictMode: true,
-    // swcMinify: true,
+    reactStrictMode: false,
+    i18n,
+    sassOptions: {
+        includePaths: [path.join(__dirname, 'styles')],
+    },
+    webpack: (config, { isServer }) => {
+        if (!isServer) {
+            config.resolve.fallback = {
+                ...config.resolve.fallback,
+                fs: false,
+            };
+        }
+        return config;
+    },
     compiler: {
         // Enables the styled-components SWC transform
         styledComponents: {
@@ -11,4 +25,4 @@ const nextConfig = {
     },
 };
 
-module.export = nextConfig;
+module.exports = nextConfig;

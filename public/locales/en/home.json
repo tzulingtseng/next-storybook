@@ -1,0 +1,50 @@
+{
+    "title": "Homepage",
+    "subTitle": "Travel × Activity × Food",
+    "headerLogo": "/_next/static/media/logo-header.release.en.ba21988b.svg",
+    "navButtons": { "outline": "Subscribe", "filled": "Donate" },
+    "category": ["Travel", "Activity", "Food"],
+    "menuConfig": [
+        [
+            {
+                "text": "Latest",
+                "divider": true
+            }
+        ],
+        [
+            {
+                "text": "In-depth Projects"
+            },
+            {
+                "text": "Issues",
+                "children": [
+                    { "text": "Environmental Sustainability" },
+                    { "text": "Economic Industries" },
+                    { "text": "Cultural Life" }
+                ]
+            },
+            {
+                "text": "Reviews",
+                "children": [
+                    { "text": "Book Excerpts and Reviews" },
+                    {
+                        "text": "Reader Reviews"
+                    }
+                ],
+                "divider": true
+            }
+        ],
+        [
+            {
+                "text": "About Us"
+            },
+            {
+                "text": "Impact Report"
+            },
+            {
+                "text": "Reporter Open Lab",
+                "divider": true
+            }
+        ]
+    ]
+}

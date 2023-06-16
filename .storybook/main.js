@@ -13,5 +13,12 @@ const config = {
     docs: {
         autodocs: 'tag',
     },
+    webpackFinal: async (config, { configType }) => {
+        config.resolve.alias = {
+            ...config.resolve.alias,
+            'next-i18next': 'react-i18next',
+        };
+        return config;
+    },
 };
 export default config;

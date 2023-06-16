@@ -1,0 +1,54 @@
+{
+    "title": "首頁",
+    "subTitle": "旅遊 × 活動 × 美食",
+    "headerLogo": "/_next/static/media/logo-header.release.9b3a1c6d.svg",
+    "navButtons": { "outline": "訂閱", "filled": "贊助" },
+    "category": ["旅遊", "活動", "美食"],
+    "menuConfig": [
+        [
+            {
+                "text": "最新",
+
+                "divider": true
+            }
+        ],
+        [
+            {
+                "text": "深度專題"
+            },
+            {
+                "text": "議題",
+
+                "children": [
+                    { "text": "環境永續 " },
+                    { "text": "經濟產業" },
+                    { "text": "文化生活" }
+                ]
+            },
+            {
+                "text": "評論",
+
+                "children": [
+                    { "text": "書摘與書評 " },
+                    {
+                        "text": "讀者評論"
+                    }
+                ],
+                "divider": true
+            }
+        ],
+        [
+            {
+                "text": "關於我們"
+            },
+            {
+                "text": "影響力報告"
+            },
+            {
+                "text": "報導者開放實驗室",
+
+                "divider": true
+            }
+        ]
+    ]
+}

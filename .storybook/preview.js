@@ -1,6 +1,6 @@
 /** @type { import('@storybook/react').Preview } */
 import { ThemeProvider } from 'styled-components';
-import theme from '../src/lib/theme';
+import { theme } from '../src/theme';
 
 export const parameters = {
     actions: { argTypesRegex: '^on[A-Z].*' },
@@ -17,9 +17,14 @@ export const parameters = {
 };
 
 export const decorators = [
-    (Story) => (
-        <ThemeProvider theme={theme}>
-            <Story />
-        </ThemeProvider>
-    ),
+    (Story) => {
+        const { default: defaultTheme, dark: darkTheme } = theme;
+        const currentTheme = defaultTheme;
+
+        return (
+            <ThemeProvider theme={currentTheme}>
+                <Story />
+            </ThemeProvider>
+        );
+    },
 ];

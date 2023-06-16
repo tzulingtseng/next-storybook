@@ -15,8 +15,10 @@ const theme = {
         grey4: '#60797C',
         grey3: '#8B9FA2',
         grey2: '#B2BFC1',
-        grey1: '#D9E0E2',
-        grey0: '#FAFAFA',
+        // grey1: '#D9E0E2'
+        grey1: '#808080',
+        // grey0: '#FAFAFA',
+        grey0: '#F2F2F2',
         transparent: 'transparent',
     },
     typography: {
@@ -35,6 +37,8 @@ const theme = {
         return 8 * num;
     },
 };
+
+// TODO:深色主題
 
 // TODO:深色主題
 

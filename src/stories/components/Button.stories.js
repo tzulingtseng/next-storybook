@@ -10,13 +10,6 @@ Default.args = {
     children: 'Button',
 };
 
-// 你的頁面標題
-export default {
-    component: Button,
-    title: 'Components/Button',
-    tags: ['autodocs'],
-};
-
 export const Outlined = Template.bind({});
 Outlined.args = {
     children: 'Button',
@@ -83,4 +76,11 @@ CustomizeButton.args = {
         background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
         borderRadius: 50,
     },
+};
+
+// 你的頁面標題
+export default {
+    component: Button,
+    title: 'Components/Button',
+    tags: ['autodocs'],
 };

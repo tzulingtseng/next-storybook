@@ -1,4 +1,5 @@
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import { appWithTranslation } from 'next-i18next';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -14,7 +15,7 @@ const theme = {
     },
 };
 
-export default function App({ Component, pageProps }) {
+const App = ({ Component, pageProps }) => {
     return (
         <>
             <GlobalStyle />
@@ -23,4 +24,6 @@ export default function App({ Component, pageProps }) {
             </ThemeProvider>
         </>
     );
-}
+};
+
+export default appWithTranslation(App);
