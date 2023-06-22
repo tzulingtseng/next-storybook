@@ -21,9 +21,14 @@ const Avatar = styled.div`
 
 const Content = styled.div`
     width: 100%;
+    overflow:hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align:left;
     .meta__info {
-        display: flex;
-        justify-content: center;
+        overflow:hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
     }
     .meta__title {
         overflow: hidden;
@@ -36,6 +41,8 @@ const Content = styled.div`
     .meta__description {
         font-size: 14px;
         color: #00000073;
+        white-space: nowrap;
+        text-overflow: ellipsis;
     }
 `;
 

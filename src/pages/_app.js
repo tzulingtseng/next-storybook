@@ -1,5 +1,6 @@
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import { appWithTranslation } from 'next-i18next';
+import '@/styles/globals.css';
 
 const GlobalStyle = createGlobalStyle`
   body {

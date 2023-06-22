@@ -5,13 +5,13 @@ import { theme } from '../theme';
 import Button from '@/lib/Button';
 import Switch from '@/lib/Switch';
 import Icon from '@/lib/Icon';
-import Dialog from '@/lib/Dialog';
+// import Dialog from '@/lib/Dialog';
 import ErrorMessage from '@/lib/ErrorMessage';
 import Radio from '@/lib/Radio';
 import Carousel from '@/lib/Carousel';
 import Dropdown from '@/lib/Dropdown';
-
-import { Alert, Message } from '@/lib';
+// import Alert from '@/lib/Alert';
+import Message from '@/lib/Message';
 
 const styles = {
     button: {
@@ -76,7 +76,7 @@ const Components = () => {
                     >
                         Show Dialog
                     </Button>
-                    <Alert
+                    {/* <Alert
                         style={styles.card}
                         title="警示信息"
                         alertDialogOpen={alertDialogOpen}
@@ -84,7 +84,7 @@ const Components = () => {
                         onConfirm={() => setAlertDialogOpen(false)}
                     >
                         顯示信息彈窗的內容...
-                    </Alert>
+                    </Alert> */}
                     <Button
                         variant="text"
                         onClick={() => setAlertDialogOpen(true)}

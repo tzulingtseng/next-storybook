@@ -3,7 +3,7 @@ import merge from 'lodash/merge';
 // 預設主題
 const theme = {
     colors: {
-        primary: '#60C4F8',
+        primary: '#2F798C',
         secondary: '#71D664',
         disable: '#DADADA',
         success: '#5EB253',

@@ -3,8 +3,7 @@ import styled, { css } from 'styled-components';
 import propTypes from 'prop-types';
 
 const verticalStyle = css`
-    display: inline-flex;
-    flex-direction: column;
+    display: block;
 `;
 
 const horizontalStyle = css`
@@ -23,19 +22,25 @@ const variantMap = {
 };
 
 const StyledCardContainer = styled('div')`
+    width: 280px;
+    // width: 100%;
     border: 1px solid #ddd;
     border-radius: 4px;
     overflow: hidden;
+    box-sizing: border-box;
     ${(props) => variantMap[props.$variant] || variantMap['vertical']}
 `;
 
 // 卡片封面 img or video from props ReactNode
 const Cover = styled.div`
     overflow: hidden;
-    width: 300px;
+    // width: 280px;
+    width: 100%;
+    height: calc(300px * 0.66);
     img {
         width: 100%;
         display: block;
+        objectfit: cover;
     }
 `;
 
@@ -53,7 +58,6 @@ const SpaceBetween = styled.div`
  * `Card` 是一個可以顯示單個主題內容及操作的元件，通常這個主題內容包含圖片、標題、描述或是一些操作。
  */
 const Card = ({ variant, cover, content, footer, children, ...props }) => {
-    console.log('variant', variant);
     return (
         <StyledCardContainer $variant={variant}>
             <Cover>{cover}</Cover>
