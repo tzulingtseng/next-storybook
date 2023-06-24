@@ -15,8 +15,8 @@ import Button from '@/lib/Button';
 
 import NoImage from '@/components/NoImage';
 
-import { isObject } from '@/utils/isObject';
-import { dateTransfer } from '@/utils/dateTransfer';
+// import { isObject } from '@/utils/isObject';
+// import { dateTransfer } from '@/utils/dateTransfer';
 
 const CarouselContainer = styled.div`
     width: 100%;
