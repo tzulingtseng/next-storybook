@@ -22,10 +22,10 @@ const variantMap = {
 };
 
 const StyledCardContainer = styled('div')`
-    width: 280px;
-    // width: 100%;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    max-width: 17.5rem;
+    width: 100%;
+    border: 1px solid ${(props) => props.theme.colors.grey3};
+    border-radius: 1rem;
     overflow: hidden;
     box-sizing: border-box;
     ${(props) => variantMap[props.$variant] || variantMap['vertical']}
@@ -34,13 +34,14 @@ const StyledCardContainer = styled('div')`
 // 卡片封面 img or video from props ReactNode
 const Cover = styled.div`
     overflow: hidden;
-    // width: 280px;
     width: 100%;
-    height: calc(300px * 0.66);
+    height: calc(17.5rem * 0.66);
+    object-fit: cover;
     img {
         width: 100%;
+        height: 100%;
         display: block;
-        objectfit: cover;
+        object-fit: cover;
     }
 `;
 

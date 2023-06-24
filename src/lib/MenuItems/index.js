@@ -8,45 +8,47 @@ import isEmpty from 'lodash/isEmpty';
 import { useTranslation } from 'next-i18next';
 
 // container
-const StyledMenuContainer = styled('div')(({ theme }) => ({
-    display: 'flex',
-    cursor: 'pointer',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: `${theme.getSpacing(1)}px ${theme.getSpacing(4)}px`,
-    '&:hover': {
-        backgroundColor: theme.colors.grey0,
-    },
-}));
+
+const StyledMenuContainer = styled.div`
+    display: flex;
+    cursor: pointer;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0.5rem 2rem;
+`;
 
 // icon
-const MenuIcon = styled(Icon)(({ theme }) => ({
+const MenuIcon = styled(Icon)`
     fontSize: 14,
-    color: theme.colors.grey2,
-}));
+    color: ${(props) =>
+        $open ? props.theme.colors.primary : props.theme.colors.grey2};
+`;
 
 // text
-const MenuText = styled(Typography)(({ theme, open }) => ({
-    color: open ? theme.colors.primary : theme.colors.black,
-    fontWeight: 700,
-}));
+const MenuText = styled.div`
+    color: ${(props) =>
+        props.$open ? props.theme.colors.primary : props.theme.colors.grey4};
+    font-weight: 700;
+    font-size: ${(props) => props.theme.fontSize.sm};
+`;
 
 // extent
-const MenuExtent = styled(Icon)(({ theme, haschild, open }) => ({
-    color: open ? theme.colors.primary : theme.colors.black,
-    opacity: haschild === 'true' ? 1 : 0,
-    transition: 'all .2s ease',
-    transform: open ? 'rotate(270deg)' : 'rotate(90deg)',
-}));
+const MenuExtent = styled(Icon)`
+    color: ${(props) =>
+        props.$open ? props.theme.colors.primary : props.theme.colors.grey4};
+    opacity: ${(props) => (props.$haschild === 'true' ? 1 : 0)};
+    transition: all 0.2s ease;
+    transform: ${(props) => (props.$open ? 'rotate(270deg)' : 'rotate(90deg)')};
+`;
 
 const StyledDivider = styled('div')`
     border-width: 1px 0px 0px;
     border-style: solid;
-    border-color: rgb(216, 216, 216);
+    border-color: ${(props) => props.theme.colors.grey3};
     height: 0px;
-    max-width: 216px;
+    max-width: 13.5rem;
     width: 100%;
-    margin: 16px auto;
+    margin: 1rem auto;
 `;
 
 const MenuWithChild = ({ item, haschild, hasdivder, ...props }) => {
@@ -86,12 +88,12 @@ const MenuItem = ({
         <Fragment>
             <StyledMenuContainer {...props}>
                 {/* <MenuIcon icon={icon} /> */}
-                <MenuText open={open} variant="content">
+                <MenuText $open={open} variant="content">
                     {text}
                 </MenuText>
                 <MenuExtent
-                    open={open}
-                    haschild={haschild.toString()}
+                    $open={open}
+                    $haschild={haschild.toString()}
                     icon="fa-angle-right"
                 />
             </StyledMenuContainer>

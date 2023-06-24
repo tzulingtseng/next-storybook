@@ -9,20 +9,19 @@ const theme = {
         success: '#5EB253',
         info: '#60A6F8',
         warning: '#FFC05A',
-        danger: '#F86C6C',
+        danger: '#C40D23',
         black: '#33484B',
-        white: '#FFF',
-        grey4: '#60797C',
-        grey3: '#8B9FA2',
-        grey2: '#B2BFC1',
+        white: '#FFFFFF',
+        grey4: '#404040',
+        grey3: '#D8D8D8',
+        grey2: '#808080',
         // grey1: '#D9E0E2'
-        grey1: '#808080',
+        grey1: '#F1F1F1',
         // grey0: '#FAFAFA',
         grey0: '#F2F2F2',
         transparent: 'transparent',
     },
     typography: {
-        htmlFontSize: 16,
         h1: { fontSize: '6rem' },
         h2: { fontSize: '4.5rem' },
         h3: { fontSize: '3.75rem' },
@@ -31,10 +30,16 @@ const theme = {
         h6: { fontSize: '1.75rem' },
         content: { fontSize: '1rem' },
     },
+    fontSize: {
+        xs: '0.875rem',
+        sm: '1rem',
+        md: '1.125rem',
+        lg: '1.5rem',
+    },
     radius: 4,
-    spacing: 8,
+    spacing: 1, // rem
     getSpacing: (num = 1) => {
-        return 8 * num;
+        return 4 * num + 'rem';
     },
 };
 

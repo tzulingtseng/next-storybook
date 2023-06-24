@@ -2,6 +2,7 @@
 import React, { Fragment } from 'react';
 import styled, { css } from 'styled-components';
 import Image from 'next/image';
+import BannerHomeSrc from '@/assets/images/banner-home.png';
 
 import { Inter } from 'next/font/google';
 import path from 'path';
@@ -26,6 +27,11 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import useGetActivity from '@/features/home/hooks/useGetActivity';
 import useGetScenicSpot from '@/features/home/hooks/useGetScenicSpot';
 import useGetRestaurant from '@/features/home/hooks/useGetRestaurant';
+
+const BannerHome = styled(Image)`
+    width: 100%;
+    height: auto;
+`;
 
 const Travel = (props) => {
     const { locale, locales, push } = useRouter();
@@ -69,6 +75,7 @@ const Travel = (props) => {
                         </button>
                     ))}
                 </div> */}
+                <BannerHome src={BannerHomeSrc} />
                 <Container>
                     {activityStatus === 'success' && (
                         <TypeCarouselCards

@@ -2,35 +2,34 @@ import React, { useState, useEffect, Fragment } from 'react';
 import styled, { css } from 'styled-components';
 import propTypes from 'prop-types';
 import Image from 'next/image';
-import logoImg from '../../assets/images/logo-header.release.svg';
-import logoEnImg from '../../assets/images/logo-header.release.en.svg';
-import logoIcon from '../../assets/icons/logo-symbol-default.release.svg';
-import memberIcon from '../../assets/icons/member.svg';
-import searchIcon from '../../assets/icons/search.svg';
-import facebookIcon from '../../assets/icons/facebook.svg';
-import instagramIcon from '../../assets/icons/instagram.svg';
-import twitterIcon from '../../assets/icons/twitter.svg';
-import youtubeIcon from '../../assets/icons/youtube.svg';
+import Link from 'next/link';
+import logoImg from '@/assets/images/TaiFun.png';
+// import logoEnImg from '@/assets/images/logo-header.release.en.svg';
+import logoIcon from '@/assets/icons/logo.png';
+import memberIcon from '@/assets/icons/member.svg';
+import searchIcon from '@/assets/icons/search.svg';
+import facebookIcon from '@/assets/icons/facebook.svg';
+import instagramIcon from '@/assets/icons/instagram.svg';
+import twitterIcon from '@/assets/icons/twitter.svg';
+import youtubeIcon from '@/assets/icons/youtube.svg';
 import BrandNav from '../BrandNav';
 import Channels from '../Channels';
 import Menu from '../Menu';
 import MenuItems from '../MenuItems';
 import ButtonClose from '../ButtonClose';
+import Container from '@/components/Container';
 
 import { useTranslation } from 'next-i18next';
 
 const StyledNavBar = styled('header')`
     width: 100%;
-    // height: 60px;
     height: auto;
-    // margin-left: 250px;
-    background-color: white;
-    // border: 1px solid red;
+    background-color: ${(props) => props.theme.colors.grey1};
 `;
 
 const HeaderSection = styled.div`
-    width: 1200px;
-    margin: 0 auto;
+    // width: 1200px;
+    // margin: 0 auto;
     // border: 1px solid blue;
 `;
 
@@ -40,7 +39,7 @@ const HeaderContainer = styled.div`
 `;
 
 const StyledDesktopAndAbovebox = styled.div`
-    padding: 24px 16px;
+    padding: 1.5rem 1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -54,12 +53,10 @@ const BrandWrapper = styled.div`
 `;
 
 const ButtonContainer = styled('div')`
-    width: 24px;
-    height: 24px;
+    width: 1.5rem;
+    height: 1.5rem;
     cursor: pointer;
     position: relative;
-    // border-top: 2px solid rgb(128, 128, 128);
-    // border-bottom: 2px solid rgb(128, 128, 128);
     opacity: ${(props) => (props.$isHeaderShow ? 0 : 1)};
     transition: opacity 200ms ease 0s;
     &:before,
@@ -70,7 +67,7 @@ const ButtonContainer = styled('div')`
         display: block;
         position: absolute;
 
-        background-color: rgb(128, 128, 128);
+        background-color: ${(props) => props.theme.colors.grey2};
     }
     &:before {
         top: 2px;
@@ -86,13 +83,13 @@ const ButtonLine = styled('div')`
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background-color: rgb(128, 128, 128);
+    background-color: ${(props) => props.theme.colors.grey2};
 `;
 
-const SubBrandNav = css`
+const SubBrandNav = styled('div')`
     font-weight: 400;
-    font-size: 14px;
-    color: rgb(64, 64, 64);
+    font-size: ${(props) => props.theme.fontSize.xs};
+    color: ${(props) => props.theme.colors.grey4};
 `;
 
 const IconGroupNav = styled('div')`
@@ -101,15 +98,15 @@ const IconGroupNav = styled('div')`
 `;
 
 const ButtonNavOutline = css`
-    background-color: #ffffff;
-    border: 2px solid rgb(196, 13, 35);
-    color: rgb(196, 13, 35);
+    background-color: ${(props) => props.theme.colors.white};
+    border: 2px solid ${(props) => props.theme.colors.primary};
+    color: ${(props) => props.theme.colors.primary};
 `;
 
 const ButtonNavFilled = css`
-    background-color: rgb(196, 13, 35);
-    border: 2px solid rgb(196, 13, 35);
-    color: #ffffff;
+    background-color: ${(props) => props.theme.colors.primary};
+    border: 2px solid ${(props) => props.theme.colors.primary};
+    color: ${(props) => props.theme.colors.white};
 `;
 
 const variantMap = {
@@ -118,14 +115,15 @@ const variantMap = {
 };
 
 const ButtonNav = styled('div')`
-    width: 86px;
-    height: 32px;
-    border-radius: 40px;
+    width: 5.375rem;
+    height: 2rem;
+    font-size: ${(props) => props.theme.fontSize.sm};
+    border-radius: 2.5rem;
     display: inline-flex;
     justify-content: center;
     align-items: center;
     ${(props) => variantMap[props.$variant] || variantMap.filled}
-    margin-right: 16px;
+    margin-right: 1rem;
     &:last-child {
         margin-right: 0px;
     }
@@ -133,14 +131,14 @@ const ButtonNav = styled('div')`
 
 const IconContainer = styled('div')`
     // opacity: 1;
-    margin-left: 24px;
+    margin-left: 1.5rem;
 `;
 
 const IconBox = styled(Image)`
-    width: 24px;
-    height: 24px;
-    color: rgb(128, 128, 128);
-    margin-right: 16px;
+    width: 1.5rem;
+    height: 1.5rem;
+    color: ${(props) => props.theme.colors.grey2};
+    margin-right: 1rem;
     &:last-child {
         margin-right: 0px;
     }
@@ -149,13 +147,13 @@ const IconBox = styled(Image)`
 const StyledDivider = styled('div')`
     border-width: 1px 0px 0px;
     border-style: solid;
-    border-color: rgb(216, 216, 216);
+    border-color: ${(props) => props.theme.colors.grey3};
     height: 0px;
     width: 100%;
     // transform: ${(props) =>
         props.$isCatgoryShow === true
             ? 'translateY(0px)'
-            : 'translateY(-40px)'};
+            : 'translateY(-2.5rem)'};
     opacity: ${(props) => (props.$isCatgoryShow === true ? 1 : 0)};
     transition: opacity 300ms ease-in-out 0s;
 `;
@@ -164,7 +162,7 @@ const ChannelContainer = styled('div')`
     transform: ${(props) =>
         props.$isCatgoryShow === true
             ? 'translateY(0px)'
-            : 'translateY(-40px)'};
+            : 'translateY(-2.5rem)'};
     opacity: ${(props) => (props.$isCatgoryShow === true ? 1 : 0)};
     transition: transform 300ms ease-in-out 0s;
     flex-direction: column;
@@ -173,21 +171,21 @@ const ChannelContainer = styled('div')`
 `;
 
 const HamburgerContainer = styled('div')`
-    background-color: #ffffff;
+    background-color: ${(props) => props.theme.colors.white};
     z-index: 4;
-    position: absolute;
+    position: fixed;
     top: 0px;
-    left: -280px;
+    left: -17.5rem;
     transition: transform 300ms ease-in-out 0s;
     transform: ${(props) =>
         props.$hamburgerContainerShow === true
-            ? 'translateX(280px)'
+            ? 'translateX(17.5rem)'
             : 'translateX(0px)'};
     height: 100vh;
 `;
 const ButtonCloseSection = styled('div')`
     position: relative;
-    padding: 24px 32px 16px;
+    padding: 1.5rem 2rem 1rem;
     display: flex;
     justify-content: end;
 `;
@@ -195,10 +193,10 @@ const IconSection = styled('div')`
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 16px 32px;
+    padding: 1rem 2rem;
     > img {
-        width: 24px;
-        height: 24px;
+        width: 3rem;
+        height: 3rem;
     }
 `;
 
@@ -209,22 +207,28 @@ const SocialIcons = styled('div')`
     > a {
         display: inline-flex;
         > img {
-            margin: 8px;
-            width: 24px;
-            height: 24px;
+            margin: 0.5rem;
+            width: 1.5rem;
+            height: 1.5rem;
         }
     }
 `;
 
 const HamburgerButtonNav = styled('div')`
-    padding: 24px 32px;
+    padding: 1.5rem 2rem;
     > div {
         width: 100%;
         margin-right: 0;
     }
     > div:first-child {
-        margin-bottom: 16px;
+        margin-bottom: 1rem;
     }
+`;
+
+const LogoLink = styled(Link)`
+    display: inline-flex;
+    align-items: center;
+    margin-right: 1rem;
 `;
 
 const NavBar = ({ locale, children, ...props }) => {
@@ -263,125 +267,128 @@ const NavBar = ({ locale, children, ...props }) => {
     }, []);
 
     return (
-        <StyledNavBar style={props}>
+        <StyledNavBar>
             <HeaderSection>
-                <HeaderContainer>
-                    <StyledDesktopAndAbovebox>
-                        <BrandWrapper>
-                            <ButtonContainer
-                                $isHeaderShow={isHeaderShow}
-                                onClick={handleHamburgerContainerShow}
-                            >
-                                <ButtonLine></ButtonLine>
-                            </ButtonContainer>
-                            <BrandNav isHeaderShow={isHeaderShow}>
-                                <a
-                                    href="/"
-                                    style={{
-                                        display: 'inline-block',
-                                        marginRight: '16px',
-                                    }}
+                <Container>
+                    <HeaderContainer>
+                        <StyledDesktopAndAbovebox>
+                            <BrandWrapper>
+                                <ButtonContainer
+                                    $isHeaderShow={isHeaderShow}
+                                    onClick={handleHamburgerContainerShow}
                                 >
-                                    {/* TODO:svg 切換多國語 */}
-                                    {/* <Image
-                                        width={221}
-                                        height={32}
-                                        src={logoEnImg}
-                                        alt="logo"
-                                    /> */}
-                                    <img src={t('headerLogo')} alt="Logo" />
-                                </a>
-                                <div className={SubBrandNav}>
-                                    {t('subTitle')}
+                                    <ButtonLine></ButtonLine>
+                                </ButtonContainer>
+                                <BrandNav isHeaderShow={isHeaderShow}>
+                                    <LogoLink href="/">
+                                        {/* TODO:svg 切換多國語 */}
+                                        <Image
+                                            // width={221}
+                                            height={48}
+                                            src={logoIcon}
+                                            alt="logo"
+                                        />
+                                        <Image
+                                            // width={221}
+                                            height={20}
+                                            src={logoImg}
+                                            alt="logo"
+                                        />
+                                        {/* <img
+                                            src={`/_next/static/media/TaiFun.ba21988b.png`}
+                                            alt="Logo"
+                                        /> */}
+                                    </LogoLink>
+                                    <SubBrandNav>{t('subTitle')}</SubBrandNav>
+                                </BrandNav>
+                            </BrandWrapper>
+                            <IconGroupNav>
+                                <div>
+                                    <ButtonNav
+                                        className={ButtonNavOutline}
+                                        $variant="outlined"
+                                        $locale={locale}
+                                    >
+                                        {t('navButtons.outline')}
+                                    </ButtonNav>
+                                    <ButtonNav
+                                        className={ButtonNavFilled}
+                                        $variant="filled"
+                                        $locale={locale}
+                                    >
+                                        {t('navButtons.filled')}
+                                    </ButtonNav>
                                 </div>
-                            </BrandNav>
-                        </BrandWrapper>
-                        <IconGroupNav>
-                            <div>
-                                <ButtonNav
-                                    className={ButtonNavOutline}
-                                    $variant="outlined"
-                                    $locale={locale}
-                                >
-                                    {t('navButtons.outline')}
-                                </ButtonNav>
-                                <ButtonNav
-                                    className={ButtonNavFilled}
-                                    $variant="filled"
-                                    $locale={locale}
-                                >
-                                    {t('navButtons.filled')}
-                                </ButtonNav>
-                            </div>
-                            <IconContainer>
-                                {/* TODO:how to use svg */}
-                                {/* <svg src={searchIcon} alt=""></svg> */}
-                                <IconBox src={searchIcon} />
-                                <IconBox src={memberIcon} />
-                            </IconContainer>
-                        </IconGroupNav>
-                    </StyledDesktopAndAbovebox>
-                    <StyledDivider
-                        $isCatgoryShow={isCatgoryShow}
-                    ></StyledDivider>
-                    <ChannelContainer $isCatgoryShow={isCatgoryShow}>
-                        <Channels
-                            handleHamburgerContainerShow={
-                                handleHamburgerContainerShow
-                            }
-                        ></Channels>
-                    </ChannelContainer>
-                    <StyledDivider
-                        $isCatgoryShow={isCatgoryShow}
-                    ></StyledDivider>
-                </HeaderContainer>
-                <HamburgerContainer
-                    $hamburgerContainerShow={hamburgerContainerShow}
-                >
-                    <ButtonCloseSection>
-                        <ButtonClose
-                            onClick={handleHamburgerContainerShow}
-                        ></ButtonClose>
-                    </ButtonCloseSection>
-                    <IconSection>
-                        <Image src={logoIcon} alt="logoIcon" />
-                    </IconSection>
-                    <Menu>
-                        <MenuItems
-                            items={t('menuConfig', { returnObjects: true })}
-                        ></MenuItems>
-                    </Menu>
-                    <SocialIcons>
-                        <a href="">
-                            <Image src={facebookIcon} alt="facebook" />
-                        </a>
-                        <a href="">
-                            <Image src={instagramIcon} alt="instagram" />
-                        </a>
-                        <a href="">
-                            <Image src={twitterIcon} alt="twitter" />
-                        </a>
-                        <a href="">
-                            <Image src={youtubeIcon} alt="youtube" />
-                        </a>
-                    </SocialIcons>
-                    <HamburgerButtonNav>
-                        <ButtonNav
-                            className={ButtonNavOutline}
-                            $variant="outlined"
-                            $locale={locale}
-                        >
-                            {t('navButtons.outline')}
-                        </ButtonNav>
-                        <ButtonNav
-                            className={ButtonNavFilled}
-                            $variant="filled"
-                            $locale={locale}
-                        >
-                            {t('navButtons.filled')}
-                        </ButtonNav>
-                    </HamburgerButtonNav>
-                </HamburgerContainer>
+                                <IconContainer>
+                                    {/* TODO:how to use svg */}
+                                    {/* <svg src={searchIcon} alt=""></svg> */}
+                                    <IconBox src={searchIcon} />
+                                    <IconBox src={memberIcon} />
+                                </IconContainer>
+                            </IconGroupNav>
+                        </StyledDesktopAndAbovebox>
+                        <StyledDivider
+                            $isCatgoryShow={isCatgoryShow}
+                        ></StyledDivider>
+                        <ChannelContainer $isCatgoryShow={isCatgoryShow}>
+                            <Channels
+                                handleHamburgerContainerShow={
+                                    handleHamburgerContainerShow
+                                }
+                            ></Channels>
+                        </ChannelContainer>
+                        <StyledDivider
+                            $isCatgoryShow={isCatgoryShow}
+                        ></StyledDivider>
+                    </HeaderContainer>
+                    <HamburgerContainer
+                        $hamburgerContainerShow={hamburgerContainerShow}
+                    >
+                        <ButtonCloseSection>
+                            <ButtonClose
+                                onClick={handleHamburgerContainerShow}
+                            ></ButtonClose>
+                        </ButtonCloseSection>
+                        <IconSection>
+                            <Image src={logoIcon} alt="logoIcon" />
+                        </IconSection>
+                        <Menu>
+                            <MenuItems
+                                items={t('menuConfig', { returnObjects: true })}
+                            ></MenuItems>
+                        </Menu>
+                        <SocialIcons>
+                            <a href="">
+                                <Image src={facebookIcon} alt="facebook" />
+                            </a>
+                            <a href="">
+                                <Image src={instagramIcon} alt="instagram" />
+                            </a>
+                            <a href="">
+                                <Image src={twitterIcon} alt="twitter" />
+                            </a>
+                            <a href="">
+                                <Image src={youtubeIcon} alt="youtube" />
+                            </a>
+                        </SocialIcons>
+                        <HamburgerButtonNav>
+                            <ButtonNav
+                                className={ButtonNavOutline}
+                                $variant="outlined"
+                                $locale={locale}
+                            >
+                                {t('navButtons.outline')}
+                            </ButtonNav>
+                            <ButtonNav
+                                className={ButtonNavFilled}
+                                $variant="filled"
+                                $locale={locale}
+                            >
+                                {t('navButtons.filled')}
+                            </ButtonNav>
+                        </HamburgerButtonNav>
+                    </HamburgerContainer>
+                </Container>
             </HeaderSection>
         </StyledNavBar>
     );

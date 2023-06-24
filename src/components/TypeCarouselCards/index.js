@@ -15,9 +15,6 @@ import Button from '@/lib/Button';
 
 import NoImage from '@/components/NoImage';
 
-// import { isObject } from '@/utils/isObject';
-// import { dateTransfer } from '@/utils/dateTransfer';
-
 const CarouselContainer = styled.div`
     width: 100%;
     margin: 0 auto;
@@ -27,15 +24,13 @@ const CarouselContainer = styled.div`
 const CarouselBox = styled(Swiper)`
     width: 100%;
     height: 100%;
-    // height: fit-content;
-    // padding: 2px; // 加上才看得到 shadow
-    padding-bottom: 40px;
+    padding-bottom: 2.5rem;
     .swiper-pagination-bullet {
-        width: 12px;
-        height: 12px;
+        width: 0.75rem;
+        height: 0.75rem;
     }
     .swiper-pagination-bullet-active {
-        background-color: #2f798c;
+        background-color: ${(props) => props.theme.colors.primary};
     }
 `;
 
@@ -43,15 +38,26 @@ const StyledTitleContainer = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: end;
+    margin: 1.5rem 0;
 `;
 
-const StyledTitleText = styled.h2``;
+const StyledTitleText = styled.div`
+    color: ${(props) => props.theme.colors.primary};
+    font-size: ${(props) => props.theme.fontSize.lg};
+    font-weight: 600;
+`;
 
-const StyledTitleLink = styled.div``;
+const StyledTitleLink = styled.div`
+    color: ${(props) => props.theme.colors.danger};
+    font-size: ${(props) => props.theme.fontSize.sm};
+    &:after {
+        content: ' >';
+    }
+`;
 
 const StyledSwiperSlide = styled(SwiperSlide)`
     width: auto;
-    // height: fit-content;
+    margin-right: 1rem;
 `;
 
 const Actions = styled.div`
@@ -65,6 +71,11 @@ const Actions = styled.div`
     }
 `;
 
+const StyledButton = styled(Button)`
+    width: 100%;
+    margin-bottom: 1rem;
+    font-size: ${(props) => props.theme.fontSize.sm};
+`;
 const TypeCarouselCards = ({ type, lists }) => {
     let titleName;
     switch (type) {
@@ -78,6 +89,15 @@ const TypeCarouselCards = ({ type, lists }) => {
             titleName = '熱門美食';
             break;
     }
+
+    const swiperParams = {
+        slidesPerView: 'auto', // 根据容器宽度自动调整每页显示的滑块数量
+        // spaceBetween: '1rem', // 滑块之间的间距
+        modules: [Pagination],
+        navigation: false,
+        pagination: { clickable: true, dynamicBullets: true },
+    };
+
     return (
         <>
             <CarouselContainer>
@@ -89,13 +109,7 @@ const TypeCarouselCards = ({ type, lists }) => {
                         </Link>
                     </StyledTitleLink>
                 </StyledTitleContainer>
-                <CarouselBox
-                    modules={[Navigation, Pagination]}
-                    pagination={{ clickable: true, dynamicBullets: true }}
-                    navigation={false}
-                    spaceBetween={26.5}
-                    slidesPerView={'auto'}
-                >
+                <CarouselBox {...swiperParams}>
                     {lists &&
                         lists.map((item) => {
                             let PictureUrl1 =
@@ -146,21 +160,14 @@ const TypeCarouselCards = ({ type, lists }) => {
                                                     description={openTime}
                                                     address={Address}
                                                     text="開放時間"
-                                                    icon="fa-solid fa-thumbs-up"
+                                                    icon="fa-solid fa-location-dot"
                                                 />
                                             }
                                             footer={
                                                 <Actions>
-                                                    <Button
-                                                        style={{
-                                                            width: '100%',
-                                                            marginBottom:
-                                                                '16px',
-                                                        }}
-                                                        variant="outlined"
-                                                    >
+                                                    <StyledButton variant="outlined">
                                                         查看詳情
-                                                    </Button>
+                                                    </StyledButton>
                                                 </Actions>
                                             }
                                         ></Card>

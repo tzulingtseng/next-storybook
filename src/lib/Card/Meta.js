@@ -4,42 +4,48 @@ import PropTypes from 'prop-types';
 import Icon from '../Icon';
 
 const StyledMeta = styled.div`
-    padding: 12px 16px;
+    padding: 0.75rem 1rem;
     display: flex;
     & > *:not(:first-child) {
-        margin-left: 8px;
+        margin-left: 0.5rem;
     }
 `;
 
 const Avatar = styled.div`
-    width: 40px;
-    height: 40px;
+    width: 2.5rem;
+    height: 2.5rem;
     & > img {
         width: 100%;
     }
 `;
 
+const StyledIcon = styled(Icon)`
+    color: ${(props) => props.theme.colors.danger};
+`;
+
 const Content = styled.div`
     width: 100%;
-    overflow:hidden;
+    overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    text-align:left;
+    text-align: left;
     .meta__info {
-        overflow:hidden;
+        overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+        font-size: ${(props) => props.theme.fontSize.xs};
     }
     .meta__title {
         overflow: hidden;
         color: #000000d9;
         font-weight: 500;
-        font-size: 16px;
+        font-size: ${(props) => props.theme.fontSize.sm};
         white-space: nowrap;
         text-overflow: ellipsis;
+        margin: 0.5rem 0;
     }
     .meta__description {
-        font-size: 14px;
+        font-size: ${(props) => props.theme.fontSize.xs};
         color: #00000073;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -61,10 +67,15 @@ const Meta = ({
     </Avatar> */}
         <Content>
             <div className="meta__info">
-                {address && (
-                    <Icon icon={icon} style={{ marginRight: '8px' }}></Icon>
-                )}
-                <span>{address}</span>
+                <div>
+                    {address && (
+                        <StyledIcon
+                            icon={icon}
+                            style={{ marginRight: '8px' }}
+                        ></StyledIcon>
+                    )}
+                    <span>{address}</span>
+                </div>
             </div>
             <div className="meta__title">{title}</div>
             <div className="meta__description">

@@ -8,8 +8,8 @@ import { usePagination } from '@/hooks/usePagination';
 import { useColor } from '@/hooks/useColor';
 
 const buttonStyle = css`
-    width: 32px;
-    height: 32px;
+    width: 2rem;
+    height: 2rem;
     border-radius: 100%;
     display: flex;
     align-items: center;
@@ -37,7 +37,7 @@ const StyledPagination = styled.div`
     display: flex;
     align-items: center;
     & > *:not(:first-child) {
-        margin-left: 12px;
+        margin-left: 0.75rem;
     }
 `;
 

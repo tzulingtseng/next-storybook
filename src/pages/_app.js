@@ -1,14 +1,7 @@
-import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import { ThemeProvider } from 'styled-components';
 import { appWithTranslation } from 'next-i18next';
 import '@/styles/globals.css';
-
-const GlobalStyle = createGlobalStyle`
-  body {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-`;
+import GlobalStyle from '@/styles/GlobalStyle';
 
 const theme = {
     colors: {

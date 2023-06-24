@@ -4,16 +4,13 @@ import Icon from '../Icon';
 import Typography from '../Typography';
 
 // container
-const StyledMenuContainer = styled('div')(({ theme }) => ({
-    display: 'flex',
-    cursor: 'pointer',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: `${theme.getSpacing(1)}px ${theme.getSpacing(2)}px`,
-    '&:hover': {
-        backgroundColor: theme.colors.grey4,
-    },
-}));
+const StyledMenuContainer = styled.div`
+    display: flex;
+    cursor: pointer;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0.5 2;
+`;
 
 // icon
 const MenuIcon = styled(Icon)(({ theme }) => ({

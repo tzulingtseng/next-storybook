@@ -1,16 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const StyledBrandNav = styled('div')(({ theme, ...props }) => ({
-    height: 32,
-    width: 'auto',
-    backgroundColor: theme.colors.white,
-    display: 'flex',
-    alignItems: 'center',
-    marginLeft: props.$isHeaderShow ? '0px' : '24px', // 24px
-    transform: props.$isHeaderShow ? 'translateX(-24px)' : 'translateX(0px)', // 0px
-    transition: 'all 200ms ease 150ms',
-}));
+const StyledBrandNav = styled.div`
+    height: 2rem;
+    width: auto;
+    background-color: ${(props) => props.theme.colors.transparent};
+    display: flex;
+    align-items: center;
+    margin-left: 0px;
+    transform: translateX(-1.5rem);
+    transition: all 200ms ease 150ms;
+`;
 
 const BrandNav = ({ isHeaderShow, children, ...props }) => {
     return (

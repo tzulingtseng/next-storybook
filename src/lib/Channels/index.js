@@ -13,16 +13,16 @@ const CategoryContainer = styled('div')`
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 8px 16px;
+    padding: 0.5rem 1rem;
 `;
 
 const ButtonContainer = styled('div')`
-    width: 24px;
-    height: 24px;
+    width: 1.5rem;
+    height: 1.5rem;
     cursor: pointer;
     position: relative;
-    // border-top: 2px solid rgb(128, 128, 128);
-    // border-bottom: 2px solid rgb(128, 128, 128);
+    // border-top: 2px solid ${(props) => props.theme.colors.grey2};
+    // border-bottom: 2px solid ${(props) => props.theme.colors.grey2};
     &:before,
     &:after {
         content: '';
@@ -31,7 +31,7 @@ const ButtonContainer = styled('div')`
         display: block;
         position: absolute;
 
-        background-color: rgb(128, 128, 128);
+        background-color: ${(props) => props.theme.colors.grey2};
     }
     &:before {
         top: 2px;
@@ -47,10 +47,12 @@ const ButtonLine = styled('div')`
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background-color: rgb(128, 128, 128);
+    background-color: ${(props) => props.theme.colors.grey2};
 `;
 
-const Item = styled('div')``;
+const Item = styled('div')`
+    font-size: ${(props) => props.theme.fontSize.sm};
+`;
 
 const Channels = ({ handleHamburgerContainerShow }) => {
     const { t } = useTranslation('home');

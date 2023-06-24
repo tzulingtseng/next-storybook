@@ -3,14 +3,14 @@ import styled, { css } from 'styled-components';
 import ButtonClose from '../ButtonClose';
 
 const MenuContainer = styled.div`
-    width: 280px;
+    width: 17.5rem;
     // height: 100%;
     max-height: 100vh;
     overflow-y: scroll;
     overscroll-behavior: contain;
-    background-color: rgb(255, 255, 255);
+    background-color: ${(props) => props.theme.colors.white};
     text-align: left;
-    padding: 24px 0;
+    padding: 1.5rem 0;
 `;
 
 const Menu = ({ children, ...props }) => {

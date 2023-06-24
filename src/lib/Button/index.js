@@ -25,7 +25,7 @@ const textStyle = css`
 const disabledStyle = css`
     cursor: not-allowed;
     // TODO:FIX disabled 的顏色要可以調嗎
-    color: #fff;
+    color: ${(props) => props.theme.colors.white};
     &:hover,
     &:active {
         opacity: 1;
@@ -39,23 +39,23 @@ const variantMap = {
 };
 
 const StartIcon = styled.span`
-    margin-right: 8px;
+    margin-right: 0.5rem;
 `;
 
 const EndIcon = styled.span`
-    margin-left: 8px;
+    margin-left: 0.5rem;
 `;
 
 const StyledButton = styled.button`
     border: none;
     outline: none;
-    min-width: 100px;
-    height: 40px;
+    min-width: 6.25rem;
+    height: 2.5rem;
     display: inline-flex;
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    border-radius: ${({ theme }) => theme.radius}px;
+    border-radius: 0.5rem;
     cursor: pointer;
     transition: color 0.2s, background-color 0.2s, border 0.2s,
         opacity 0.2s ease-in-out;
