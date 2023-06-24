@@ -29,7 +29,7 @@ const StyledNavBar = styled('header')`
 `;
 
 const HeaderSection = styled.div`
-    width: 1280px;
+    width: 1200px;
     margin: 0 auto;
     // border: 1px solid blue;
 `;

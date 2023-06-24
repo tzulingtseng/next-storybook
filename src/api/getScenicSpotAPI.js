@@ -4,7 +4,7 @@ import axios from 'axios';
 import { API_HOSTNAME_URL } from 'src/config/';
 import { getAuthorizationHeader } from '@/utils/getAuthorizationHeader';
 
-const getActivityAPI = async ({
+const getScenicSpotAPI = async ({
     top = undefined,
     // filter = 'Picture/PictureUrl1 ne null',
     filter = undefined,
@@ -29,7 +29,7 @@ const getActivityAPI = async ({
     };
 
     await axios
-        .get(`https://${API_HOSTNAME_URL}/v2/Tourism/Activity`, {
+        .get(`https://${API_HOSTNAME_URL}/v2/Tourism/ScenicSpot`, {
             // TODO: 研究 useEffect 怎麼控制
             // signal: typeof signal === 'object' ? signal : undefined,
             params,
@@ -73,4 +73,4 @@ const getActivityAPI = async ({
     return returnData;
 };
 
-export default getActivityAPI;
+export default getScenicSpotAPI;

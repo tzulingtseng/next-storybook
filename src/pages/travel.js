@@ -15,36 +15,19 @@ import Card from '@/lib/Card';
 import Button from '@/lib/Button';
 import { Icon } from '@/lib';
 import Meta from '@/lib/Card/Meta';
-import Footer from '@/lib/Footer';
-import ActivityCarouselCards from '@/components/ActivityCarouselCards';
+import Container from '@/components/Container';
+import Footer from '@/components/Footer';
+import TypeCarouselCards from '@/components/TypeCarouselCards';
 
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import useGetActivity from '@/features/home/hooks/useGetActivity';
-
-const Container = styled('div')`
-    max-width: 1200px;
-    width: 100%;
-    margin: 0 auto;
-    height: auto;
-`;
-
-const Actions = styled.div`
-    padding: 8px 16px;
-    color: #888;
-    i {
-        cursor: pointer;
-    }
-    & > *:not(:first-child) {
-        margin-left: 20px;
-    }
-`;
+import useGetScenicSpot from '@/features/home/hooks/useGetScenicSpot';
+import useGetRestaurant from '@/features/home/hooks/useGetRestaurant';
 
 const Travel = (props) => {
-    const { products } = props;
-
     const { locale, locales, push } = useRouter();
     const changeLanguage = (l) => () => {
         push('/', undefined, { locale: l });
@@ -56,31 +39,54 @@ const Travel = (props) => {
         status: activityStatus,
         data: activityData,
         error: activityError,
-    } = useGetActivity({ top: 10 });
+    } = useGetActivity({ top: 10, filter: 'Picture/PictureUrl1 ne null' });
 
-    // const { data: activityData } = useGetActivity()
-    // const useGetActivityLog = useGetActivity();
-    // console.log('activityData', activityData);
+    const {
+        status: scenicSpotStatus,
+        data: scenicSpotData,
+        error: scenicSpotError,
+    } = useGetScenicSpot({ top: 10, filter: 'Picture/PictureUrl1 ne null' });
+
+    const {
+        status: restaurantStatus,
+        data: restaurantData,
+        error: restaurantError,
+    } = useGetRestaurant({ top: 10, filter: 'Picture/PictureUrl1 ne null' });
 
     return (
         <>
             <ThemeProvider theme={theme}>
                 <NavBar locale={locale}></NavBar>
-                <h1>{t('title')}</h1>
+                {/* <h1>{t('title')}</h1>
                 <div>
                     <h3>With Link</h3>
                     <h1>Choose your locale:</h1>
                     {locales.map((l) => (
                         <button key={l}>
-                            <Link href={'/tdx'} locale={l}>
+                            <Link href={`/travel`} locale={l}>
                                 {l}
                             </Link>
                         </button>
                     ))}
-                </div>
+                </div> */}
                 <Container>
                     {activityStatus === 'success' && (
-                        <ActivityCarouselCards lists={activityData} />
+                        <TypeCarouselCards
+                            lists={activityData}
+                            type="activity"
+                        />
+                    )}
+                    {scenicSpotStatus === 'success' && (
+                        <TypeCarouselCards
+                            lists={scenicSpotData}
+                            type="scenicSpot"
+                        />
+                    )}
+                    {restaurantStatus === 'success' && (
+                        <TypeCarouselCards
+                            lists={restaurantData}
+                            type="restaurant"
+                        />
                     )}
                 </Container>
                 <Footer></Footer>
@@ -90,14 +96,8 @@ const Travel = (props) => {
 };
 
 export async function getStaticProps({ locale }) {
-    // const filePath = path.join(process.cwd(), 'data', 'backend.json');
-    // const jsonData = await fs.readFile(filePath);
-    // const data = JSON.parse(jsonData);
-    // console.log('data', data);
-
     return {
         props: {
-            // products: data.products,
             ...(await serverSideTranslations(locale, [
                 'common',
                 'about',

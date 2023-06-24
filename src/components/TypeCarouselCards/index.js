@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import styled, { css } from 'styled-components';
+import moment from 'moment-timezone';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
@@ -38,6 +39,16 @@ const CarouselBox = styled(Swiper)`
     }
 `;
 
+const StyledTitleContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+`;
+
+const StyledTitleText = styled.h2``;
+
+const StyledTitleLink = styled.div``;
+
 const StyledSwiperSlide = styled(SwiperSlide)`
     width: auto;
     // height: fit-content;
@@ -54,36 +65,75 @@ const Actions = styled.div`
     }
 `;
 
-const ActivityCarouselCards = ({ lists }) => {
+const TypeCarouselCards = ({ type, lists }) => {
+    let titleName;
+    switch (type) {
+        case 'activity':
+            titleName = '熱門景點';
+            break;
+        case 'scenicSpot':
+            titleName = '熱門活動';
+            break;
+        case 'restaurant':
+            titleName = '熱門美食';
+            break;
+    }
     return (
         <>
             <CarouselContainer>
+                <StyledTitleContainer>
+                    <StyledTitleText>{titleName}</StyledTitleText>
+                    <StyledTitleLink>
+                        <Link href={`/travel/search?type=${type}`}>
+                            更多{titleName}
+                        </Link>
+                    </StyledTitleLink>
+                </StyledTitleContainer>
                 <CarouselBox
                     modules={[Navigation, Pagination]}
                     pagination={{ clickable: true, dynamicBullets: true }}
                     navigation={false}
-                    spaceBetween={20}
+                    spaceBetween={26.5}
                     slidesPerView={'auto'}
                 >
                     {lists &&
                         lists.map((item) => {
+                            let PictureUrl1 =
+                                item?.Picture?.PictureUrl1 ?? null;
+                            let openTime =
+                                moment(item?.StartTime, moment.ISO_8601)
+                                    .tz('Asia/Taipei')
+                                    .format('YYYY-MM-DD') +
+                                ' ~ ' +
+                                moment(item?.EndTime, moment.ISO_8601)
+                                    .tz('Asia/Taipei')
+                                    .format('YYYY-MM-DD');
+                            let Address = item?.Address ?? '詳見官網';
+                            let itemId, itemName, type;
+                            if (item?.ActivityID) {
+                                itemId = item.ActivityID;
+                                itemName = item.ActivityName;
+                                type = 'activitiy';
+                            } else if (item?.ScenicSpotID) {
+                                itemId = item.ScenicSpotID;
+                                itemName = item.ScenicSpotName;
+                                type = 'scenicSpot';
+                            } else if (item?.RestaurantID) {
+                                itemId = item.RestaurantID;
+                                itemName = item.RestaurantName;
+                                type = 'restaurant';
+                            }
                             return (
                                 <StyledSwiperSlide key={item.ActivityID}>
                                     <Link
-                                        href={`/travel/detail/${item.ActivityID}`}
+                                        href={`/travel/detail/${type}?id=${itemId}`}
                                     >
                                         <Card
                                             cover={
-                                                isObject(
-                                                    item.Picture,
-                                                    'PictureUrl1'
-                                                ) ? (
+                                                PictureUrl1 ? (
                                                     <img
-                                                        src={
-                                                            item.Picture
-                                                                .PictureUrl1
-                                                        }
-                                                        alt={item.ActivityName}
+                                                        src={PictureUrl1}
+                                                        alt={itemName}
                                                     />
                                                 ) : (
                                                     <NoImage />
@@ -92,29 +142,9 @@ const ActivityCarouselCards = ({ lists }) => {
                                             children={
                                                 <Meta
                                                     // avatarUrl={item.Picture.PictureUrl1}
-                                                    title={item.ActivityName}
-                                                    description={
-                                                        isObject(
-                                                            item,
-                                                            'StartTime'
-                                                        )
-                                                            ? dateTransfer(
-                                                                  item.StartTime
-                                                              ) +
-                                                              '~' +
-                                                              dateTransfer(
-                                                                  item.EndTime
-                                                              )
-                                                            : '詳見官網'
-                                                    }
-                                                    address={
-                                                        isObject(
-                                                            item,
-                                                            'Address'
-                                                        )
-                                                            ? item.Address
-                                                            : '詳見官網'
-                                                    }
+                                                    title={itemName}
+                                                    description={openTime}
+                                                    address={Address}
                                                     text="開放時間"
                                                     icon="fa-solid fa-thumbs-up"
                                                 />
@@ -144,4 +174,4 @@ const ActivityCarouselCards = ({ lists }) => {
     );
 };
 
-export default ActivityCarouselCards;
+export default TypeCarouselCards;

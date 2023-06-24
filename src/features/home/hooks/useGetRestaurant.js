@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
-import getActivityAPI from '@/api/getActivityAPI';
+import { useState, useEffect, useRef } from 'react';
+import getRestaurantAPI from '@/api/getRestaurantAPI';
 
-const useGetActivity = ({ top = null, filter = null }) => {
+const useGetRestaurant = ({ ...props }) => {
     // console.log('props', props);
     const [status, setStatus] = useState(undefined);
     const [data, setData] = useState(undefined);
-    // const [pagination, setPagination] = useState(undefined);
     const [error, setError] = useState(undefined);
 
     const isMountedRef = useRef(true);
@@ -28,7 +27,7 @@ const useGetActivity = ({ top = null, filter = null }) => {
      */
     useEffect(() => {
         const handleData = async () => {
-            console.log(`~~~~取得所有觀光活動資料~~~~`); //FIXME:
+            console.log(`~~~~取得所有觀光餐廳資料~~~~`); //FIXME:
 
             // 取消上次API請求
             // apiControllerRef.current?.abort();
@@ -36,23 +35,23 @@ const useGetActivity = ({ top = null, filter = null }) => {
             // 創建API請求
             // apiControllerRef.current = new AbortController();
 
-            const responseData = await getActivityAPI({
-                top: top,
-                filter: filter,
+            const responseData = await getRestaurantAPI({
+                top: props?.top ?? null,
+                filter: props?.filter ?? null,
             });
 
             // 確保在此頁執行
             // if (isMountedRef.current) {
             if (responseData?.status === 'success') {
-                // handle success (取得觀光活動資料)
+                //     // handle success (取得觀光活動資料)
                 setData(responseData?.data);
                 setStatus('success');
             } else if (responseData?.status === 'error') {
-                // handle error (後端錯誤)
+                //     // handle error (後端錯誤)
                 setStatus('error');
                 setError(responseData.desc);
             } else {
-                // handle cancel (取消 call api)
+                //     // handle cancel (取消 call api)
                 setStatus('cancel');
             }
             // }
@@ -63,9 +62,8 @@ const useGetActivity = ({ top = null, filter = null }) => {
     return {
         status: status,
         data: data,
-        // pagination: pagination,
         error: error,
     };
 };
 
-export default useGetActivity;
+export default useGetRestaurant;

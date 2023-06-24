@@ -4,7 +4,7 @@ import axios from 'axios';
 import { API_HOSTNAME_URL } from 'src/config/';
 import { getAuthorizationHeader } from '@/utils/getAuthorizationHeader';
 
-const getActivityAPI = async ({
+const getRestaurantAPI = async ({
     top = undefined,
     // filter = 'Picture/PictureUrl1 ne null',
     filter = undefined,
@@ -29,7 +29,7 @@ const getActivityAPI = async ({
     };
 
     await axios
-        .get(`https://${API_HOSTNAME_URL}/v2/Tourism/Activity`, {
+        .get(`https://${API_HOSTNAME_URL}/v2/Tourism/Restaurant`, {
             // TODO: 研究 useEffect 怎麼控制
             // signal: typeof signal === 'object' ? signal : undefined,
             params,
@@ -57,6 +57,7 @@ const getActivityAPI = async ({
         .catch((error) => {
             if (error.__CANCEL__) {
                 // handle cancel 請求取消
+                // TODO:確認i18n.t()
                 returnData = {
                     status: 'cancel',
                     desc: i18n.t('cancel', { ns: 'api_mapping' }),
@@ -64,6 +65,7 @@ const getActivityAPI = async ({
             } else {
                 // handle error
                 // 專門處理請求本身的錯誤，例如網絡連接錯誤、請求超時、無法發送請求等等
+                // TODO:確認i18n.t()
                 returnData = {
                     status: 'error',
                     desc: i18n.t('error', { ns: 'api_mapping' }),
@@ -73,4 +75,4 @@ const getActivityAPI = async ({
     return returnData;
 };
 
-export default getActivityAPI;
+export default getRestaurantAPI;
