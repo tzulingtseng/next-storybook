@@ -5,11 +5,19 @@ import moment from 'moment-timezone';
 import Container from '@/components/Container';
 import CardContainer from '@/components/CardContainer';
 import Pagination from '@/lib/Pagination';
+import breakpoint from '@/lib/constant/breakpoint';
 
 const SearchResultsTitle = styled.div`
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1.5rem 0;
+`;
+const SearchResultsTitleText = styled.div`
+    color: ${(props) => props.theme.colors.primary};
+    font-size: ${(props) => props.theme.fontSize.lg};
+    font-weight: 600;
 `;
 
 const SearchInfo = styled.div`
@@ -20,9 +28,8 @@ const SearchInfo = styled.div`
 `;
 
 const SearchResultsContainer = styled.div`
-    // width: calc(100% + 10px * 2);
-    width: 100%;
-    // height: auto;
+    width: calc(100% + 1rem * 2);
+    margin: 0 -1rem;
     display: flex;
     flex-wrap: wrap;
 `;
@@ -47,7 +54,7 @@ const SearchResults = ({
     return (
         <Container>
             <SearchResultsTitle>
-                <div>搜尋結果：</div>
+                <SearchResultsTitleText>搜尋結果</SearchResultsTitleText>
                 <SearchInfo>
                     <div>
                         關鍵字：

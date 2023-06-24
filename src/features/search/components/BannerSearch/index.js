@@ -11,24 +11,42 @@ import Button from '@/lib/Button';
 const BannerContainer = styled.div`
     width: 100%;
     position: relative;
+    > img {
+        width: 100%;
+        height: auto;
+    }
 `;
 
-const BannerContentBox = styled.div`
-    width: 500px;
-    height: 200px;
-    background-color: rgba(216, 216, 216, 0.5);
+const BannerMask = styled.div`
+    background-color: ${(props) => props.theme.colors.white};
+    opacity: 0.1;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     display: flex;
     justify-content: center;
     align-items: center;
 `;
 
-const BannerTitle = styled.div``;
+const BannerContentBox = styled.div`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50rem;
+`;
 
-const BannerContent = styled.div``;
+const BannerContent = styled.div`
+    text-align: center;
+`;
+
+const BannerTitle = styled.div`
+    font-size: ${(props) => props.theme.fontSize.xxl};
+    font-weight: 600;
+    color: ${(props) => props.theme.colors.white};
+`;
 
 const BannerSearchBox = styled.div``;
 
@@ -51,6 +69,7 @@ const BannerSearch = ({
             ) : (
                 <Image src={BannerRestaurant} alt="Banner" />
             )}
+            <BannerMask />
             <BannerContentBox>
                 <BannerContent>
                     <BannerTitle>尋找{bannerTitle}</BannerTitle>

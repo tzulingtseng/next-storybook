@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import ButtonClose from '../ButtonClose';
 
 const MenuContainer = styled.div`
-    width: 17.5rem;
+    width: 100%;
     // height: 100%;
     max-height: 100vh;
     overflow-y: scroll;

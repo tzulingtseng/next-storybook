@@ -5,10 +5,23 @@ import NoImage from '@/components/NoImage';
 import Card from '@/lib/Card';
 import Meta from '@/lib/Card/Meta';
 import Button from '@/lib/Button';
+import breakpoint from '@/lib/constant/breakpoint';
 
 const StyledCardContainer = styled.div`
-    margin: 0 10px;
-    margin-bottom: 20px;
+    width: calc(100% - 2rem);
+    margin: 0 1rem;
+    margin-bottom: 1rem;
+    > a {
+        > div {
+            max-width: initial;
+        }
+    }
+    ${breakpoint.mediaSM} {
+        width: calc(100% / 2 - 2rem);
+    }
+    ${breakpoint.mediaMD} {
+        width: calc(100% / 3 - 2rem);
+    }
 `;
 
 const Actions = styled.div`
@@ -18,8 +31,14 @@ const Actions = styled.div`
         cursor: pointer;
     }
     & > *:not(:first-child) {
-        margin-left: 20px;
+        margin-left: 1rem;
     }
+`;
+
+const StyledButton = styled(Button)`
+    width: 100%;
+    margin-bottom: 1rem;
+    font-size: ${(props) => props.theme.fontSize.sm};
 `;
 
 const CardContainer = ({
@@ -36,7 +55,7 @@ const CardContainer = ({
                 <Card
                     cover={
                         PictureUrl1 ? (
-                            <img src={PictureUrl1} alt={itemName} />
+                            <img src={PictureUrl1} alt="首頁熱門項目" />
                         ) : (
                             <NoImage />
                         )
@@ -52,15 +71,9 @@ const CardContainer = ({
                     }
                     footer={
                         <Actions>
-                            <Button
-                                style={{
-                                    width: '100%',
-                                    marginBottom: '16px',
-                                }}
-                                variant="outlined"
-                            >
+                            <StyledButton variant="outlined">
                                 查看詳情
-                            </Button>
+                            </StyledButton>
                         </Actions>
                     }
                 ></Card>

@@ -35,6 +35,8 @@ const theme = {
         sm: '1rem',
         md: '1.125rem',
         lg: '1.5rem',
+        xl: '2rem',
+        xxl: '3rem',
     },
     radius: 4,
     spacing: 1, // rem

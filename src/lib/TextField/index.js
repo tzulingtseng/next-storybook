@@ -25,15 +25,14 @@ const disabledStyle = css`
 const StyledTextField = styled.div`
     display: inline-flex;
     align-items: center;
-    border: 1px solid #ddd;
-    background-color: #fff;
-    border-radius: 4px;
-    padding: 8px 12px;
-    box-sizing: border-box;
-    height: 36px;
+    border: 1px solid ${(props) => props.theme.colors.grey3};
+    background-color: ${(props) => props.theme.colors.white};
+    border-radius: 0.25rem;
+    padding: 1.25rem 0.5rem;
+    height: 2rem;
 
     &:hover {
-        border: 1px solid #222;
+        border: 1px solid ${(props) => props.theme.colors.grey2};
     }
 
     ${(props) => (props.$isError ? errorStyle : null)}
@@ -43,10 +42,11 @@ const StyledTextField = styled.div`
 const Input = styled.input`
     outline: none;
     border: none;
-    font-size: 14px;
+    font-size: 1rem;
     color: #333;
     width: 100%;
     border: 1px solid #ddd;
+    background-color: ${(props) => props.theme.colors.white};
 `;
 
 /**

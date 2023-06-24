@@ -15,46 +15,74 @@ import ThemeProvider from '@/lib/ThemeProvider';
 import theme from '@/lib/theme';
 import NavBar from '@/lib/NavBar';
 import Footer from '@/components/Footer';
+import Container from '@/components/Container';
 import TransportInfo from '@/features/detail/components/TransportInfo';
+import breakpoint from '@/lib/constant/breakpoint';
 
-const Container = styled('div')`
-    max-width: 1200px;
-    width: 100%;
-    margin: 0 auto;
-    height: auto;
-    border: 1px solid red;
-    // height: 100vh;
-    .leaflet-container {
-        width: 100%;
-        height: 80vh;
-    }
+const InfoContainer = styled('div')`
+    margin-top: 3rem;
 `;
 
-const InfoContainer = styled('div')``;
-
-const InfoTitle = styled('h1')``;
+const InfoTitle = styled.div`
+    margin: 1.5rem 0;
+    font-size: ${(props) => props.theme.fontSize.lg};
+    font-weight: 600;
+`;
 
 const InfoBox = styled('div')`
+    width: 100%;
     display: flex;
+    flex-direction: column;
+    ${breakpoint.mediaSM} {
+        flex-direction: initial;
+    }
 `;
 
 const InfoImageContainer = styled('div')`
     overflow: hidden;
-    width: 50%;
-    // width: 100%;
-    // height: calc(300px * 0.66);
+    width: 100%;
+    border-radius: 1rem;
     img {
         width: 100%;
+        height: 100%;
         display: block;
-        objectfit: cover;
+        object-fit: cover;
+    }
+    ${breakpoint.mediaSM} {
+        width: 50%;
     }
 `;
 
 const InfoDetailContainer = styled('div')`
-    width: 50%;
+    width: 100%;
+    padding-left: 0rem;
+    padding-top: 1.5rem;
+    ${breakpoint.mediaSM} {
+        width: 50%;
+        padding-left: 1.5rem;
+        padding-top: 0rem;
+    }
 `;
 
-const IntroContainer = styled('div')``;
+const InfoDetailTitle = styled.div`
+    font-size: ${(props) => props.theme.fontSize.lg};
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+`;
+
+const InfoDetailItem = styled.div`
+    font-size: ${(props) => props.theme.fontSize.sm};
+    font-weight: 600;
+    margin: 1rem 0;
+`;
+
+const IntroContainer = styled('div')`
+    margin-bottom: 3rem;
+    > .leaflet-container {
+        width: 100%;
+        height: 30rem;
+    }
+`;
 
 const MapContainer = styled('div')``;
 
@@ -95,20 +123,20 @@ const Detail = ({ data }) => {
                                 <img src={Picture.PictureUrl1} alt={SpotName} />
                             </InfoImageContainer>
                             <InfoDetailContainer>
-                                <h2>資訊</h2>
-                                <h3>電話：{Phone}</h3>
-                                <div></div>
-                                <h3>地址：</h3>
+                                <InfoDetailTitle>資訊</InfoDetailTitle>
+                                <InfoDetailItem>電話：</InfoDetailItem>
+                                <div>{Phone}</div>
+                                <InfoDetailItem>地址：</InfoDetailItem>
                                 <div>{Address}</div>
-                                <h3>開放時間：</h3>
+                                <InfoDetailItem>開放時間：</InfoDetailItem>
                                 <div>{OpenTime}</div>
                             </InfoDetailContainer>
                         </InfoBox>
                     </InfoContainer>
                     <IntroContainer>
-                        <h2>介紹</h2>
+                        <InfoTitle>介紹</InfoTitle>
                         <div>{Description}</div>
-                        <h2>地圖</h2>
+                        <InfoTitle>地圖</InfoTitle>
                         <TransportInfo position={Position} />
                     </IntroContainer>
                     {/* <MapContainer></MapContainer> */}

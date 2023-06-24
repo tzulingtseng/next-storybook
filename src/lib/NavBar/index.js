@@ -17,18 +17,24 @@ import Channels from '../Channels';
 import Menu from '../Menu';
 import MenuItems from '../MenuItems';
 import ButtonClose from '../ButtonClose';
-import Container from '@/components/Container';
+// import Container from '@/components/Container';
+import breakpoint from '@/lib/constant/breakpoint';
 
 import { useTranslation } from 'next-i18next';
 
 const StyledNavBar = styled('header')`
     width: 100%;
     height: auto;
+    position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
     background-color: ${(props) => props.theme.colors.grey1};
 `;
 
 const HeaderSection = styled.div`
-    // width: 1200px;
+    width: 100%;
+    height: auto;
     // margin: 0 auto;
     // border: 1px solid blue;
 `;
@@ -36,6 +42,19 @@ const HeaderSection = styled.div`
 const HeaderContainer = styled.div`
     position: sticky;
     top: 0px;
+    max-width: auto;
+    width: 90%;
+    margin: 0 auto;
+    background-color: ${(props) => props.theme.colors.grey1};
+    ${breakpoint.mediaMD} {
+        max-width: 64rem;
+        width: 100%;
+    }
+    ,
+    ${breakpoint.mediaLG} {
+        max-width: 75rem;
+        width: 100%;
+    }
 `;
 
 const StyledDesktopAndAbovebox = styled.div`
@@ -87,9 +106,13 @@ const ButtonLine = styled('div')`
 `;
 
 const SubBrandNav = styled('div')`
-    font-weight: 400;
-    font-size: ${(props) => props.theme.fontSize.xs};
-    color: ${(props) => props.theme.colors.grey4};
+    display: none;
+    ${breakpoint.mediaXL} {
+        display: block;
+        font-weight: 400;
+        font-size: ${(props) => props.theme.fontSize.xs};
+        color: ${(props) => props.theme.colors.grey4};
+    }
 `;
 
 const IconGroupNav = styled('div')`
@@ -130,8 +153,11 @@ const ButtonNav = styled('div')`
 `;
 
 const IconContainer = styled('div')`
-    // opacity: 1;
-    margin-left: 1.5rem;
+    display: none;
+    ${breakpoint.mediaXL} {
+        display: block;
+        margin-left: 1.5rem;
+    }
 `;
 
 const IconBox = styled(Image)`
@@ -175,13 +201,14 @@ const HamburgerContainer = styled('div')`
     z-index: 4;
     position: fixed;
     top: 0px;
-    left: -17.5rem;
+    left: 0;
     transition: transform 300ms ease-in-out 0s;
     transform: ${(props) =>
         props.$hamburgerContainerShow === true
-            ? 'translateX(17.5rem)'
-            : 'translateX(0px)'};
+            ? 'translateX(0)'
+            : 'translateX(-100%)'};
     height: 100vh;
+    width: 100%;
 `;
 const ButtonCloseSection = styled('div')`
     position: relative;
@@ -269,126 +296,126 @@ const NavBar = ({ locale, children, ...props }) => {
     return (
         <StyledNavBar>
             <HeaderSection>
-                <Container>
-                    <HeaderContainer>
-                        <StyledDesktopAndAbovebox>
-                            <BrandWrapper>
-                                <ButtonContainer
-                                    $isHeaderShow={isHeaderShow}
-                                    onClick={handleHamburgerContainerShow}
-                                >
-                                    <ButtonLine></ButtonLine>
-                                </ButtonContainer>
-                                <BrandNav isHeaderShow={isHeaderShow}>
-                                    <LogoLink href="/">
-                                        {/* TODO:svg 切換多國語 */}
-                                        <Image
-                                            // width={221}
-                                            height={48}
-                                            src={logoIcon}
-                                            alt="logo"
-                                        />
-                                        <Image
-                                            // width={221}
-                                            height={20}
-                                            src={logoImg}
-                                            alt="logo"
-                                        />
-                                        {/* <img
+                {/* <Container> */}
+                <HeaderContainer>
+                    <StyledDesktopAndAbovebox>
+                        <BrandWrapper>
+                            <ButtonContainer
+                                $isHeaderShow={isHeaderShow}
+                                onClick={handleHamburgerContainerShow}
+                            >
+                                <ButtonLine></ButtonLine>
+                            </ButtonContainer>
+                            <BrandNav isHeaderShow={isHeaderShow}>
+                                <LogoLink href="/">
+                                    {/* TODO:svg 切換多國語 */}
+                                    <Image
+                                        // width={221}
+                                        height={48}
+                                        src={logoIcon}
+                                        alt="logo"
+                                    />
+                                    <Image
+                                        // width={221}
+                                        height={20}
+                                        src={logoImg}
+                                        alt="logo text"
+                                    />
+                                    {/* <img
                                             src={`/_next/static/media/TaiFun.ba21988b.png`}
                                             alt="Logo"
                                         /> */}
-                                    </LogoLink>
-                                    <SubBrandNav>{t('subTitle')}</SubBrandNav>
-                                </BrandNav>
-                            </BrandWrapper>
-                            <IconGroupNav>
-                                <div>
-                                    <ButtonNav
-                                        className={ButtonNavOutline}
-                                        $variant="outlined"
-                                        $locale={locale}
-                                    >
-                                        {t('navButtons.outline')}
-                                    </ButtonNav>
-                                    <ButtonNav
-                                        className={ButtonNavFilled}
-                                        $variant="filled"
-                                        $locale={locale}
-                                    >
-                                        {t('navButtons.filled')}
-                                    </ButtonNav>
-                                </div>
-                                <IconContainer>
-                                    {/* TODO:how to use svg */}
-                                    {/* <svg src={searchIcon} alt=""></svg> */}
-                                    <IconBox src={searchIcon} />
-                                    <IconBox src={memberIcon} />
-                                </IconContainer>
-                            </IconGroupNav>
-                        </StyledDesktopAndAbovebox>
-                        <StyledDivider
-                            $isCatgoryShow={isCatgoryShow}
-                        ></StyledDivider>
-                        <ChannelContainer $isCatgoryShow={isCatgoryShow}>
-                            <Channels
-                                handleHamburgerContainerShow={
-                                    handleHamburgerContainerShow
-                                }
-                            ></Channels>
-                        </ChannelContainer>
-                        <StyledDivider
-                            $isCatgoryShow={isCatgoryShow}
-                        ></StyledDivider>
-                    </HeaderContainer>
-                    <HamburgerContainer
-                        $hamburgerContainerShow={hamburgerContainerShow}
-                    >
-                        <ButtonCloseSection>
-                            <ButtonClose
-                                onClick={handleHamburgerContainerShow}
-                            ></ButtonClose>
-                        </ButtonCloseSection>
-                        <IconSection>
-                            <Image src={logoIcon} alt="logoIcon" />
-                        </IconSection>
-                        <Menu>
-                            <MenuItems
-                                items={t('menuConfig', { returnObjects: true })}
-                            ></MenuItems>
-                        </Menu>
-                        <SocialIcons>
-                            <a href="">
-                                <Image src={facebookIcon} alt="facebook" />
-                            </a>
-                            <a href="">
-                                <Image src={instagramIcon} alt="instagram" />
-                            </a>
-                            <a href="">
-                                <Image src={twitterIcon} alt="twitter" />
-                            </a>
-                            <a href="">
-                                <Image src={youtubeIcon} alt="youtube" />
-                            </a>
-                        </SocialIcons>
-                        <HamburgerButtonNav>
-                            <ButtonNav
-                                className={ButtonNavOutline}
-                                $variant="outlined"
-                                $locale={locale}
-                            >
-                                {t('navButtons.outline')}
-                            </ButtonNav>
-                            <ButtonNav
-                                className={ButtonNavFilled}
-                                $variant="filled"
-                                $locale={locale}
-                            >
-                                {t('navButtons.filled')}
-                            </ButtonNav>
-                        </HamburgerButtonNav>
-                    </HamburgerContainer>
-                </Container>
+                                </LogoLink>
+                                <SubBrandNav>{t('subTitle')}</SubBrandNav>
+                            </BrandNav>
+                        </BrandWrapper>
+                        <IconGroupNav>
+                            <div>
+                                <ButtonNav
+                                    className={ButtonNavOutline}
+                                    $variant="outlined"
+                                    $locale={locale}
+                                >
+                                    {t('navButtons.outline')}
+                                </ButtonNav>
+                                <ButtonNav
+                                    className={ButtonNavFilled}
+                                    $variant="filled"
+                                    $locale={locale}
+                                >
+                                    {t('navButtons.filled')}
+                                </ButtonNav>
+                            </div>
+                            <IconContainer>
+                                {/* TODO:how to use svg */}
+                                {/* <svg src={searchIcon} alt=""></svg> */}
+                                <IconBox src={searchIcon} />
+                                <IconBox src={memberIcon} />
+                            </IconContainer>
+                        </IconGroupNav>
+                    </StyledDesktopAndAbovebox>
+                    <StyledDivider
+                        $isCatgoryShow={isCatgoryShow}
+                    ></StyledDivider>
+                    <ChannelContainer $isCatgoryShow={isCatgoryShow}>
+                        <Channels
+                            handleHamburgerContainerShow={
+                                handleHamburgerContainerShow
+                            }
+                        ></Channels>
+                    </ChannelContainer>
+                    <StyledDivider
+                        $isCatgoryShow={isCatgoryShow}
+                    ></StyledDivider>
+                </HeaderContainer>
+                <HamburgerContainer
+                    $hamburgerContainerShow={hamburgerContainerShow}
+                >
+                    <ButtonCloseSection>
+                        <ButtonClose
+                            onClick={handleHamburgerContainerShow}
+                        ></ButtonClose>
+                    </ButtonCloseSection>
+                    <IconSection>
+                        <Image src={logoIcon} alt="logoIcon" />
+                    </IconSection>
+                    <Menu>
+                        <MenuItems
+                            items={t('menuConfig', { returnObjects: true })}
+                        ></MenuItems>
+                    </Menu>
+                    <SocialIcons>
+                        <a href="">
+                            <Image src={facebookIcon} alt="facebook" />
+                        </a>
+                        <a href="">
+                            <Image src={instagramIcon} alt="instagram" />
+                        </a>
+                        <a href="">
+                            <Image src={twitterIcon} alt="twitter" />
+                        </a>
+                        <a href="">
+                            <Image src={youtubeIcon} alt="youtube" />
+                        </a>
+                    </SocialIcons>
+                    <HamburgerButtonNav>
+                        <ButtonNav
+                            className={ButtonNavOutline}
+                            $variant="outlined"
+                            $locale={locale}
+                        >
+                            {t('navButtons.outline')}
+                        </ButtonNav>
+                        <ButtonNav
+                            className={ButtonNavFilled}
+                            $variant="filled"
+                            $locale={locale}
+                        >
+                            {t('navButtons.filled')}
+                        </ButtonNav>
+                    </HamburgerButtonNav>
+                </HamburgerContainer>
+                {/* </Container> */}
             </HeaderSection>
         </StyledNavBar>
     );

@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import styled, { css } from 'styled-components';
 
 import ThemeProvider from '@/lib/ThemeProvider';
 import theme from '@/lib/theme';
 import Footer from '@/components/Footer';
+import NavBar from '@/lib/NavBar';
 
 import Select from '@/lib/Select';
 
@@ -20,6 +23,9 @@ import getRestaurantAPI from '@/api/getRestaurantAPI';
 import scrollToTop from '@/utils/scrollToTop';
 
 const search = () => {
+    const { locale, locales, push } = useRouter();
+    const { t } = useTranslation('home');
+
     const [filteredType, setFilteredType] = useState(null);
     const [typeStatus, setTypeStatus] = useState(null);
     const [typeData, setTypeData] = useState([]);
@@ -247,6 +253,7 @@ const search = () => {
      */
     return (
         <ThemeProvider theme={theme}>
+            <NavBar locale={locale}></NavBar>
             <BannerSearch
                 bannerTitle={bannerTitle}
                 bannerImgSrc={bannerImgSrc}
@@ -271,5 +278,17 @@ const search = () => {
         </ThemeProvider>
     );
 };
+
+export async function getServerSideProps({ locale }) {
+    return {
+        props: {
+            ...(await serverSideTranslations(locale, [
+                'common',
+                'about',
+                'home',
+            ])),
+        },
+    };
+}
 
 export default search;

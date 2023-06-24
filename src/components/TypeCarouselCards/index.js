@@ -61,13 +61,13 @@ const StyledSwiperSlide = styled(SwiperSlide)`
 `;
 
 const Actions = styled.div`
-    padding: 8px 16px;
+    padding: 0.5rem 1rem;
     color: #888;
     i {
         cursor: pointer;
     }
     & > *:not(:first-child) {
-        margin-left: 20px;
+        margin-left: 1rem;
     }
 `;
 

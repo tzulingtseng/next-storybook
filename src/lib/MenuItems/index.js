@@ -14,7 +14,7 @@ const StyledMenuContainer = styled.div`
     cursor: pointer;
     flex-direction: row;
     justify-content: space-between;
-    padding: 0.5rem 2rem;
+    padding: 1rem 4rem;
 `;
 
 // icon
@@ -46,7 +46,7 @@ const StyledDivider = styled('div')`
     border-style: solid;
     border-color: ${(props) => props.theme.colors.grey3};
     height: 0px;
-    max-width: 13.5rem;
+    max-width: 33rem;
     width: 100%;
     margin: 1rem auto;
 `;

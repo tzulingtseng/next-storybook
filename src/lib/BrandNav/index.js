@@ -7,8 +7,9 @@ const StyledBrandNav = styled.div`
     background-color: ${(props) => props.theme.colors.transparent};
     display: flex;
     align-items: center;
-    margin-left: 0px;
-    transform: translateX(-1.5rem);
+    margin-left: ${(props) => (props.$isHeaderShow ? '0px' : '24px')};
+    transform: ${(props) =>
+        props.$isHeaderShow ? `translateX(-1.5rem)` : `translateX(0rem)`};
     transition: all 200ms ease 150ms;
 `;
 

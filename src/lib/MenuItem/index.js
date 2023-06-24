@@ -9,7 +9,7 @@ const StyledMenuContainer = styled.div`
     cursor: pointer;
     flex-direction: row;
     justify-content: space-between;
-    padding: 0.5 2;
+    padding: 1rem 3rem;
 `;
 
 // icon
