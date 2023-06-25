@@ -75,7 +75,11 @@ const Travel = (props) => {
                         </button>
                     ))}
                 </div> */}
-                <BannerHome src={BannerHomeSrc} alt="首頁 banner" />
+                <BannerHome
+                    src={BannerHomeSrc}
+                    alt="首頁 banner"
+                    priority={true}
+                />
                 <Container>
                     {activityStatus === 'success' && (
                         <TypeCarouselCards

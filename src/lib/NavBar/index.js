@@ -349,8 +349,8 @@ const NavBar = ({ locale, children, ...props }) => {
                             <IconContainer>
                                 {/* TODO:how to use svg */}
                                 {/* <svg src={searchIcon} alt=""></svg> */}
-                                <IconBox src={searchIcon} />
-                                <IconBox src={memberIcon} />
+                                <IconBox src={searchIcon} alt="搜尋" />
+                                <IconBox src={memberIcon} alt="會員" />
                             </IconContainer>
                         </IconGroupNav>
                     </StyledDesktopAndAbovebox>

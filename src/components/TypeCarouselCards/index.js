@@ -146,7 +146,7 @@ const TypeCarouselCards = ({ type, lists }) => {
                             }
                             // console.log('itemId', itemId);
                             return (
-                                <StyledSwiperSlide key={item.itemId}>
+                                <StyledSwiperSlide key={itemId}>
                                     <Link
                                         href={`/travel/detail/${type}?id=${itemId}`}
                                     >

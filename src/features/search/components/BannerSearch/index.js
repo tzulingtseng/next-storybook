@@ -63,11 +63,11 @@ const BannerSearch = ({
         <BannerContainer>
             {/* TODO:待優化寫法 */}
             {bannerImgSrc !== null && bannerImgSrc === 'BannerActivity' ? (
-                <Image src={BannerActivity} alt="Banner" />
+                <Image src={BannerActivity} alt="Banner" priority={true} />
             ) : bannerImgSrc === 'BannerscenicSpot' ? (
-                <Image src={BannerscenicSpot} alt="Banner" />
+                <Image src={BannerscenicSpot} alt="Banner" priority={true} />
             ) : (
-                <Image src={BannerRestaurant} alt="Banner" />
+                <Image src={BannerRestaurant} alt="Banner" priority={true} />
             )}
             <BannerMask />
             <BannerContentBox>

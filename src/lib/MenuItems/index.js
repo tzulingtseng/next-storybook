@@ -103,14 +103,13 @@ const MenuItem = ({
 };
 
 const MenuItems = ({ items, ...props }) => {
-    const renderMenuItem = (item, i) => {
+    const renderMenuItem = (item) => {
         const hasChild = !isEmpty(item.children) && item.children.length > 0;
         const hasDivder = item.divider === true;
+        // console.log('item', item.id);
         return hasChild ? (
-            <Fragment>
-                {' '}
+            <Fragment key={item.id}>
                 <MenuWithChild
-                    key={`MenuItems_${i}`}
                     item={item}
                     haschild={hasChild}
                     hasdivder={hasDivder}
@@ -118,7 +117,7 @@ const MenuItems = ({ items, ...props }) => {
             </Fragment>
         ) : (
             <MenuItem
-                key={`MenuItem_${i}`}
+                key={item.id}
                 text={item.text}
                 icon={item.icon}
                 haschild={hasChild}
