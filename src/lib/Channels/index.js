@@ -62,7 +62,7 @@ const Channels = ({ handleHamburgerContainerShow }) => {
                 <ButtonContainer onClick={handleHamburgerContainerShow}>
                     <ButtonLine></ButtonLine>
                 </ButtonContainer>
-                {t('category', { returnObjects: true }).map((item, i) => (
+                {t('type', { returnObjects: true }).map((item, i) => (
                     <Item key={i}>{item}</Item>
                 ))}
             </CategoryContainer>

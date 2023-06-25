@@ -47,17 +47,17 @@ const Travel = (props) => {
         error: activityError,
     } = useGetActivity({ top: 10, filter: 'Picture/PictureUrl1 ne null' });
 
-    const {
-        status: scenicSpotStatus,
-        data: scenicSpotData,
-        error: scenicSpotError,
-    } = useGetScenicSpot({ top: 10, filter: 'Picture/PictureUrl1 ne null' });
+    // const {
+    //     status: scenicSpotStatus,
+    //     data: scenicSpotData,
+    //     error: scenicSpotError,
+    // } = useGetScenicSpot({ top: 10, filter: 'Picture/PictureUrl1 ne null' });
 
-    const {
-        status: restaurantStatus,
-        data: restaurantData,
-        error: restaurantError,
-    } = useGetRestaurant({ top: 10, filter: 'Picture/PictureUrl1 ne null' });
+    // const {
+    //     status: restaurantStatus,
+    //     data: restaurantData,
+    //     error: restaurantError,
+    // } = useGetRestaurant({ top: 10, filter: 'Picture/PictureUrl1 ne null' });
 
     return (
         <>
@@ -83,18 +83,18 @@ const Travel = (props) => {
                             type="activity"
                         />
                     )}
-                    {scenicSpotStatus === 'success' && (
+                    {/* {scenicSpotStatus === 'success' && (
                         <TypeCarouselCards
                             lists={scenicSpotData}
                             type="scenicSpot"
                         />
-                    )}
-                    {restaurantStatus === 'success' && (
+                    )} */}
+                    {/* {restaurantStatus === 'success' && (
                         <TypeCarouselCards
-                            lists={restaurantData}
-                            type="restaurant"
+                        // lists={restaurantData}
+                        // type="restaurant"
                         />
-                    )}
+                    )} */}
                 </Container>
                 <Footer></Footer>
             </ThemeProvider>

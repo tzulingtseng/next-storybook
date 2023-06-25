@@ -2,7 +2,6 @@ import React, { Fragment } from 'react';
 import styled, { css } from 'styled-components';
 import moment from 'moment-timezone';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -12,6 +11,8 @@ import 'swiper/css/navigation';
 import Card from '@/lib/Card';
 import Meta from '@/lib/Card/Meta';
 import Button from '@/lib/Button';
+
+import { useTranslation } from 'next-i18next';
 
 import NoImage from '@/components/NoImage';
 
@@ -80,13 +81,13 @@ const TypeCarouselCards = ({ type, lists }) => {
     let titleName;
     switch (type) {
         case 'activity':
-            titleName = '熱門景點';
+            titleName = 'hotActivity'; // 熱門活動
             break;
         case 'scenicSpot':
-            titleName = '熱門活動';
+            titleName = 'hotScenicSpot'; // 熱門景點
             break;
         case 'restaurant':
-            titleName = '熱門美食';
+            titleName = 'hotRestaurant'; // 熱門美食
             break;
     }
 
@@ -97,21 +98,27 @@ const TypeCarouselCards = ({ type, lists }) => {
         navigation: false,
         pagination: { clickable: true, dynamicBullets: true },
     };
+    const { t } = useTranslation('home');
 
     return (
         <>
             <CarouselContainer>
                 <StyledTitleContainer>
-                    <StyledTitleText>{titleName}</StyledTitleText>
+                    {/* <StyledTitleText>{titleName}</StyledTitleText> */}
+                    <StyledTitleText>
+                        {t(`carouselConfig.${titleName}`)}
+                    </StyledTitleText>
                     <StyledTitleLink>
                         <Link href={`/travel/search?type=${type}`}>
-                            更多{titleName}
+                            {' '}
+                            {t(`carouselConfig.more`)}
                         </Link>
                     </StyledTitleLink>
                 </StyledTitleContainer>
                 <CarouselBox {...swiperParams}>
                     {lists &&
                         lists.map((item) => {
+                            // console.log('lists', lists);
                             let PictureUrl1 =
                                 item?.Picture?.PictureUrl1 ?? null;
                             let openTime =
@@ -122,7 +129,7 @@ const TypeCarouselCards = ({ type, lists }) => {
                                 moment(item?.EndTime, moment.ISO_8601)
                                     .tz('Asia/Taipei')
                                     .format('YYYY-MM-DD');
-                            let Address = item?.Address ?? '詳見官網';
+                            let Address = item?.Address ?? null;
                             let itemId, itemName, type;
                             if (item?.ActivityID) {
                                 itemId = item.ActivityID;
@@ -137,8 +144,9 @@ const TypeCarouselCards = ({ type, lists }) => {
                                 itemName = item.RestaurantName;
                                 type = 'restaurant';
                             }
+                            // console.log('itemId', itemId);
                             return (
-                                <StyledSwiperSlide key={item.ActivityID}>
+                                <StyledSwiperSlide key={item.itemId}>
                                     <Link
                                         href={`/travel/detail/${type}?id=${itemId}`}
                                     >
@@ -147,7 +155,7 @@ const TypeCarouselCards = ({ type, lists }) => {
                                                 PictureUrl1 ? (
                                                     <img
                                                         src={PictureUrl1}
-                                                        alt={itemName}
+                                                        alt="觀光"
                                                     />
                                                 ) : (
                                                     <NoImage />
@@ -156,17 +164,31 @@ const TypeCarouselCards = ({ type, lists }) => {
                                             children={
                                                 <Meta
                                                     // avatarUrl={item.Picture.PictureUrl1}
-                                                    title={itemName}
+                                                    title={t(
+                                                        `carouselData.${itemId}.titleName`
+                                                    )}
                                                     description={openTime}
-                                                    address={Address}
-                                                    text="開放時間"
+                                                    address={
+                                                        Address
+                                                            ? t(
+                                                                  `carouselData.${itemId}.address`
+                                                              )
+                                                            : t(
+                                                                  `carouselData.moreDetails`
+                                                              )
+                                                    }
+                                                    text={t(
+                                                        `carouselConfig.openTime`
+                                                    )}
                                                     icon="fa-solid fa-location-dot"
                                                 />
                                             }
                                             footer={
                                                 <Actions>
                                                     <StyledButton variant="outlined">
-                                                        查看詳情
+                                                        {t(
+                                                            `carouselConfig.buttonText`
+                                                        )}
                                                     </StyledButton>
                                                 </Actions>
                                             }
