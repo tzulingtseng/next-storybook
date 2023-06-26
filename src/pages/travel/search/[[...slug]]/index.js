@@ -27,7 +27,7 @@ const search = () => {
     const { t } = useTranslation('home');
 
     const [filteredType, setFilteredType] = useState(null);
-    const [typeStatus, setTypeStatus] = useState(null);
+    const [typeStatus, setTypeStatus] = useState(undefined);
     const [typeData, setTypeData] = useState([]);
     const [typeError, setTypeError] = useState(null);
 
@@ -53,6 +53,7 @@ const search = () => {
     const handleData = (responseData) => {
         if (responseData?.status === 'success') {
             // handle success
+            setTypeStatus('success');
             setTypeData(responseData?.data);
         } else if (responseData?.status === 'error') {
             // handle error (後端錯誤)
@@ -264,6 +265,7 @@ const search = () => {
                 handleFilteredResults={handleFilteredResults}
             ></BannerSearch>
             <SearchResults
+                status={typeStatus}
                 searchedInputValue={searchedInputValue}
                 searchedInputCountyValue={searchedInputCountyValue}
                 results={results}

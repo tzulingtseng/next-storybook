@@ -5,6 +5,7 @@ import moment from 'moment-timezone';
 import Container from '@/components/Container';
 import CardContainer from '@/components/CardContainer';
 import Pagination from '@/lib/Pagination';
+import CardSkeleton from '@/components/CardSkeleton';
 import breakpoint from '@/lib/constant/breakpoint';
 
 const SearchResultsTitle = styled.div`
@@ -40,7 +41,28 @@ const PaginationContainer = styled.div`
     margin: 10px 0;
 `;
 
+const StyledCardSkeletonContainer = styled.div`
+    width: calc(100% - 2rem);
+    margin: 0 1rem;
+    margin-bottom: 1rem;
+    > a {
+        > div {
+            max-width: initial;
+        }
+    }
+    ${breakpoint.mediaSM} {
+        width: calc(100% / 3 - 2rem);
+    }
+    ${breakpoint.mediaMD} {
+        width: calc(100% / 4 - 2rem);
+    }
+    // ${breakpoint.mediaLG} {
+    //     width: calc(100% / 4 - 2rem);
+    // }
+`;
+
 const SearchResults = ({
+    status,
     searchedInputValue,
     searchedInputCountyValue,
     results,
@@ -82,65 +104,80 @@ const SearchResults = ({
                 </SearchInfo>
             </SearchResultsTitle>
             <SearchResultsContainer>
-                {PageDataArray
-                    ? PageDataArray.map((item) => {
-                          const {
-                              Picture: { PictureUrl1 = null } = {},
-                              StartTime,
-                              EndTime,
-                              Address = '詳見官網',
-                              ActivityID,
-                              ActivityName,
-                              ScenicSpotID,
-                              ScenicSpotName,
-                              RestaurantID,
-                              RestaurantName,
-                          } = item;
+                {(status === undefined ||
+                    status === 'loading' ||
+                    status === 'cancel') &&
+                    Array(10)
+                        .fill(0)
+                        .map((item, i) => (
+                            <StyledCardSkeletonContainer key={i}>
+                                <CardSkeleton />
+                            </StyledCardSkeletonContainer>
+                        ))}
+                {status === 'success' &&
+                    PageDataArray &&
+                    PageDataArray.map((item) => {
+                        const {
+                            Picture: { PictureUrl1 = null } = {},
+                            StartTime,
+                            EndTime,
+                            Address = '詳見官網',
+                            ActivityID,
+                            ActivityName,
+                            ScenicSpotID,
+                            ScenicSpotName,
+                            RestaurantID,
+                            RestaurantName,
+                        } = item;
 
-                          const openTime = `${moment(StartTime, moment.ISO_8601)
-                              .tz('Asia/Taipei')
-                              .format('YYYY-MM-DD')} ~ ${moment(
-                              EndTime,
-                              moment.ISO_8601
-                          )
-                              .tz('Asia/Taipei')
-                              .format('YYYY-MM-DD')}`;
+                        const openTime = `${moment(StartTime, moment.ISO_8601)
+                            .tz('Asia/Taipei')
+                            .format('YYYY-MM-DD')} ~ ${moment(
+                            EndTime,
+                            moment.ISO_8601
+                        )
+                            .tz('Asia/Taipei')
+                            .format('YYYY-MM-DD')}`;
 
-                          let itemId, itemName;
-                          if (ActivityID) {
-                              itemId = ActivityID;
-                              itemName = ActivityName;
-                          } else if (ScenicSpotID) {
-                              itemId = ScenicSpotID;
-                              itemName = ScenicSpotName;
-                          } else if (RestaurantID) {
-                              itemId = RestaurantID;
-                              itemName = RestaurantName;
-                          }
+                        let itemId, itemName;
+                        if (ActivityID) {
+                            itemId = ActivityID;
+                            itemName = ActivityName;
+                        } else if (ScenicSpotID) {
+                            itemId = ScenicSpotID;
+                            itemName = ScenicSpotName;
+                        } else if (RestaurantID) {
+                            itemId = RestaurantID;
+                            itemName = RestaurantName;
+                        }
 
-                          return (
-                              <CardContainer
-                                  key={itemId}
-                                  filteredType={filteredType}
-                                  itemId={itemId}
-                                  PictureUrl1={PictureUrl1}
-                                  itemName={itemName}
-                                  openTime={openTime}
-                                  Address={Address}
-                              ></CardContainer>
-                          );
-                      })
-                    : '目前沒有符合的搜尋結果'}
+                        return (
+                            <CardContainer
+                                key={itemId}
+                                filteredType={filteredType}
+                                itemId={itemId}
+                                PictureUrl1={PictureUrl1}
+                                itemName={itemName}
+                                openTime={openTime}
+                                Address={Address}
+                            ></CardContainer>
+                        );
+                    })}
+                {status === 'success' &&
+                    !PageDataArray &&
+                    '目前沒有符合的搜尋結果'}
             </SearchResultsContainer>
-            <PaginationContainer>
-                <Pagination
-                    page={page}
-                    pageSize={pageSize}
-                    total={totalPages}
-                    onChange={setPage}
-                    withEllipsis
-                />
-            </PaginationContainer>
+            {status === 'success' && (
+                <PaginationContainer>
+                    <Pagination
+                        page={page}
+                        pageSize={pageSize}
+                        total={totalPages}
+                        onChange={setPage}
+                        withEllipsis
+                    />
+                </PaginationContainer>
+            )}
         </Container>
     );
 };

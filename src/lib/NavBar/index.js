@@ -307,7 +307,7 @@ const NavBar = ({ locale, children, ...props }) => {
                                 <ButtonLine></ButtonLine>
                             </ButtonContainer>
                             <BrandNav isHeaderShow={isHeaderShow}>
-                                <LogoLink href="/">
+                                <LogoLink href="/travel">
                                     {/* TODO:svg 切換多國語 */}
                                     <Image
                                         // width={221}

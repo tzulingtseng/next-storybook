@@ -1,5 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
+import Skeleton from 'react-loading-skeleton';
+import breakpoint from '../constant/breakpoint';
 import propTypes from 'prop-types';
 
 const verticalStyle = css`
@@ -22,26 +24,30 @@ const variantMap = {
 };
 
 const StyledCardContainer = styled('div')`
-    max-width: 17.5rem;
     width: 100%;
     border: 1px solid ${(props) => props.theme.colors.grey3};
     border-radius: 1rem;
     overflow: hidden;
-    box-sizing: border-box;
     ${(props) => variantMap[props.$variant] || variantMap['vertical']}
+    ${breakpoint.mediaMD} {
+        width: 14.5rem;
+    }
 `;
 
 // 卡片封面 img or video from props ReactNode
 const Cover = styled.div`
     overflow: hidden;
     width: 100%;
-    height: calc(17.5rem * 0.66);
+    height: calc(100% * 0.66);
     object-fit: cover;
     img {
         width: 100%;
         height: 100%;
         display: block;
         object-fit: cover;
+    }
+    ${breakpoint.mediaMD} {
+        height: calc(14.5rem * 0.66);
     }
 `;
 

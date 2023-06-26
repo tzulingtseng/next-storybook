@@ -1,5 +1,5 @@
 // import Image from 'next/image';
-import React, { Fragment } from 'react';
+import React, { useState, Fragment } from 'react';
 import styled, { css } from 'styled-components';
 import Image from 'next/image';
 import BannerHomeSrc from '@/assets/images/banner-home.png';
@@ -34,6 +34,7 @@ const BannerHome = styled(Image)`
 `;
 
 const Travel = (props) => {
+    const [isLoading, setIsLoading] = useState(true);
     const { locale, locales, push } = useRouter();
     const changeLanguage = (l) => () => {
         push('/', undefined, { locale: l });
@@ -81,24 +82,23 @@ const Travel = (props) => {
                     priority={true}
                 />
                 <Container>
-                    {activityStatus === 'success' && (
-                        <TypeCarouselCards
-                            lists={activityData}
-                            type="activity"
-                        />
-                    )}
-                    {/* {scenicSpotStatus === 'success' && (
-                        <TypeCarouselCards
+                    <TypeCarouselCards
+                        lists={activityData}
+                        type="activity"
+                        status={activityStatus}
+                    />
+
+                    {/* <TypeCarouselCards
                             lists={scenicSpotData}
                             type="scenicSpot"
+                            status={scenicSpotStatus}
                         />
-                    )} */}
-                    {/* {restaurantStatus === 'success' && (
+
                         <TypeCarouselCards
-                        // lists={restaurantData}
-                        // type="restaurant"
-                        />
-                    )} */}
+                            lists={restaurantData}
+                            type="restaurant"
+                            status={restaurantStatus}
+                        /> */}
                 </Container>
                 <Footer></Footer>
             </ThemeProvider>

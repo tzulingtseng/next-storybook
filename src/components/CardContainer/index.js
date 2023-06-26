@@ -6,6 +6,7 @@ import Card from '@/lib/Card';
 import Meta from '@/lib/Card/Meta';
 import Button from '@/lib/Button';
 import breakpoint from '@/lib/constant/breakpoint';
+import CardSkeleton from '../CardSkeleton';
 
 const StyledCardContainer = styled.div`
     width: calc(100% - 2rem);
@@ -20,8 +21,11 @@ const StyledCardContainer = styled.div`
         width: calc(100% / 2 - 2rem);
     }
     ${breakpoint.mediaMD} {
-        width: calc(100% / 3 - 2rem);
+        width: calc(100% / 4 - 2rem);
     }
+    // ${breakpoint.mediaLG} {
+    //     width: calc(100% / 4 - 2rem);
+    // }
 `;
 
 const Actions = styled.div`

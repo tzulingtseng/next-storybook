@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import styled, { css } from 'styled-components';
+import Skeleton from 'react-loading-skeleton';
 import moment from 'moment-timezone';
 import Link from 'next/link';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
@@ -15,6 +16,7 @@ import Button from '@/lib/Button';
 import { useTranslation } from 'next-i18next';
 
 import NoImage from '@/components/NoImage';
+import CardSkeleton from '../CardSkeleton';
 
 const CarouselContainer = styled.div`
     width: 100%;
@@ -77,7 +79,7 @@ const StyledButton = styled(Button)`
     margin-bottom: 1rem;
     font-size: ${(props) => props.theme.fontSize.sm};
 `;
-const TypeCarouselCards = ({ type, lists }) => {
+const TypeCarouselCards = ({ status, type, lists }) => {
     let titleName;
     switch (type) {
         case 'activity':
@@ -115,10 +117,23 @@ const TypeCarouselCards = ({ type, lists }) => {
                         </Link>
                     </StyledTitleLink>
                 </StyledTitleContainer>
+                {/* TODO:優化寫法 */}
                 <CarouselBox {...swiperParams}>
-                    {lists &&
+                    {(status === undefined ||
+                        status === 'loading' ||
+                        status === 'cancel') &&
+                        Array(10)
+                            .fill(0)
+                            .map((item, i) => (
+                                <StyledSwiperSlide key={i}>
+                                    <span>
+                                        <CardSkeleton />
+                                    </span>
+                                </StyledSwiperSlide>
+                            ))}
+                    {status === 'success' &&
+                        lists &&
                         lists.map((item) => {
-                            // console.log('lists', lists);
                             let PictureUrl1 =
                                 item?.Picture?.PictureUrl1 ?? null;
                             let openTime =
@@ -144,7 +159,6 @@ const TypeCarouselCards = ({ type, lists }) => {
                                 itemName = item.RestaurantName;
                                 type = 'restaurant';
                             }
-                            // console.log('itemId', itemId);
                             return (
                                 <StyledSwiperSlide key={itemId}>
                                     <Link
