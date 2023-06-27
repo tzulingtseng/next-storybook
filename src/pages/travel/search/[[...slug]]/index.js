@@ -11,8 +11,6 @@ import theme from '@/lib/theme';
 import Footer from '@/components/Footer';
 import NavBar from '@/lib/NavBar';
 
-import Select from '@/lib/SelectIthome';
-
 import BannerSearch from '@/features/search/components/BannerSearch';
 import SearchResults from '@/features/search/components/SearchResults';
 

@@ -19,7 +19,6 @@ import Meta from '@/lib/Card/Meta';
 import Container from '@/components/Container';
 import Footer from '@/components/Footer';
 import TypeCarouselCards from '@/components/TypeCarouselCards';
-import SelectIthome from '@/lib/SelectIthome';
 import Select from '@/lib/Select';
 
 import { useRouter } from 'next/router';
