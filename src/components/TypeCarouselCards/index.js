@@ -17,16 +17,11 @@ import { useTranslation } from 'next-i18next';
 
 import NoImage from '@/components/NoImage';
 import CardSkeleton from '../CardSkeleton';
+import breakpoint from '@/lib/constant/breakpoint';
 
-const CarouselContainer = styled.div`
-    width: 100%;
-    margin: 0 auto;
-    // height: 100%;
-`;
+const CarouselContainer = styled.div``;
 
 const CarouselBox = styled(Swiper)`
-    width: 100%;
-    height: 100%;
     padding-bottom: 2.5rem;
     .swiper-pagination-bullet {
         width: 0.75rem;
@@ -59,8 +54,14 @@ const StyledTitleLink = styled.div`
 `;
 
 const StyledSwiperSlide = styled(SwiperSlide)`
-    width: auto;
+    width: 60%;
     margin-right: 1rem;
+    ${breakpoint.mediaSM} {
+        width: 40%;
+    }
+    ${breakpoint.mediaMD} {
+        width: 28%;
+    }
 `;
 
 const Actions = styled.div`
@@ -126,9 +127,7 @@ const TypeCarouselCards = ({ status, type, lists }) => {
                             .fill(0)
                             .map((item, i) => (
                                 <StyledSwiperSlide key={i}>
-                                    <span>
-                                        <CardSkeleton />
-                                    </span>
+                                    <CardSkeleton />
                                 </StyledSwiperSlide>
                             ))}
                     {status === 'success' &&

@@ -4,20 +4,15 @@ import breakpoint from '@/lib/constant/breakpoint';
 
 const StyledNoImg = styled.div`
     width: 100%;
-    padding-top: 66.64%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #f5fdff;
     color: #60797c;
-    position: relative;
-    ${breakpoint.mediaMD} {
-        height: 14.5rem;
-    }
 `;
-const StyledNoImgContent = styled.div`
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-`;
+const StyledNoImgContent = styled.div``;
 
 const NoImage = () => {
     return (

@@ -4,6 +4,7 @@ import Image from 'next/image';
 import BannerActivity from '@/assets/images/banner-activity.png';
 import BannerscenicSpot from '@/assets/images/banner-scenicSpot.png';
 import BannerRestaurant from '@/assets/images/banner-restaurant.png';
+import Skeleton from 'react-loading-skeleton';
 
 import TextField from '@/lib/TextField';
 import Button from '@/lib/Button';
@@ -11,6 +12,7 @@ import Button from '@/lib/Button';
 const BannerContainer = styled.div`
     width: 100%;
     position: relative;
+    padding-bottom: 40.56%;
     > img {
         width: 100%;
         height: auto;
@@ -23,11 +25,24 @@ const BannerMask = styled.div`
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+`;
+const BannerImgBox = styled.div`
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    > img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
 `;
 
 const BannerContentBox = styled.div`
@@ -61,14 +76,26 @@ const BannerSearch = ({
 }) => {
     return (
         <BannerContainer>
-            {/* TODO:待優化寫法 */}
-            {bannerImgSrc !== null && bannerImgSrc === 'BannerActivity' ? (
-                <Image src={BannerActivity} alt="Banner" priority={true} />
-            ) : bannerImgSrc === 'BannerscenicSpot' ? (
-                <Image src={BannerscenicSpot} alt="Banner" priority={true} />
-            ) : (
-                <Image src={BannerRestaurant} alt="Banner" priority={true} />
-            )}
+            <BannerImgBox>
+                {/* TODO:待優化寫法 */}
+                {bannerImgSrc !== null && bannerImgSrc === 'BannerActivity' ? (
+                    <Image src={BannerActivity} alt="Banner" priority={true} />
+                ) : bannerImgSrc === 'BannerscenicSpot' ? (
+                    <Image
+                        src={BannerscenicSpot}
+                        alt="Banner"
+                        priority={true}
+                    />
+                ) : bannerImgSrc === 'BannerRestaurant' ? (
+                    <Image
+                        src={BannerRestaurant}
+                        alt="Banner"
+                        priority={true}
+                    />
+                ) : (
+                    <Skeleton height="100%" />
+                )}
+            </BannerImgBox>
             <BannerMask />
             <BannerContentBox>
                 <BannerContent>

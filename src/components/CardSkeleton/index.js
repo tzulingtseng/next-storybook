@@ -3,21 +3,26 @@ import styled from 'styled-components';
 import Skeleton from 'react-loading-skeleton';
 
 const StyledCardContainer = styled('div')`
-    width: 14.5rem;
+    width: 100%;
     border: 1px solid ${(props) => props.theme.colors.grey3};
     border-radius: 1rem;
     overflow: hidden;
-    display: inline-block;
-    .react-loading-skeleton {
-        display: block;
-    }
 `;
 
 const Cover = styled.div`
-    overflow: hidden;
+    padding-bottom: 66.64%;
     width: 100%;
-    height: calc(14.5rem * 0.66);
-    object-fit: cover;
+    position: relative;
+    overflow: hidden;
+    > span {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        top: 0;
+        left: 0;
+    }
 `;
 
 const SpaceBetween = styled.div`

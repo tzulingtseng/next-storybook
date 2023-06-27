@@ -24,30 +24,26 @@ const variantMap = {
 };
 
 const StyledCardContainer = styled('div')`
-    width: 100%;
     border: 1px solid ${(props) => props.theme.colors.grey3};
     border-radius: 1rem;
     overflow: hidden;
-    ${(props) => variantMap[props.$variant] || variantMap['vertical']}
-    ${breakpoint.mediaMD} {
-        width: 14.5rem;
-    }
+    ${(props) => variantMap[props.$variant] || variantMap['vertical']};
 `;
 
 // 卡片封面 img or video from props ReactNode
 const Cover = styled.div`
-    overflow: hidden;
+    padding-bottom: 66.64%;
     width: 100%;
-    height: calc(100% * 0.66);
-    object-fit: cover;
+    position: relative;
+    overflow: hidden;
     img {
+        position: absolute;
         width: 100%;
         height: 100%;
-        display: block;
         object-fit: cover;
-    }
-    ${breakpoint.mediaMD} {
-        height: calc(14.5rem * 0.66);
+        object-position: center;
+        top: 0;
+        left: 0;
     }
 `;
 

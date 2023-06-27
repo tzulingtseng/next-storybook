@@ -102,6 +102,9 @@ a {
     color: inherit;
     text-decoration: none;
 }
+.react-loading-skeleton{
+    display: block!important;
+}
 
 /* @media (prefers-color-scheme: dark) {
     html {
