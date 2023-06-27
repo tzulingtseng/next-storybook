@@ -1,165 +1,148 @@
-/* eslint-disable react/forbid-prop-types */
-import React, { useState } from 'react';
-import styled, { css } from 'styled-components';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from 'react';
+import styled, { css, useTheme } from 'styled-components';
+import Icon from '@/lib/Icon';
 
-// import CircularProgress from '@material-ui/core/CircularProgress';
-// import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
-import Dropdown from '../Dropdown';
-import Icon from '../Icon';
+import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-const StyledCircularProgress = styled('div')`
-    margin-right: 8px;
-    color: ${(props) =>
-        props.$variant === 'contained' ? '#FFF' : props.$color} !important;
-`;
-
-const selectBoxEnable = css`
-    color: #333;
-    &:hover {
-        border: 1px solid #222;
+const SelectWrapper = styled.div`
+    width: 4rem; // TODO:確認寬度
+    display: inline-block; // TODO:完成後，改成
+    border-radius: 0.25rem;
+    position: relative;
+    cursor: pointer;
+    // TODO:refactor reset
+    ul,
+    li {
+        margin: 0;
+        padding: 0;
+        list-style: none;
     }
 `;
 
-const selectBoxDisable = css`
-    background: #f5f5f5;
-    color: #00000040;
+const SelectBoxWrapper = styled.div`
+    width: 100%;
+    margin-bottom: 0.25rem;
+    padding: 0.5rem 0.75rem;
+    background-color: ${(props) => props.theme.colors.white};
+    z-index: 1;
+    position: relative;
+    border: 1px solid
+        ${(props) =>
+            props.$isOpen
+                ? props.theme.colors.grey2
+                : props.theme.colors.grey3};
+    &:hover {
+        border: 1px solid ${(props) => props.theme.colors.grey2};
+    }
 `;
 
 const SelectBox = styled.div`
+    width: 100%;
     display: inline-flex;
-    align-items: center;
     justify-content: space-between;
-    height: 38px;
-    box-sizing: border-box;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 6px 12px;
-    cursor: pointer;
-    min-width: 180px;
-
-    & > *:not(:first-child) {
-        margin-left: 12px;
-    }
-
-    ${(props) => (props.$isDisabled ? selectBoxDisable : selectBoxEnable)}
-`;
-
-const ArrowDown = styled.div`
-    height: 24px;
-    width: 24px;
-    transform: rotate(${(props) => (props.$isOpen ? 180 : 0)}deg);
-    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-`;
-
-const Menu = styled.div`
-    min-width: 180px;
-    display: inline-flex;
-    flex-direction: column;
-`;
-
-const MenuItem = styled.div`
-    display: inline-flex;
     align-items: center;
-    height: 38px;
-    padding: 6px 12px;
-    box-sizing: border-box;
-    cursor: pointer;
-    color: ${(props) => (props.$isSelected ? '#3091fd' : '#222')};
+`;
 
-    &:hover {
-        background: #e7f4f9;
+const SelectItems = styled.div`
+    position: absolute;
+    transition: all 0.2s ease;
+    transform: ${(props) =>
+        props.$isOpen ? 'translateY(0%)' : 'translateY(-30%)'};
+    display: ${(props) => (props.$isOpen ? 'block' : 'none')};
+    opacity: ${(props) => (props.$isOpen ? 1 : 0)};
+    width: 100%;
+    height: auto;
+    border: 1px solid ${(props) => props.theme.colors.grey3};
+    background-color: ${(props) => props.theme.colors.white};
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 3px 6px -4px,
+        rgba(0, 0, 0, 0.08) 0px 6px 16px 0px,
+        rgba(0, 0, 0, 0.05) 0px 9px 28px 8px;
+    li {
+        width: 100%;
+        padding: 0.5rem 0.75rem;
+        // border-bottom: 1px solid ${(props) => props.theme.colors.grey3};
+    }
+    li:last-child {
+        border-bottom: none;
+    }
+    li:hover {
+        background-color: ${(props) => props.theme.colors.grey0};
     }
 `;
 
-/**
- * `Select` 是一個下拉選擇器。觸發時能夠彈出一個菜單讓用戶選擇操作。
- */
-const Select = ({
-    options,
-    value,
-    onSelect,
-    placeholder,
-    isDisabled,
-    isLoading,
-}) => {
-    const [isOpen, setIsOpen] = useState(false);
+const SelectIcon = styled(Icon)`
+    transition: all 0.2s ease;
+    transform: ${(props) =>
+        props.$isOpen ? 'rotate(180deg)' : 'rotate(0deg)'};
+`;
 
-    const foundOption = options.find((option) => option.value === value) || {};
-
+const Select = ({ placeholder, options, ...props }) => {
+    const [open, setOpen] = useState(false);
+    const [selectedValue, setSelectedValue] = useState('zhHant');
+    const [selectedItem, setSelectedItem] = useState('中');
+    const [active, setActive] = useState(false);
+    const theme = useTheme();
+    const { locale, locales, push } = useRouter();
+    const { t } = useTranslation('common');
+    // const changeLanguage = (l, selectedValue) => {
+    //     console.log('changeLanguage', selectedValue);
+    //     push('/travel', undefined, { locale: selectedValue });
+    // };
+    const handleSelect = (e) => {
+        setSelectedItem(e.target.innerText);
+        setSelectedValue(e.currentTarget.getAttribute('value'));
+        setOpen(false);
+    };
+    useEffect(() => {
+        push('/travel', undefined, { locale: selectedValue });
+    }, [selectedValue]);
     return (
-        <Dropdown
-            isOpen={isOpen}
-            onClick={() => (isDisabled || isLoading ? null : setIsOpen(true))}
-            onClose={() => setIsOpen(false)}
-            placement="bottom-left"
-            overlay={
-                <Menu>
-                    {options.map((option) => (
-                        <MenuItem
-                            key={option.value}
-                            role="presentation"
-                            $isSelected={option.value === value}
-                            onClick={() => {
-                                onSelect(option.value);
-                                setIsOpen(false);
+        <SelectWrapper>
+            {/* placeholder */}
+            <SelectBoxWrapper
+                role="button"
+                onClick={() => {
+                    setOpen(!open);
+                }}
+                $isOpen={open}
+            >
+                <SelectBox>
+                    <div>
+                        {selectedItem
+                            ? t(`langOptions.${selectedValue}`)
+                            : t(`langOptions.placeholder`)}
+                    </div>
+                    <SelectIcon $isOpen={open} icon="fa-angle-down" size={20} />
+                </SelectBox>
+            </SelectBoxWrapper>
+            {/* options */}
+            <SelectItems $isOpen={open}>
+                <ul>
+                    {options.map((item, i) => (
+                        <li
+                            role="option"
+                            key={i}
+                            value={item.value}
+                            onClick={(e) => {
+                                handleSelect(e);
+                            }}
+                            // TODO:優化寫法，placeholder 的選項需亮色
+                            style={{
+                                color:
+                                    selectedItem === item.label
+                                        ? theme.colors.primary
+                                        : theme.colors.black,
                             }}
                         >
-                            {option.label}
-                        </MenuItem>
+                            {t(`langOptions.${item.value}`)}
+                        </li>
                     ))}
-                </Menu>
-            }
-        >
-            <SelectBox $isDisabled={isDisabled || isLoading}>
-                <span>{foundOption.label || placeholder}</span>
-                {isLoading ? (
-                    <StyledCircularProgress $color="#00000040" size={16} />
-                ) : (
-                    <ArrowDown $isOpen={isOpen}>
-                        {/* <KeyboardArrowDown /> */}
-                        <Icon icon="fa-solid fa-chevron-down" />
-                    </ArrowDown>
-                )}
-            </SelectBox>
-        </Dropdown>
+                </ul>
+            </SelectItems>
+        </SelectWrapper>
     );
-};
-
-Select.propTypes = {
-    /**
-     * 選項內容
-     */
-    options: PropTypes.array,
-    /**
-     * 用來指定當前被選中的項目
-     */
-    value: PropTypes.string,
-    /**
-     * 未選擇任何選項時顯示的 placeholder
-     */
-    placeholder: PropTypes.string,
-    /**
-     * 是否禁用下拉選單
-     */
-    isDisabled: PropTypes.bool,
-    /**
-     * 資料是否正在載入中
-     */
-    isLoading: PropTypes.bool,
-    /**
-     * 當選項被選中時會被調用
-     */
-    onSelect: PropTypes.func,
-};
-
-Select.defaultProps = {
-    options: [],
-    value: '',
-    placeholder: '',
-    isDisabled: false,
-    isLoading: false,
-    onSelect: () => {},
 };
 
 export default Select;

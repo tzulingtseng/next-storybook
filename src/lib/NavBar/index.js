@@ -19,6 +19,7 @@ import MenuItems from '../MenuItems';
 import ButtonClose from '../ButtonClose';
 // import Container from '@/components/Container';
 import breakpoint from '@/lib/constant/breakpoint';
+import Select from '@/lib/Select';
 
 import { useTranslation } from 'next-i18next';
 
@@ -345,6 +346,19 @@ const NavBar = ({ locale, children, ...props }) => {
                                 >
                                     {t('navButtons.filled')}
                                 </ButtonNav>
+                                <Select
+                                    options={[
+                                        {
+                                            value: 'zhHant',
+                                            label: '中',
+                                        },
+                                        {
+                                            value: 'en',
+                                            label: '英',
+                                        },
+                                    ]}
+                                    placeholder="中"
+                                />
                             </div>
                             <IconContainer>
                                 {/* TODO:how to use svg */}

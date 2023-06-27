@@ -19,6 +19,8 @@ import Meta from '@/lib/Card/Meta';
 import Container from '@/components/Container';
 import Footer from '@/components/Footer';
 import TypeCarouselCards from '@/components/TypeCarouselCards';
+import SelectIthome from '@/lib/SelectIthome';
+import Select from '@/lib/Select';
 
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
@@ -36,10 +38,6 @@ const BannerHome = styled(Image)`
 const Travel = (props) => {
     const [isLoading, setIsLoading] = useState(true);
     const { locale, locales, push } = useRouter();
-    const changeLanguage = (l) => () => {
-        push('/', undefined, { locale: l });
-        // push('/about', undefined, { locale: l });
-    };
     const { t } = useTranslation('home');
 
     const {
@@ -76,11 +74,11 @@ const Travel = (props) => {
                         </button>
                     ))}
                 </div> */}
-                <BannerHome
+                {/* <BannerHome
                     src={BannerHomeSrc}
                     alt="首頁 banner"
                     priority={true}
-                />
+                /> */}
                 <Container>
                     <TypeCarouselCards
                         lists={activityData}
@@ -100,7 +98,7 @@ const Travel = (props) => {
                             status={restaurantStatus}
                         /> */}
                 </Container>
-                <Footer></Footer>
+                {/* <Footer></Footer> */}
             </ThemeProvider>
         </>
     );

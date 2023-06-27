@@ -10,7 +10,7 @@ const theme = {
         info: '#60A6F8',
         warning: '#FFC05A',
         danger: '#C40D23',
-        black: '#33484B',
+        black: '#000000',
         white: '#FFFFFF',
         grey4: '#404040',
         grey3: '#D8D8D8',

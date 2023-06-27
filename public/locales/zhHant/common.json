@@ -1,3 +1,8 @@
 {
-    "hello common": "Hello common zh-TW"
+    "hello common": "Hello common zh-TW",
+    "langOptions": {
+        "zhHant": "中",
+        "en": "英",
+        "placeholder": "中"
+    }
 }
