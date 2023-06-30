@@ -4,6 +4,7 @@ import '@/styles/globals.css';
 import GlobalStyle from '@/styles/GlobalStyle';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import ErrorBoundary from '@/components/ErrorBoundary';
 
 const theme = {
     colors: {
@@ -15,11 +16,13 @@ const App = ({ Component, pageProps }) => {
     return (
         <>
             <GlobalStyle />
-            <ThemeProvider theme={theme}>
-                <SkeletonTheme baseColor="#FFFFFF" highlightColor="#D8D8D8">
-                    <Component {...pageProps} />
-                </SkeletonTheme>
-            </ThemeProvider>
+            <ErrorBoundary>
+                <ThemeProvider theme={theme}>
+                    <SkeletonTheme baseColor="#FFFFFF" highlightColor="#D8D8D8">
+                        <Component {...pageProps} />
+                    </SkeletonTheme>
+                </ThemeProvider>
+            </ErrorBoundary>
         </>
     );
 };
