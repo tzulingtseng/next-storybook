@@ -119,25 +119,26 @@ const Select = ({ placeholder, options, ...props }) => {
             {/* options */}
             <SelectItems $isOpen={open}>
                 <ul>
-                    {options.map((item, i) => (
-                        <li
-                            role="option"
-                            key={i}
-                            value={item.value}
-                            onClick={(e) => {
-                                handleSelect(e);
-                            }}
-                            // TODO:優化寫法，placeholder 的選項需亮色
-                            style={{
-                                color:
-                                    selectedItem === item.label
-                                        ? theme.colors.primary
-                                        : theme.colors.black,
-                            }}
-                        >
-                            {t(`langOptions.${item.value}`)}
-                        </li>
-                    ))}
+                    {options &&
+                        options.map((item, i) => (
+                            <li
+                                role="option"
+                                key={i}
+                                value={item.value}
+                                onClick={(e) => {
+                                    handleSelect(e);
+                                }}
+                                // TODO:優化寫法，placeholder 的選項需亮色
+                                style={{
+                                    color:
+                                        selectedItem === item.label
+                                            ? theme.colors.primary
+                                            : theme.colors.black,
+                                }}
+                            >
+                                {t(`langOptions.${item.value}`)}
+                            </li>
+                        ))}
                 </ul>
             </SelectItems>
         </SelectWrapper>

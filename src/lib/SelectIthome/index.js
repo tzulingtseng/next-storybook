@@ -93,19 +93,20 @@ const Select = ({
             placement="bottom-left"
             overlay={
                 <Menu>
-                    {options.map((option) => (
-                        <MenuItem
-                            key={option.value}
-                            role="presentation"
-                            $isSelected={option.value === value}
-                            onClick={() => {
-                                onSelect(option.value);
-                                setIsOpen(false);
-                            }}
-                        >
-                            {option.label}
-                        </MenuItem>
-                    ))}
+                    {options &&
+                        options.map((option) => (
+                            <MenuItem
+                                key={option.value}
+                                role="presentation"
+                                $isSelected={option.value === value}
+                                onClick={() => {
+                                    onSelect(option.value);
+                                    setIsOpen(false);
+                                }}
+                            >
+                                {option.label}
+                            </MenuItem>
+                        ))}
                 </Menu>
             }
         >
