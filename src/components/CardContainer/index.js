@@ -6,7 +6,7 @@ import Card from '@/lib/Card';
 import Meta from '@/lib/Card/Meta';
 import Button from '@/lib/Button';
 import breakpoint from '@/lib/constant/breakpoint';
-import CardSkeleton from '../CardSkeleton';
+import { useTranslation } from 'next-i18next';
 
 const StyledCardContainer = styled.div`
     width: calc(100% - 2rem);
@@ -50,9 +50,11 @@ const CardContainer = ({
     itemId,
     PictureUrl1,
     itemName,
-    openTime,
+    // openTime,
+    description,
     Address,
 }) => {
+    const { t } = useTranslation('common');
     return (
         <StyledCardContainer>
             <Link href={`/travel/detail/${filteredType}?id=${itemId}`}>
@@ -67,16 +69,16 @@ const CardContainer = ({
                     children={
                         <Meta
                             title={itemName}
-                            description={openTime}
+                            description={description}
                             address={Address}
-                            text="開放時間"
+                            // text={t(`carouselConfig.openTime`)}
                             icon="fa-solid fa-thumbs-up"
                         />
                     }
                     footer={
                         <Actions>
                             <StyledButton variant="outlined">
-                                查看詳情
+                                {t(`carouselConfig.buttonText`)}
                             </StyledButton>
                         </Actions>
                     }

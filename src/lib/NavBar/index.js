@@ -3,9 +3,8 @@ import styled, { css } from 'styled-components';
 import propTypes from 'prop-types';
 import Image from 'next/image';
 import Link from 'next/link';
-import logoImg from '@/assets/images/TaiFun.png';
-// import logoEnImg from '@/assets/images/logo-header.release.en.svg';
-import logoIcon from '@/assets/icons/logo.png';
+import logoImg from '@/assets/images/TaiFun.svg';
+import logoIcon from '@/assets/icons/logo.svg';
 import memberIcon from '@/assets/icons/member.svg';
 import searchIcon from '@/assets/icons/search.svg';
 import facebookIcon from '@/assets/icons/facebook.svg';
@@ -210,6 +209,14 @@ const HamburgerContainer = styled('div')`
             : 'translateX(-100%)'};
     height: 100vh;
     width: 100%;
+    ${breakpoint.mediaXL} {
+        left: -17.5rem;
+        transform: ${(props) =>
+            props.$hamburgerContainerShow === true
+                ? 'translateX(17.5rem)'
+                : 'translateX(0px)'};
+        width: 17.5rem;
+    }
 `;
 const ButtonCloseSection = styled('div')`
     position: relative;
@@ -260,7 +267,7 @@ const LogoLink = styled(Link)`
 `;
 
 const NavBar = ({ locale, children, ...props }) => {
-    const { t } = useTranslation('home');
+    const { t } = useTranslation('common');
 
     const [hamburgerContainerShow, setHamburgerContainerShow] = useState(false);
     const [isCatgoryShow, setIsCatgoryShow] = useState(true);
@@ -446,11 +453,7 @@ NavBar.defaultProps = {
 export async function getStaticProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, [
-                'common',
-                'about',
-                'home',
-            ])),
+            ...(await serverSideTranslations(locale, ['common', 'about'])),
         },
     };
 }

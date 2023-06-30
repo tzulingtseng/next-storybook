@@ -22,7 +22,7 @@ import scrollToTop from '@/utils/scrollToTop';
 
 const search = () => {
     const { locale, locales, push } = useRouter();
-    const { t } = useTranslation('home');
+    const { t } = useTranslation('common');
 
     const [filteredType, setFilteredType] = useState(null);
     const [typeStatus, setTypeStatus] = useState(undefined);
@@ -164,17 +164,17 @@ const search = () => {
     const typeHandlers = {
         activity: {
             handler: handleActivityData,
-            title: '活動',
+            // title: '活動',
             bannerImgSrc: 'BannerActivity',
         },
         scenicSpot: {
             handler: handleScenicSpotData,
-            title: '景點',
+            // title: '景點',
             bannerImgSrc: 'BannerScenicSpot',
         },
         restaurant: {
             handler: handleRestaurantData,
-            title: '美食',
+            // title: '美食',
             bannerImgSrc: 'BannerRestaurant',
         },
     };
@@ -254,7 +254,7 @@ const search = () => {
         <ThemeProvider theme={theme}>
             <NavBar locale={locale}></NavBar>
             <BannerSearch
-                bannerTitle={bannerTitle}
+                bannerTitle={t(`searchConfig.${type}BannerTitle`)}
                 bannerImgSrc={bannerImgSrc}
                 inputValue={inputValue}
                 setInputValue={setInputValue}
@@ -283,9 +283,11 @@ export async function getServerSideProps({ locale }) {
     return {
         props: {
             ...(await serverSideTranslations(locale, [
+                'api_mapping',
                 'common',
-                'about',
-                'home',
+                'activityData',
+                'scenicSpotData',
+                'restaurantData',
             ])),
         },
     };

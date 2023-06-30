@@ -101,7 +101,7 @@ const TypeCarouselCards = ({ status, type, lists }) => {
         navigation: false,
         pagination: { clickable: true, dynamicBullets: true },
     };
-    const { t } = useTranslation('home');
+    const { t } = useTranslation('common');
 
     return (
         <>
@@ -135,7 +135,7 @@ const TypeCarouselCards = ({ status, type, lists }) => {
                         lists.map((item) => {
                             let PictureUrl1 =
                                 item?.Picture?.PictureUrl1 ?? null;
-                            let openTime =
+                            let formattedTime =
                                 moment(item?.StartTime, moment.ISO_8601)
                                     .tz('Asia/Taipei')
                                     .format('YYYY-MM-DD') +
@@ -143,19 +143,25 @@ const TypeCarouselCards = ({ status, type, lists }) => {
                                 moment(item?.EndTime, moment.ISO_8601)
                                     .tz('Asia/Taipei')
                                     .format('YYYY-MM-DD');
+                            let time = item?.OpenTime;
+                            let openTime = time
+                                ? t('carouselConfig.time')
+                                : formattedTime;
                             let Address = item?.Address ?? null;
+                            let description =
+                                item?.Description ?? DescriptionDetail;
                             let itemId, itemName, type;
                             if (item?.ActivityID) {
                                 itemId = item.ActivityID;
-                                itemName = item.ActivityName;
-                                type = 'activitiy';
+                                // itemName = item.ActivityName;
+                                type = 'activity';
                             } else if (item?.ScenicSpotID) {
                                 itemId = item.ScenicSpotID;
-                                itemName = item.ScenicSpotName;
+                                // itemName = item.ScenicSpotName;
                                 type = 'scenicSpot';
                             } else if (item?.RestaurantID) {
                                 itemId = item.RestaurantID;
-                                itemName = item.RestaurantName;
+                                // itemName = item.RestaurantName;
                                 type = 'restaurant';
                             }
                             return (
@@ -178,16 +184,25 @@ const TypeCarouselCards = ({ status, type, lists }) => {
                                                 <Meta
                                                     // avatarUrl={item.Picture.PictureUrl1}
                                                     title={t(
-                                                        `carouselData.${itemId}.titleName`
+                                                        `${itemId}.titleName`,
+                                                        { ns: `${type}Data` }
                                                     )}
-                                                    description={openTime}
+                                                    description={t(
+                                                        `${itemId}.description`,
+                                                        {
+                                                            ns: `${type}Data`,
+                                                        }
+                                                    )}
                                                     address={
                                                         Address
                                                             ? t(
-                                                                  `carouselData.${itemId}.address`
+                                                                  `${itemId}.address`,
+                                                                  {
+                                                                      ns: `${type}Data`,
+                                                                  }
                                                               )
                                                             : t(
-                                                                  `carouselData.moreDetails`
+                                                                  `carouselConfig.moreDetails`
                                                               )
                                                     }
                                                     text={t(

@@ -7,6 +7,7 @@ import CardContainer from '@/components/CardContainer';
 import Pagination from '@/lib/Pagination';
 import CardSkeleton from '@/components/CardSkeleton';
 import breakpoint from '@/lib/constant/breakpoint';
+import { useTranslation } from 'next-i18next';
 
 const SearchResultsTitle = styled.div`
     width: 100%;
@@ -24,7 +25,8 @@ const SearchResultsTitleText = styled.div`
 const SearchInfo = styled.div`
     display: flex;
     .highlight {
-        color: #2f798c;
+        color: ${(props) => props.theme.colors.primary};
+        margin: 0 0.5rem;
     }
 `;
 
@@ -73,33 +75,36 @@ const SearchResults = ({
     setPage,
     filteredType,
 }) => {
+    const { t } = useTranslation('common');
     return (
         <Container>
             <SearchResultsTitle>
-                <SearchResultsTitleText>搜尋結果</SearchResultsTitleText>
+                <SearchResultsTitleText>
+                    {t('searchConfig.searchResults')}
+                </SearchResultsTitleText>
                 <SearchInfo>
                     <div>
-                        關鍵字：
+                        {t('searchConfig.keyword')}
                         <span className="highlight">
-                            {searchedInputValue ? searchedInputValue : '無'}
+                            {searchedInputValue
+                                ? searchedInputValue
+                                : t('searchConfig.noData')}
                         </span>
-                        ，
                     </div>
                     <div>
-                        地區：
+                        {t('searchConfig.area')}
                         <span className="highlight">
                             {searchedInputCountyValue
                                 ? searchedInputCountyValue
-                                : '無'}
+                                : t('searchConfig.noData')}
                         </span>
-                        ，
                     </div>
                     <div>
-                        共
+                        {t('searchConfig.total')}
                         <span className="highlight">
                             {results ? results.length : 0}
                         </span>
-                        筆資料
+                        {t('searchConfig.records')}
                     </div>
                 </SearchInfo>
             </SearchResultsTitle>
@@ -121,16 +126,20 @@ const SearchResults = ({
                             Picture: { PictureUrl1 = null } = {},
                             StartTime,
                             EndTime,
-                            Address = '詳見官網',
+                            Address,
                             ActivityID,
                             ActivityName,
                             ScenicSpotID,
                             ScenicSpotName,
                             RestaurantID,
                             RestaurantName,
+                            Description,
+                            DescriptionDetail,
                         } = item;
-
-                        const openTime = `${moment(StartTime, moment.ISO_8601)
+                        let formattedTime = `${moment(
+                            StartTime,
+                            moment.ISO_8601
+                        )
                             .tz('Asia/Taipei')
                             .format('YYYY-MM-DD')} ~ ${moment(
                             EndTime,
@@ -138,7 +147,10 @@ const SearchResults = ({
                         )
                             .tz('Asia/Taipei')
                             .format('YYYY-MM-DD')}`;
-
+                        let time = item?.OpenTime;
+                        let openTime = time
+                            ? t('carouselConfig.time')
+                            : formattedTime;
                         let itemId, itemName;
                         if (ActivityID) {
                             itemId = ActivityID;
@@ -157,15 +169,30 @@ const SearchResults = ({
                                 filteredType={filteredType}
                                 itemId={itemId}
                                 PictureUrl1={PictureUrl1}
-                                itemName={itemName}
-                                openTime={openTime}
-                                Address={Address}
+                                itemName={t(`${itemId}.titleName`, {
+                                    ns: `${filteredType}Data`,
+                                })}
+                                // openTime={openTime}
+                                description={
+                                    Description || DescriptionDetail
+                                        ? t(`${itemId}.description`, {
+                                              ns: `${filteredType}Data`,
+                                          })
+                                        : null
+                                }
+                                Address={
+                                    Address
+                                        ? t(`${itemId}.address`, {
+                                              ns: `${filteredType}Data`,
+                                          })
+                                        : t(`carouselConfig.moreDetails`)
+                                }
                             ></CardContainer>
                         );
                     })}
                 {status === 'success' &&
                     !PageDataArray &&
-                    '目前沒有符合的搜尋結果'}
+                    t(`searchConfig.noResults`)}
             </SearchResultsContainer>
             {status === 'success' && (
                 <PaginationContainer>

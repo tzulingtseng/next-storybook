@@ -88,14 +88,15 @@ const MapContainer = styled('div')``;
 
 const Detail = ({ data }) => {
     const { locale, locales, push } = useRouter();
-    const { t } = useTranslation('home');
+    const { t } = useTranslation('common');
     const {
-        // QueryType,
+        QueryType,
         Address,
         // City,
         // Location,
         Description,
         // DescriptionDetail,
+        OpenDay,
         OpenTime,
         // ParkingPosition,
         Phone,
@@ -110,33 +111,63 @@ const Detail = ({ data }) => {
         UpdateTime,
         // ZipCode,
     } = data.detailData;
-    // console.log('detailData', data.detailData);
+    console.log('SpotID', SpotID);
     return (
         <>
             <ThemeProvider theme={theme}>
                 <NavBar locale={locale}></NavBar>
                 <Container>
                     <InfoContainer>
-                        <InfoTitle>{SpotName}</InfoTitle>
+                        <InfoTitle>
+                            {t(`${SpotID}.titleName`, {
+                                ns: `${QueryType}Data`,
+                            })}
+                        </InfoTitle>
                         <InfoBox>
                             <InfoImageContainer>
                                 <img src={Picture.PictureUrl1} alt={SpotName} />
                             </InfoImageContainer>
                             <InfoDetailContainer>
-                                <InfoDetailTitle>資訊</InfoDetailTitle>
-                                <InfoDetailItem>電話：</InfoDetailItem>
-                                <div>{Phone}</div>
-                                <InfoDetailItem>地址：</InfoDetailItem>
-                                <div>{Address}</div>
-                                <InfoDetailItem>開放時間：</InfoDetailItem>
-                                <div>{OpenTime}</div>
+                                <InfoDetailTitle>
+                                    {t('detailConfig.information')}
+                                </InfoDetailTitle>
+                                <InfoDetailItem>
+                                    {t('detailConfig.tel')}
+                                </InfoDetailItem>
+                                <div>
+                                    {Phone
+                                        ? Phone
+                                        : t('detailConfig.moreDetails')}
+                                </div>
+                                <InfoDetailItem>
+                                    {t('detailConfig.address')}
+                                </InfoDetailItem>
+                                <div>
+                                    {Address
+                                        ? t(`${SpotID}.address`, {
+                                              ns: `${QueryType}Data`,
+                                          })
+                                        : t('detailConfig.moreDetails')}
+                                </div>
+                                {/* <InfoDetailItem>
+                                    {t('detailConfig.openTime')}
+                                </InfoDetailItem>
+                                <div>
+                                    {OpenDay === '全天候開放'
+                                        ? t('detailConfig.openAllDay')
+                                        : OpenTime}
+                                </div> */}
                             </InfoDetailContainer>
                         </InfoBox>
                     </InfoContainer>
                     <IntroContainer>
-                        <InfoTitle>介紹</InfoTitle>
-                        <div>{Description}</div>
-                        <InfoTitle>地圖</InfoTitle>
+                        <InfoTitle>{t('detailConfig.introTitle')}</InfoTitle>
+                        <div>
+                            {t(`${SpotID}.description`, {
+                                ns: `${QueryType}Data`,
+                            })}
+                        </div>
+                        <InfoTitle>{t('detailConfig.mapTitle')}</InfoTitle>
                         <TransportInfo position={Position} />
                     </IntroContainer>
                     {/* <MapContainer></MapContainer> */}
@@ -150,6 +181,7 @@ const Detail = ({ data }) => {
 export async function getServerSideProps({ params, query, locale }) {
     // TODO:為什麼要用 params
     const { id, type } = query;
+    // console.log('type', type);
     let detailData;
     let responseData;
 
@@ -163,11 +195,13 @@ export async function getServerSideProps({ params, query, locale }) {
                 // handle success (取得觀光活動資料)
                 // console.log('responseData?.data', responseData?.data);
                 detailData = {
-                    // QueryType: type,
+                    QueryType: type,
                     Address: responseData?.data[0]?.Address ?? null,
                     // City: responseData?.data[0]?.City ?? null,
                     // Location: responseData?.data[0]?.Location ?? null,
-                    Description: responseData?.data[0]?.Description ?? null,
+                    Description:
+                        responseData?.data[0]?.Description ?? DescriptionDetail,
+                    OpenDay: responseData?.data[0]?.OpenTime ?? null,
                     OpenTime:
                         moment(
                             responseData?.data[0]?.StartTime,
@@ -203,27 +237,32 @@ export async function getServerSideProps({ params, query, locale }) {
             if (responseData?.status === 'success') {
                 // handle success (取得觀光活動資料)
                 detailData = {
-                    // QueryType: type,
+                    QueryType: type,
                     Address: responseData?.data[0]?.Address ?? null,
                     // City: responseData?.data[0]?.City ?? null,
                     // Location: responseData?.data[0]?.Location ?? null,
                     Description: responseData?.data[0]?.Description ?? null,
+                    OpenDay: responseData?.data[0]?.OpenTime,
                     OpenTime:
+                        responseData?.data[0]?.OpenTime ??
                         moment(
                             responseData?.data[0]?.StartTime,
                             moment.ISO_8601
                         )
                             .tz('Asia/Taipei')
                             .format('YYYY-MM-DD') +
-                        ' ~ ' +
-                        moment(responseData?.data[0]?.EndTime, moment.ISO_8601)
-                            .tz('Asia/Taipei')
-                            .format('YYYY-MM-DD'),
+                            ' ~ ' +
+                            moment(
+                                responseData?.data[0]?.EndTime,
+                                moment.ISO_8601
+                            )
+                                .tz('Asia/Taipei')
+                                .format('YYYY-MM-DD'),
                     Phone: responseData?.data[0]?.Phone ?? null,
                     Picture: responseData?.data[0]?.Picture ?? null,
                     Position: responseData?.data[0]?.Position ?? null,
-                    SpotID: responseData?.data[0]?.ActivityID ?? null,
-                    SpotName: responseData?.data[0]?.ActivityName ?? null,
+                    SpotID: responseData?.data[0]?.ScenicSpotID ?? null,
+                    SpotName: responseData?.data[0]?.ScenicSpotName ?? null,
                     SrcUpdateTime: responseData?.data[0]?.SrcUpdateTime ?? null,
                     UpdateTime: responseData?.data[0]?.UpdateTime ?? null,
                 };
@@ -243,27 +282,32 @@ export async function getServerSideProps({ params, query, locale }) {
             if (responseData?.status === 'success') {
                 // handle success (取得觀光活動資料)
                 detailData = {
-                    // QueryType: type,
+                    QueryType: type,
                     Address: responseData?.data[0]?.Address ?? null,
                     // City: responseData?.data[0]?.City ?? null,
                     // Location: responseData?.data[0]?.Location ?? null,
                     Description: responseData?.data[0]?.Description ?? null,
+                    OpenDay: responseData?.data[0]?.OpenTime,
                     OpenTime:
+                        responseData?.data[0]?.OpenTime ??
                         moment(
                             responseData?.data[0]?.StartTime,
                             moment.ISO_8601
                         )
                             .tz('Asia/Taipei')
                             .format('YYYY-MM-DD') +
-                        ' ~ ' +
-                        moment(responseData?.data[0]?.EndTime, moment.ISO_8601)
-                            .tz('Asia/Taipei')
-                            .format('YYYY-MM-DD'),
+                            ' ~ ' +
+                            moment(
+                                responseData?.data[0]?.EndTime,
+                                moment.ISO_8601
+                            )
+                                .tz('Asia/Taipei')
+                                .format('YYYY-MM-DD'),
                     Phone: responseData?.data[0]?.Phone ?? null,
                     Picture: responseData?.data[0]?.Picture ?? null,
                     Position: responseData?.data[0]?.Position ?? null,
-                    SpotID: responseData?.data[0]?.ActivityID ?? null,
-                    SpotName: responseData?.data[0]?.ActivityName ?? null,
+                    SpotID: responseData?.data[0]?.RestaurantID ?? null,
+                    SpotName: responseData?.data[0]?.RestaurantName ?? null,
                     SrcUpdateTime: responseData?.data[0]?.SrcUpdateTime ?? null,
                     UpdateTime: responseData?.data[0]?.UpdateTime ?? null,
                 };
@@ -281,7 +325,9 @@ export async function getServerSideProps({ params, query, locale }) {
             ...(await serverSideTranslations(locale, [
                 'api_mapping',
                 'common',
-                'home',
+                'activityData',
+                'scenicSpotData',
+                'restaurantData',
             ])),
             data: {
                 detailData,

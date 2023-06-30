@@ -37,7 +37,7 @@ const BannerHome = styled(Image)`
 const Travel = (props) => {
     const [isLoading, setIsLoading] = useState(true);
     const { locale, locales, push } = useRouter();
-    const { t } = useTranslation('home');
+    const { t } = useTranslation('common');
 
     const {
         status: activityStatus,
@@ -45,17 +45,17 @@ const Travel = (props) => {
         error: activityError,
     } = useGetActivity({ top: 10, filter: 'Picture/PictureUrl1 ne null' });
 
-    // const {
-    //     status: scenicSpotStatus,
-    //     data: scenicSpotData,
-    //     error: scenicSpotError,
-    // } = useGetScenicSpot({ top: 10, filter: 'Picture/PictureUrl1 ne null' });
+    const {
+        status: scenicSpotStatus,
+        data: scenicSpotData,
+        error: scenicSpotError,
+    } = useGetScenicSpot({ top: 10, filter: 'Picture/PictureUrl1 ne null' });
 
-    // const {
-    //     status: restaurantStatus,
-    //     data: restaurantData,
-    //     error: restaurantError,
-    // } = useGetRestaurant({ top: 10, filter: 'Picture/PictureUrl1 ne null' });
+    const {
+        status: restaurantStatus,
+        data: restaurantData,
+        error: restaurantError,
+    } = useGetRestaurant({ top: 10, filter: 'Picture/PictureUrl1 ne null' });
 
     return (
         <>
@@ -85,17 +85,17 @@ const Travel = (props) => {
                         status={activityStatus}
                     />
 
-                    {/* <TypeCarouselCards
-                            lists={scenicSpotData}
-                            type="scenicSpot"
-                            status={scenicSpotStatus}
-                        />
+                    <TypeCarouselCards
+                        lists={scenicSpotData}
+                        type="scenicSpot"
+                        status={scenicSpotStatus}
+                    />
 
-                        <TypeCarouselCards
-                            lists={restaurantData}
-                            type="restaurant"
-                            status={restaurantStatus}
-                        /> */}
+                    <TypeCarouselCards
+                        lists={restaurantData}
+                        type="restaurant"
+                        status={restaurantStatus}
+                    />
                 </Container>
                 {/* <Footer></Footer> */}
             </ThemeProvider>
@@ -107,9 +107,11 @@ export async function getStaticProps({ locale }) {
     return {
         props: {
             ...(await serverSideTranslations(locale, [
+                'api_mapping',
                 'common',
-                'about',
-                'home',
+                'activityData',
+                'scenicSpotData',
+                'restaurantData',
             ])),
         },
     };

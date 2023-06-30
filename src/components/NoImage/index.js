@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import breakpoint from '@/lib/constant/breakpoint';
+import { useTranslation } from 'next-i18next';
 
 const StyledNoImg = styled.div`
     width: 100%;
@@ -15,10 +16,11 @@ const StyledNoImg = styled.div`
 const StyledNoImgContent = styled.div``;
 
 const NoImage = () => {
+    const { t } = useTranslation('common');
     return (
         <StyledNoImg>
             <StyledNoImgContent>
-                <div>此景點尚未提供照片</div>
+                <div>{t(`carouselConfig.noImg`)}</div>
             </StyledNoImgContent>
         </StyledNoImg>
     );

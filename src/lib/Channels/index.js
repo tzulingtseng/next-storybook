@@ -55,7 +55,7 @@ const Item = styled('div')`
 `;
 
 const Channels = ({ handleHamburgerContainerShow }) => {
-    const { t } = useTranslation('home');
+    const { t } = useTranslation('common');
     return (
         <ChannelContainer>
             <CategoryContainer>

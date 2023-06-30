@@ -79,7 +79,7 @@ const Meta = ({
             </div>
             <div className="meta__title">{title}</div>
             <div className="meta__description">
-                <div>{text}</div>
+                {/* <div>{text}</div> */}
                 {description}
             </div>
         </Content>

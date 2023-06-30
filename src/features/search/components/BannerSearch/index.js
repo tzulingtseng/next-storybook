@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import Image from 'next/image';
+import { useTranslation } from 'next-i18next';
 import BannerActivity from '@/assets/images/banner-activity.png';
 import BannerscenicSpot from '@/assets/images/banner-scenicSpot.png';
 import BannerRestaurant from '@/assets/images/banner-restaurant.png';
@@ -74,6 +75,7 @@ const BannerSearch = ({
     setInputCountyValue,
     handleFilteredResults,
 }) => {
+    const { t } = useTranslation('common');
     return (
         <BannerContainer>
             <BannerImgBox>
@@ -99,47 +101,23 @@ const BannerSearch = ({
             <BannerMask />
             <BannerContentBox>
                 <BannerContent>
-                    <BannerTitle>尋找{bannerTitle}</BannerTitle>
+                    <BannerTitle>{bannerTitle}</BannerTitle>
                     <BannerSearchBox>
                         <TextField
                             onChange={(e) => setInputValue(e.target.value)}
-                            placeholder="搜尋"
+                            placeholder={t(`searchConfig.searchKeyword`)}
                             value={inputValue}
                         />
                         <TextField
                             onChange={(e) =>
                                 setInputCountyValue(e.target.value)
                             }
-                            placeholder="搜尋"
+                            placeholder={t(`searchConfig.searchKeyword`)}
                             value={inputCountyValue}
                         />
-                        {/* <Select
-                        onSelect={function noRefCheck() {}}
-                        options={[
-                            {
-                                label: '我全都要',
-                                value: 'all',
-                            },
-                            {
-                                label: 'AZ 疫苗',
-                                value: 'AZ',
-                            },
-                            {
-                                label: 'BNT 疫苗',
-                                value: 'BNT',
-                            },
-                            {
-                                label: '莫德納疫苗',
-                                value: 'Moderna',
-                            },
-                            {
-                                label: '高端疫苗',
-                                value: 'Vaccine',
-                            },
-                        ]}
-                        placeholder="請選擇預約疫苗"
-                    /> */}
-                        <Button onClick={handleFilteredResults}>搜尋</Button>
+                        <Button onClick={handleFilteredResults}>
+                            {t(`searchConfig.searchButton`)}
+                        </Button>
                     </BannerSearchBox>
                 </BannerContent>
             </BannerContentBox>

@@ -1,8 +1,114 @@
 {
-    "hello common": "Hello common en",
+    "title": "Homepage",
+    "subTitle": "Travel × Activity × Food",
+    "headerLogo": "/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FTaiFun.a6ae6503.png&w=256&q=75",
+    "navButtons": {
+        "outline": "Subscribe",
+        "filled": "Donate"
+    },
+    "type": [
+        "Travel",
+        "Activity",
+        "Food"
+    ],
+    "menuConfig": [
+        [
+            {
+                "id": "menuTitle_01",
+                "text": "Latest",
+                "divider": true
+            }
+        ],
+        [
+            {
+                "id": "menuTitle_02",
+                "text": "In-depth Projects"
+            },
+            {
+                "id": "menuTitle_03",
+                "text": "Issues",
+                "children": [
+                    {
+                        "id": "menuSubTitle_01",
+                        "text": "Environmental Sustainability"
+                    },
+                    {
+                        "id": "menuSubTitle_02",
+                        "text": "Economic Industries"
+                    },
+                    {
+                        "id": "menuSubTitle_03",
+                        "text": "Cultural Life"
+                    }
+                ]
+            },
+            {
+                "id": "menuTitle_04",
+                "text": "Reviews",
+                "children": [
+                    {
+                        "id": "menuSubTitle_04",
+                        "text": "Book Excerpts and Reviews"
+                    },
+                    {
+                        "id": "menuSubTitle_05",
+                        "text": "Reader Reviews"
+                    }
+                ],
+                "divider": true
+            }
+        ],
+        [
+            {
+                "id": "menuTitle_05",
+                "text": "About Us"
+            },
+            {
+                "id": "menuTitle_06",
+                "text": "Impact Report"
+            },
+            {
+                "id": "menuTitle_07",
+                "text": "Reporter Open Lab",
+                "divider": true
+            }
+        ]
+    ],
     "langOptions": {
         "zhHant": "ch",
         "en": "en",
         "placeholder": "ch"
+    },
+    "searchConfig": {
+        "searchResults": "Search Results",
+        "keyword": "Keyword:",
+        "area": ", Area:",
+        "total": ", A total of",
+        "records": "records.",
+        "noResults": "There are currently no matching results.",
+        "noData": "none",
+        "searchKeyword": "Enter keyword",
+        "searchButton": "search",
+        "activityBannerTitle": "LET'S GO ACTIVITY",
+        "scenicSpotBannerTitle": "LET'S GO SCENICSPOT",
+        "restaurantSpotBannerTitle": "LET'S GO RESTAURANT"
+    },
+    "detailConfig": {
+        "information": "Information",
+        "tel": "Tel:",
+        "address": "Address:",
+        "moreDetails": "See Official Website",
+        "introTitle": "Introduce",
+        "mapTitle": "Map"
+    },
+    "carouselConfig": {
+        "hotActivity": "Hot Activities",
+        "hotScenicSpot": "Hot ScenicSpots",
+        "hotRestaurant": "Hot Restaurants",
+        "more": "More",
+        "moreDetails": "See Official Website",
+        "time": "Open 24/7.",
+        "buttonText": "View Details",
+        "noImg": "No photo available."
     }
 }

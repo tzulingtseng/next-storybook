@@ -1,8 +1,113 @@
 {
-    "hello common": "Hello common zh-TW",
+    "title": "首頁",
+    "subTitle": "旅遊 × 活動 × 美食",
+    "headerLogo": "/_next/static/media/logo-header.release.9b3a1c6d.svg",
+    "navButtons": {
+        "outline": "訂閱",
+        "filled": "贊助"
+    },
+    "type": [
+        "旅遊",
+        "活動",
+        "美食"
+    ],
+    "menuConfig": [
+        [
+            {
+                "id": "menuTitle_01",
+                "text": "最新",
+                "divider": true
+            }
+        ],
+        [
+            {
+                "id": "menuTitle_02",
+                "text": "深度專題"
+            },
+            {
+                "id": "menuTitle_03",
+                "text": "議題",
+                "children": [
+                    {
+                        "id": "menuSubTitle_01",
+                        "text": "環境永續 "
+                    },
+                    {
+                        "id": "menuSubTitle_02",
+                        "text": "經濟產業"
+                    },
+                    {
+                        "id": "menuSubTitle_03",
+                        "text": "文化生活"
+                    }
+                ]
+            },
+            {
+                "id": "menuTitle_04",
+                "text": "評論",
+                "children": [
+                    {
+                        "id": "menuSubTitle_04",
+                        "text": "書摘與書評 "
+                    },
+                    {
+                        "id": "menuSubTitle_05",
+                        "text": "讀者評論"
+                    }
+                ],
+                "divider": true
+            }
+        ],
+        [
+            {
+                "id": "menuTitle_05",
+                "text": "關於我們"
+            },
+            {
+                "id": "menuTitle_06",
+                "text": "影響力報告"
+            },
+            {
+                "id": "menuTitle_07",
+                "text": "報導者開放實驗室",
+                "divider": true
+            }
+        ]
+    ],
     "langOptions": {
         "zhHant": "中",
         "en": "英",
         "placeholder": "中"
+    },
+    "searchConfig": {
+        "searchResults": "搜尋結果",
+        "keyword": "關鍵字：",
+        "area": "，地區：",
+        "total": "，共",
+        "records": "筆資料",
+        "noResults": "目前沒有符合的搜尋結果",
+        "noData": "無",
+        "searchKeyword": "搜尋關鍵字",
+        "searchButton": "搜尋",
+        "activityBannerTitle": "尋找活動",
+        "scenicSpotBannerTitle": "尋找景點",
+        "restaurantSpotBannerTitle": "尋找餐廳"
+    },
+    "detailConfig": {
+        "information": "資訊",
+        "tel": "電話：",
+        "address": "地址：",
+        "moreDetails": "詳見官網",
+        "introTitle": "介紹",
+        "mapTitle": "地圖"
+    },
+    "carouselConfig": {
+        "hotActivity": "熱門活動",
+        "hotScenicSpot": "熱門景點",
+        "hotRestaurant": "熱門美食",
+        "more": "更多",
+        "moreDetails": "詳見官網",
+        "buttonText": "查看詳情",
+        "noImg": "尚未提供照片"
     }
 }

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import styled, { css, useTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import Icon from '@/lib/Icon';
 
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const SelectWrapper = styled.div`
     width: 4rem; // TODO:確認寬度
@@ -95,9 +94,9 @@ const Select = ({ placeholder, options, ...props }) => {
         setSelectedValue(e.currentTarget.getAttribute('value'));
         setOpen(false);
     };
-    useEffect(() => {
-        push('/travel', undefined, { locale: selectedValue });
-    }, [selectedValue]);
+    // useEffect(() => {
+    //     push('/travel', undefined, { locale: selectedValue });
+    // }, [selectedValue]);
     return (
         <SelectWrapper>
             {/* placeholder */}
