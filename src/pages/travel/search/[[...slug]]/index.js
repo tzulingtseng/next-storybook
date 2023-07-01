@@ -261,7 +261,7 @@ const search = () => {
                 inputCountyValue={inputCountyValue}
                 setInputCountyValue={setInputCountyValue}
                 handleFilteredResults={handleFilteredResults}
-            ></BannerSearch>
+            />
             <SearchResults
                 status={typeStatus}
                 searchedInputValue={searchedInputValue}
@@ -273,8 +273,8 @@ const search = () => {
                 totalPages={totalPages}
                 setPage={setPage}
                 filteredType={filteredType}
-            ></SearchResults>
-            <Footer></Footer>
+            />
+            <Footer />
         </ThemeProvider>
     );
 };
