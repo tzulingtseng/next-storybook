@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
 import BannerActivity from '@/assets/images/banner-activity.png';
-import BannerscenicSpot from '@/assets/images/banner-scenicSpot.png';
+import BannerScenicSpot from '@/assets/images/banner-scenicSpot.png';
 import BannerRestaurant from '@/assets/images/banner-restaurant.png';
 import Skeleton from 'react-loading-skeleton';
 
@@ -76,28 +76,35 @@ const BannerSearch = ({
     handleFilteredResults,
 }) => {
     const { t } = useTranslation('common');
-    return (
-        <BannerContainer>
-            <BannerImgBox>
-                {/* TODO:待優化寫法 */}
-                {bannerImgSrc !== null && bannerImgSrc === 'BannerActivity' ? (
+    const getBannerImage = () => {
+        switch (bannerImgSrc) {
+            case 'BannerActivity':
+                return (
                     <Image src={BannerActivity} alt="Banner" priority={true} />
-                ) : bannerImgSrc === 'BannerscenicSpot' ? (
+                );
+            case 'BannerScenicSpot':
+                return (
                     <Image
-                        src={BannerscenicSpot}
+                        src={BannerScenicSpot}
                         alt="Banner"
                         priority={true}
                     />
-                ) : bannerImgSrc === 'BannerRestaurant' ? (
+                );
+            case 'BannerRestaurant':
+                return (
                     <Image
                         src={BannerRestaurant}
                         alt="Banner"
                         priority={true}
                     />
-                ) : (
-                    <Skeleton height="100%" />
-                )}
-            </BannerImgBox>
+                );
+            default:
+                return <Skeleton height="100%" />;
+        }
+    };
+    return (
+        <BannerContainer>
+            <BannerImgBox>{getBannerImage()}</BannerImgBox>
             <BannerMask />
             <BannerContentBox>
                 <BannerContent>

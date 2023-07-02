@@ -36,7 +36,8 @@ const BannerHome = styled(Image)`
 
 const Travel = (props) => {
     const [isLoading, setIsLoading] = useState(true);
-    const { locale, locales, push } = useRouter();
+    const { locale } = useRouter();
+    const [selectedValue, setSelectedValue] = useState(locale);
     const { t } = useTranslation('common');
 
     const {
@@ -60,19 +61,11 @@ const Travel = (props) => {
     return (
         <>
             <ThemeProvider theme={theme}>
-                <NavBar locale={locale}></NavBar>
-                {/* <h1>{t('title')}</h1>
-                <div>
-                    <h3>With Link</h3>
-                    <h1>Choose your locale:</h1>
-                    {locales.map((l) => (
-                        <button key={l}>
-                            <Link href={`/travel`} locale={l}>
-                                {l}
-                            </Link>
-                        </button>
-                    ))}
-                </div> */}
+                <NavBar
+                    locale={locale}
+                    selectedValue={selectedValue}
+                    setSelectedValue={setSelectedValue}
+                />
                 {/* <BannerHome
                     src={BannerHomeSrc}
                     alt="首頁 banner"

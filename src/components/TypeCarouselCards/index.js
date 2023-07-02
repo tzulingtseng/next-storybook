@@ -135,6 +135,18 @@ const TypeCarouselCards = ({ status, type, lists }) => {
                         lists.map((item) => {
                             let PictureUrl1 =
                                 item?.Picture?.PictureUrl1 ?? null;
+                            let formattedTime =
+                                moment(item?.StartTime, moment.ISO_8601)
+                                    .tz('Asia/Taipei')
+                                    .format('YYYY-MM-DD') +
+                                ' ~ ' +
+                                moment(item?.EndTime, moment.ISO_8601)
+                                    .tz('Asia/Taipei')
+                                    .format('YYYY-MM-DD');
+                            let time = item?.OpenTime;
+                            let openTime = time
+                                ? t('carouselConfig.moreDetails')
+                                : formattedTime;
                             let Address = item?.Address ?? null;
                             let itemId, type;
                             if (item?.ActivityID) {
@@ -173,12 +185,7 @@ const TypeCarouselCards = ({ status, type, lists }) => {
                                                         `${itemId}.titleName`,
                                                         { ns: `${type}Data` }
                                                     )}
-                                                    description={t(
-                                                        `${itemId}.description`,
-                                                        {
-                                                            ns: `${type}Data`,
-                                                        }
-                                                    )}
+                                                    description={openTime}
                                                     address={
                                                         Address
                                                             ? t(

@@ -1,6 +1,5 @@
-import React, { Fragment } from 'react';
-import styled, { css } from 'styled-components';
-import Image from 'next/image';
+import React, { useState } from 'react';
+import styled from 'styled-components';
 import moment from 'moment-timezone';
 
 import { useRouter } from 'next/router';
@@ -87,7 +86,8 @@ const IntroContainer = styled('div')`
 const MapContainer = styled('div')``;
 
 const Detail = ({ data }) => {
-    const { locale, locales, push } = useRouter();
+    const { locale } = useRouter();
+    const [selectedValue, setSelectedValue] = useState(locale);
     const { t } = useTranslation('common');
     const {
         QueryType,
@@ -111,11 +111,15 @@ const Detail = ({ data }) => {
         UpdateTime,
         // ZipCode,
     } = data.detailData;
-    console.log('SpotID', SpotID);
+
     return (
         <>
             <ThemeProvider theme={theme}>
-                <NavBar locale={locale} />
+                <NavBar
+                    locale={locale}
+                    selectedValue={selectedValue}
+                    setSelectedValue={setSelectedValue}
+                />
                 <Container>
                     <InfoContainer>
                         <InfoTitle>

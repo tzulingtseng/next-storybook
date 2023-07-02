@@ -1,13 +1,13 @@
 {
     "title": "Homepage",
-    "subTitle": "Travel × Activity × Food",
+    "subTitle": "ScenicSpot × Activity × Food",
     "headerLogo": "/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FTaiFun.a6ae6503.png&w=256&q=75",
     "navButtons": {
         "outline": "Subscribe",
         "filled": "Donate"
     },
     "type": [
-        "Travel",
+        "ScenicSpot",
         "Activity",
         "Food"
     ],
@@ -109,6 +109,7 @@
         "moreDetails": "See Official Website",
         "time": "Open 24/7.",
         "buttonText": "View Details",
-        "noImg": "No photo available."
+        "noImg": "No photo available.",
+        "openTime": "Opening"
     }
 }

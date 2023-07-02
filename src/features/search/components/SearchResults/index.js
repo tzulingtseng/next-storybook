@@ -58,9 +58,6 @@ const StyledCardSkeletonContainer = styled.div`
     ${breakpoint.mediaMD} {
         width: calc(100% / 4 - 2rem);
     }
-    // ${breakpoint.mediaLG} {
-    //     width: calc(100% / 4 - 2rem);
-    // }
 `;
 
 const SearchResults = ({
@@ -99,13 +96,13 @@ const SearchResults = ({
                                 : t('searchConfig.noData')}
                         </span>
                     </div>
-                    <div>
+                    {/* <div>
                         {t('searchConfig.total')}
                         <span className="highlight">
                             {results ? results.length : 0}
                         </span>
                         {t('searchConfig.records')}
-                    </div>
+                    </div> */}
                 </SearchInfo>
             </SearchResultsTitle>
             <SearchResultsContainer>
@@ -149,7 +146,7 @@ const SearchResults = ({
                             .format('YYYY-MM-DD')}`;
                         let time = item?.OpenTime;
                         let openTime = time
-                            ? t('carouselConfig.time')
+                            ? t('carouselConfig.moreDetails')
                             : formattedTime;
                         let itemId, itemName;
                         if (ActivityID) {
@@ -172,14 +169,8 @@ const SearchResults = ({
                                 itemName={t(`${itemId}.titleName`, {
                                     ns: `${filteredType}Data`,
                                 })}
-                                // openTime={openTime}
-                                description={
-                                    Description || DescriptionDetail
-                                        ? t(`${itemId}.description`, {
-                                              ns: `${filteredType}Data`,
-                                          })
-                                        : null
-                                }
+                                openTime={openTime}
+                                description={openTime}
                                 Address={
                                     Address
                                         ? t(`${itemId}.address`, {

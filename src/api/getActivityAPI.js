@@ -6,8 +6,10 @@ import { getAuthorizationHeader } from '@/utils/getAuthorizationHeader';
 
 const getActivityAPI = async ({
     top = undefined,
+    skip = undefined,
     // filter = 'Picture/PictureUrl1 ne null',
     filter = undefined,
+    select = undefined,
 }) => {
     let returnData = {
         status: undefined,
@@ -21,11 +23,11 @@ const getActivityAPI = async ({
      */
     let params = {
         $top: top,
-        // $skip: skip,
+        $skip: skip,
         $format: 'JSON',
         $filter: filter,
         // $spatialFilter: spatialFilter,
-        // $select: select,
+        $select: select,
     };
 
     await axios

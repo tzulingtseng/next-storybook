@@ -1,13 +1,13 @@
 {
     "title": "首頁",
-    "subTitle": "旅遊 × 活動 × 美食",
+    "subTitle": "景點 × 活動 × 美食",
     "headerLogo": "/_next/static/media/logo-header.release.9b3a1c6d.svg",
     "navButtons": {
         "outline": "訂閱",
         "filled": "贊助"
     },
     "type": [
-        "旅遊",
+        "景點",
         "活動",
         "美食"
     ],
@@ -108,6 +108,7 @@
         "more": "更多",
         "moreDetails": "詳見官網",
         "buttonText": "查看詳情",
-        "noImg": "尚未提供照片"
+        "noImg": "尚未提供照片",
+        "openTime": "開放時間"
     }
 }

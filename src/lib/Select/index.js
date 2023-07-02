@@ -78,25 +78,17 @@ const SelectIcon = styled(Icon)`
 `;
 
 const Select = ({ placeholder, options, ...props }) => {
+    const { locale } = useRouter();
     const [open, setOpen] = useState(false);
-    const [selectedValue, setSelectedValue] = useState('zhHant');
-    const [selectedItem, setSelectedItem] = useState('中');
-    const [active, setActive] = useState(false);
+    const [selectedValue, setSelectedValue] = useState(locale);
     const theme = useTheme();
-    const { locale, locales, push } = useRouter();
+
     const { t } = useTranslation('common');
-    // const changeLanguage = (l, selectedValue) => {
-    //     console.log('changeLanguage', selectedValue);
-    //     push('/travel', undefined, { locale: selectedValue });
-    // };
-    const handleSelect = (e) => {
-        setSelectedItem(e.target.innerText);
+
+    const changeLanguage = (e) => {
         setSelectedValue(e.currentTarget.getAttribute('value'));
         setOpen(false);
     };
-    // useEffect(() => {
-    //     push('/travel', undefined, { locale: selectedValue });
-    // }, [selectedValue]);
     return (
         <SelectWrapper>
             {/* placeholder */}
@@ -109,7 +101,7 @@ const Select = ({ placeholder, options, ...props }) => {
             >
                 <SelectBox>
                     <div>
-                        {selectedItem
+                        {selectedValue
                             ? t(`langOptions.${selectedValue}`)
                             : t(`langOptions.placeholder`)}
                     </div>
@@ -126,12 +118,12 @@ const Select = ({ placeholder, options, ...props }) => {
                                 key={i}
                                 value={item.value}
                                 onClick={(e) => {
-                                    handleSelect(e);
+                                    changeLanguage(e);
                                 }}
                                 // TODO:優化寫法，placeholder 的選項需亮色
                                 style={{
                                     color:
-                                        selectedItem === item.label
+                                        selectedValue === item.value
                                             ? theme.colors.primary
                                             : theme.colors.black,
                                 }}

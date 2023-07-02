@@ -71,8 +71,8 @@ const CardContainer = ({
                             title={itemName}
                             description={description}
                             address={Address}
-                            // text={t(`carouselConfig.openTime`)}
-                            icon="fa-solid fa-thumbs-up"
+                            text={t(`carouselConfig.openTime`)}
+                            icon="fa-solid fa-location-dot"
                         />
                     }
                     footer={

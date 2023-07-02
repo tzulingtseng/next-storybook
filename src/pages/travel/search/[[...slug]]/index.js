@@ -22,6 +22,7 @@ import scrollToTop from '@/utils/scrollToTop';
 
 const search = () => {
     const { locale, locales, push } = useRouter();
+    const [selectedValue, setSelectedValue] = useState(locale);
     const { t } = useTranslation('common');
 
     const [filteredType, setFilteredType] = useState(null);
@@ -252,7 +253,11 @@ const search = () => {
      */
     return (
         <ThemeProvider theme={theme}>
-            <NavBar locale={locale} />
+            <NavBar
+                locale={locale}
+                selectedValue={selectedValue}
+                setSelectedValue={setSelectedValue}
+            />
             <BannerSearch
                 bannerTitle={t(`searchConfig.${type}BannerTitle`)}
                 bannerImgSrc={bannerImgSrc}

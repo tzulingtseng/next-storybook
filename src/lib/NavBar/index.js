@@ -266,7 +266,13 @@ const LogoLink = styled(Link)`
     margin-right: 1rem;
 `;
 
-const NavBar = ({ locale, children, ...props }) => {
+const NavBar = ({
+    locale,
+    children,
+    selectedValue,
+    setSelectedValue,
+    ...props
+}) => {
     const { t } = useTranslation('common');
 
     const [hamburgerContainerShow, setHamburgerContainerShow] = useState(false);
@@ -365,14 +371,16 @@ const NavBar = ({ locale, children, ...props }) => {
                                         },
                                     ]}
                                     placeholder="中"
+                                    selectedValue={selectedValue}
+                                    setSelectedValue={setSelectedValue}
                                 />
                             </div>
-                            <IconContainer>
-                                {/* TODO:how to use svg */}
-                                {/* <svg src={searchIcon} alt=""></svg> */}
-                                <IconBox src={searchIcon} alt="搜尋" />
-                                <IconBox src={memberIcon} alt="會員" />
-                            </IconContainer>
+                            {/* <IconContainer> */}
+                            {/* TODO:how to use svg */}
+                            {/* <svg src={searchIcon} alt=""></svg> */}
+                            {/* <IconBox src={searchIcon} alt="搜尋" />
+                                <IconBox src={memberIcon} alt="會員" /> */}
+                            {/* </IconContainer> */}
                         </IconGroupNav>
                     </StyledDesktopAndAbovebox>
                     <StyledDivider
