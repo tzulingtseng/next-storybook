@@ -252,7 +252,7 @@ const search = () => {
      */
     return (
         <ThemeProvider theme={theme}>
-            <NavBar locale={locale}></NavBar>
+            <NavBar locale={locale} />
             <BannerSearch
                 bannerTitle={t(`searchConfig.${type}BannerTitle`)}
                 bannerImgSrc={bannerImgSrc}
