@@ -115,7 +115,7 @@ const Detail = ({ data }) => {
     return (
         <>
             <ThemeProvider theme={theme}>
-                <NavBar locale={locale}></NavBar>
+                <NavBar locale={locale} />
                 <Container>
                     <InfoContainer>
                         <InfoTitle>
@@ -172,7 +172,7 @@ const Detail = ({ data }) => {
                     </IntroContainer>
                     {/* <MapContainer></MapContainer> */}
                 </Container>
-                <Footer></Footer>
+                <Footer />
             </ThemeProvider>
         </>
     );

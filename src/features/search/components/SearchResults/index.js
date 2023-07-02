@@ -187,7 +187,7 @@ const SearchResults = ({
                                           })
                                         : t(`carouselConfig.moreDetails`)
                                 }
-                            ></CardContainer>
+                            />
                         );
                     })}
                 {status === 'success' &&
