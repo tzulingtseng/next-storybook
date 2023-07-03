@@ -94,7 +94,7 @@ const Travel = (props) => {
                         status={restaurantStatus}
                     />
                 </Container>
-                {/* <Footer></Footer> */}
+                <Footer />
             </ThemeProvider>
         </>
     );

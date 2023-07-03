@@ -6,6 +6,7 @@
         "outline": "Subscribe",
         "filled": "Donate"
     },
+    "footerSource": "MOTC TDX Service Platform",
     "type": [
         "ScenicSpot",
         "Activity",
