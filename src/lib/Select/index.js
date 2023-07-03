@@ -11,6 +11,7 @@ const SelectWrapper = styled.div`
     border-radius: 0.25rem;
     position: relative;
     cursor: pointer;
+    font-size: 1rem;
     // TODO:refactor reset
     ul,
     li {
@@ -97,7 +98,6 @@ const Select = ({
 
     return (
         <SelectWrapper>
-            {/* placeholder */}
             <SelectBoxWrapper
                 role="button"
                 onClick={() => {
@@ -111,7 +111,11 @@ const Select = ({
                             ? t(`langOptions.${selectedValue}`)
                             : t(`langOptions.placeholder`)}
                     </div>
-                    <SelectIcon $isOpen={open} icon="fa-angle-down" size={20} />
+                    <SelectIcon
+                        $isOpen={open}
+                        icon="fa-angle-down"
+                        size="1rem"
+                    />
                 </SelectBox>
             </SelectBoxWrapper>
             {/* options */}

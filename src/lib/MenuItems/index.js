@@ -19,7 +19,7 @@ const StyledMenuContainer = styled.div`
 
 // icon
 const MenuIcon = styled(Icon)`
-    fontSize: 14,
+    fontSize: 1rem,
     color: ${(props) =>
         $open ? props.theme.colors.primary : props.theme.colors.grey2};
 `;

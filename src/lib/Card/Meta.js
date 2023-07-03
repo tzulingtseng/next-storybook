@@ -71,7 +71,7 @@ const Meta = ({
                     {address && (
                         <StyledIcon
                             icon={icon}
-                            style={{ marginRight: '8px' }}
+                            style={{ marginRight: '0.5rem' }}
                         ></StyledIcon>
                     )}
                     <span>{address}</span>

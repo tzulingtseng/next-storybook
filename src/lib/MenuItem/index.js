@@ -14,7 +14,7 @@ const StyledMenuContainer = styled.div`
 
 // icon
 const MenuIcon = styled(Icon)(({ theme }) => ({
-    fontSize: 14,
+    fontSize: '1rem',
     color: theme.colors.grey2,
 }));
 
