@@ -77,10 +77,15 @@ const SelectIcon = styled(Icon)`
         props.$isOpen ? 'rotate(180deg)' : 'rotate(0deg)'};
 `;
 
-const Select = ({ placeholder, options, ...props }) => {
+const Select = ({
+    placeholder,
+    options,
+    selectedValue,
+    setSelectedValue,
+    ...props
+}) => {
     const { locale } = useRouter();
     const [open, setOpen] = useState(false);
-    const [selectedValue, setSelectedValue] = useState(locale);
     const theme = useTheme();
 
     const { t } = useTranslation('common');
@@ -89,6 +94,7 @@ const Select = ({ placeholder, options, ...props }) => {
         setSelectedValue(e.currentTarget.getAttribute('value'));
         setOpen(false);
     };
+
     return (
         <SelectWrapper>
             {/* placeholder */}

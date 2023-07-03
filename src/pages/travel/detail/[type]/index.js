@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import moment from 'moment-timezone';
 
@@ -86,7 +86,8 @@ const IntroContainer = styled('div')`
 const MapContainer = styled('div')``;
 
 const Detail = ({ data }) => {
-    const { locale } = useRouter();
+    const router = useRouter();
+    const { locale, push } = useRouter();
     const [selectedValue, setSelectedValue] = useState(locale);
     const { t } = useTranslation('common');
     const {
@@ -111,6 +112,13 @@ const Detail = ({ data }) => {
         UpdateTime,
         // ZipCode,
     } = data.detailData;
+
+    // http://localhost:3000/en/travel/detail/activity?id=C2_315080000H_502349
+    useEffect(() => {
+        router.push(`/travel/detail/${QueryType}?id=${SpotID}`, undefined, {
+            locale: selectedValue,
+        });
+    }, [selectedValue]);
 
     return (
         <>

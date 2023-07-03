@@ -1,5 +1,5 @@
 // import Image from 'next/image';
-import React, { useState, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import styled, { css } from 'styled-components';
 import Image from 'next/image';
 import BannerHomeSrc from '@/assets/images/banner-home.png';
@@ -36,7 +36,7 @@ const BannerHome = styled(Image)`
 
 const Travel = (props) => {
     const [isLoading, setIsLoading] = useState(true);
-    const { locale } = useRouter();
+    const { locale, push } = useRouter();
     const [selectedValue, setSelectedValue] = useState(locale);
     const { t } = useTranslation('common');
 
@@ -57,6 +57,10 @@ const Travel = (props) => {
         data: restaurantData,
         error: restaurantError,
     } = useGetRestaurant({ top: 10, filter: 'Picture/PictureUrl1 ne null' });
+
+    useEffect(() => {
+        push('/travel', undefined, { locale: selectedValue });
+    }, [selectedValue]);
 
     return (
         <>

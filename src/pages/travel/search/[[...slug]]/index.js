@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
 
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import styled, { css } from 'styled-components';
 
 import ThemeProvider from '@/lib/ThemeProvider';
 import theme from '@/lib/theme';
@@ -21,7 +19,7 @@ import getRestaurantAPI from '@/api/getRestaurantAPI';
 import scrollToTop from '@/utils/scrollToTop';
 
 const search = () => {
-    const { locale, locales, push } = useRouter();
+    const { locale, push } = useRouter();
     const [selectedValue, setSelectedValue] = useState(locale);
     const { t } = useTranslation('common');
 
@@ -29,12 +27,10 @@ const search = () => {
     const [typeStatus, setTypeStatus] = useState(undefined);
     const [typeData, setTypeData] = useState([]);
     const [typeError, setTypeError] = useState(null);
-
-    const [bannerTitle, setBannerTitle] = useState(null);
     const [bannerImgSrc, setBannerImgSrc] = useState(null);
 
     const [page, setPage] = useState(null);
-    const [pageSize, setPageSize] = useState(20);
+    const [pageSize, setPageSize] = useState(8);
     const [totalPages, setTotalPages] = useState(0);
     const [PageDataArray, setPageDataArray] = useState([]);
     const [inputValue, setInputValue] = useState('');
@@ -59,6 +55,7 @@ const search = () => {
             setTypeStatus('error');
             setTypeError(responseData.desc);
         } else {
+            console.log('cancel');
             // handle cancel (取消 call api)
             setTypeStatus('cancel');
         }
@@ -138,10 +135,10 @@ const search = () => {
         });
 
         // 進階搜尋：用地區關鍵字搜尋結果，篩掉關鍵字搜尋結果，返回重複部分
-        const mergedResults = findDuplicates(
-            filteredKeyword,
-            filteredCountyKeyword
-        );
+        // const mergedResults = findDuplicates(
+        //     filteredKeyword,
+        //     filteredCountyKeyword
+        // );
 
         let filteredResults = [];
         if (keyword && countyKeyword) {
@@ -165,17 +162,14 @@ const search = () => {
     const typeHandlers = {
         activity: {
             handler: handleActivityData,
-            // title: '活動',
             bannerImgSrc: 'BannerActivity',
         },
         scenicSpot: {
             handler: handleScenicSpotData,
-            // title: '景點',
             bannerImgSrc: 'BannerScenicSpot',
         },
         restaurant: {
             handler: handleRestaurantData,
-            // title: '美食',
             bannerImgSrc: 'BannerRestaurant',
         },
     };
@@ -183,13 +177,10 @@ const search = () => {
     useEffect(() => {
         setFilteredType(type);
         const typeHandler = typeHandlers[type];
-        if (typeHandler) {
-            const { handler, title, bannerImgSrc } = typeHandler;
-            handler();
-            setBannerTitle(title);
-            setBannerImgSrc(bannerImgSrc);
-        }
-    }, [query?.type]);
+        const { handler, title, bannerImgSrc } = typeHandler;
+        handler();
+        setBannerImgSrc(bannerImgSrc);
+    }, [type]);
 
     useEffect(() => {
         // 當頁面載入時，回到頁面頂部
@@ -231,10 +222,10 @@ const search = () => {
                 `/travel/search?type=${filteredType}${queryString}`,
                 undefined,
                 {
-                    shallow: true,
+                    locale: selectedValue,
                 }
             );
-    }, [page, results]);
+    }, [page, results, selectedValue]);
 
     /**
      * 處理當頁碼不等於1時，有新的關鍵字和地區關鍵字重新搜尋
