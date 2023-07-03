@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import Link from 'next/link';
 import NoImage from '@/components/NoImage';
 import Card from '@/lib/Card';

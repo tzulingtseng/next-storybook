@@ -30,6 +30,7 @@ const StyledNavBar = styled('header')`
     left: 0;
     right: 0;
     background-color: ${(props) => props.theme.colors.grey1};
+    z-index: 3;
 `;
 
 const HeaderSection = styled.div`
@@ -183,16 +184,15 @@ const StyledDivider = styled('div')`
     opacity: ${(props) => (props.$isCatgoryShow === true ? 1 : 0)};
     transition: opacity 300ms ease-in-out 0s;
 `;
+// transform: ${(props) =>
+//     props.$isCatgoryShow === true
+//         ? 'translateY(0px)'
+//         : 'translateY(-2.5rem)'};
 
 const ChannelContainer = styled('div')`
-    transform: ${(props) =>
-        props.$isCatgoryShow === true
-            ? 'translateY(0px)'
-            : 'translateY(-2.5rem)'};
     opacity: ${(props) => (props.$isCatgoryShow === true ? 1 : 0)};
-    transition: transform 300ms ease-in-out 0s;
+    // transition: transform 300ms ease-in-out 0s;
     flex-direction: column;
-    -webkit-box-align: center;
     align-items: center;
 `;
 
@@ -283,29 +283,29 @@ const NavBar = ({
         setHamburgerContainerShow(!hamburgerContainerShow);
     };
 
-    useEffect(() => {
-        const handleScroll = () => {
-            const scrollTop =
-                window.pageYOffset || document.documentElement.scrollTop;
-            const isCatgoryShow = scrollTop < 20;
+    // useEffect(() => {
+    //     const handleScroll = () => {
+    //         const scrollTop =
+    //             window.pageYOffset || document.documentElement.scrollTop;
+    //         const isCatgoryShow = scrollTop < 20;
 
-            setIsCatgoryShow(isCatgoryShow);
+    //         setIsCatgoryShow(isCatgoryShow);
 
-            if (isCatgoryShow) {
-                setIsHeaderShow(true);
-            } else {
-                if (scrollTop > 20) {
-                    setIsHeaderShow(false);
-                }
-            }
-        };
+    //         if (isCatgoryShow) {
+    //             setIsHeaderShow(true);
+    //         } else {
+    //             if (scrollTop > 20) {
+    //                 setIsHeaderShow(false);
+    //             }
+    //         }
+    //     };
 
-        window.addEventListener('scroll', handleScroll);
-        return () => {
-            // 確保滾動事件監聽器被正確移除
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
+    //     window.addEventListener('scroll', handleScroll);
+    //     return () => {
+    //         // 確保滾動事件監聽器被正確移除
+    //         window.removeEventListener('scroll', handleScroll);
+    //     };
+    // }, []);
 
     return (
         <StyledNavBar>

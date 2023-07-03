@@ -7,6 +7,7 @@ const StyledCardContainer = styled('div')`
     border: 1px solid ${(props) => props.theme.colors.grey3};
     border-radius: 1rem;
     overflow: hidden;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 `;
 
 const Cover = styled.div`

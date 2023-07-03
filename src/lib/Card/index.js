@@ -27,6 +27,7 @@ const StyledCardContainer = styled('div')`
     border: 1px solid ${(props) => props.theme.colors.grey3};
     border-radius: 1rem;
     overflow: hidden;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
     ${(props) => variantMap[props.$variant] || variantMap['vertical']};
 `;
 
@@ -44,6 +45,10 @@ const Cover = styled.div`
         object-position: center;
         top: 0;
         left: 0;
+        &:hover {
+            transform: scale(1.2);
+            transition: transform 0.5s;
+        }
     }
 `;
 
