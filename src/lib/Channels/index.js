@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import styled, { css } from 'styled-components';
+import React from 'react';
+import styled from 'styled-components';
+import Link from 'next/link';
 import { useTranslation } from 'next-i18next';
 
 const ChannelContainer = styled('div')`
@@ -52,6 +53,9 @@ const ButtonLine = styled('div')`
 
 const Item = styled('div')`
     font-size: ${(props) => props.theme.fontSize.sm};
+    &:hover {
+        color: ${(props) => props.theme.colors.primary};
+    }
 `;
 
 const Channels = ({ handleHamburgerContainerShow }) => {
@@ -62,8 +66,10 @@ const Channels = ({ handleHamburgerContainerShow }) => {
                 <ButtonContainer onClick={handleHamburgerContainerShow}>
                     <ButtonLine></ButtonLine>
                 </ButtonContainer>
-                {t('type', { returnObjects: true }).map((item, i) => (
-                    <Item key={i}>{item}</Item>
+                {t('categoryType', { returnObjects: true }).map((item, i) => (
+                    <Link key={i} href={`/travel/search?type=${item.type}`}>
+                        <Item>{item.name}</Item>
+                    </Link>
                 ))}
             </CategoryContainer>
         </ChannelContainer>

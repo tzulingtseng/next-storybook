@@ -18,7 +18,7 @@ const FooterContent = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1rem;
+    font-size: ${(props) => props.theme.fontSize.sm};
     color: ${(props) => props.theme.colors.grey2};
 `;
 

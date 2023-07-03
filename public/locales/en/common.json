@@ -7,10 +7,19 @@
         "filled": "Donate"
     },
     "footerSource": "MOTC TDX Service Platform",
-    "type": [
-        "ScenicSpot",
-        "Activity",
-        "Food"
+    "categoryType": [
+        {
+            "type": "scenicSpot",
+            "name": "ScenicSpot"
+        },
+        {
+            "type": "activity",
+            "name": "Activity"
+        },
+        {
+            "type": "restaurant",
+            "name": "Food"
+        }
     ],
     "menuConfig": [
         [

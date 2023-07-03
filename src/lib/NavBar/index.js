@@ -43,16 +43,16 @@ const HeaderContainer = styled.div`
     position: sticky;
     top: 0px;
     max-width: auto;
-    width: 90%;
+    width: calc(90% + 2rem);
     margin: 0 auto;
     background-color: ${(props) => props.theme.colors.grey1};
     ${breakpoint.mediaMD} {
-        max-width: 64rem;
+        max-width: calc(64rem + 2rem);
         width: 100%;
     }
     ,
     ${breakpoint.mediaLG} {
-        max-width: 75rem;
+        max-width: calc(75rem + 2rem);
         width: 100%;
     }
 `;
@@ -345,7 +345,8 @@ const NavBar = ({
                         </BrandWrapper>
                         <IconGroupNav>
                             <div>
-                                <ButtonNav
+                                {/* 訂閱 & 贊助 button */}
+                                {/* <ButtonNav
                                     className={ButtonNavOutline}
                                     $variant="outlined"
                                     $locale={locale}
@@ -358,7 +359,7 @@ const NavBar = ({
                                     $locale={locale}
                                 >
                                     {t('navButtons.filled')}
-                                </ButtonNav>
+                                </ButtonNav> */}
                                 <Select
                                     options={[
                                         {

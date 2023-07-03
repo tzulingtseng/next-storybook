@@ -42,7 +42,7 @@ const StyledTextField = styled.div`
 const Input = styled.input`
     outline: none;
     border: none;
-    font-size: 1rem;
+    font-size: ${(props) => props.theme.fontSize.sm};
     color: #333;
     width: 100%;
     border: 1px solid #ddd;

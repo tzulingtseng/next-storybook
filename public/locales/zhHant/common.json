@@ -7,10 +7,19 @@
         "filled": "贊助"
     },
     "footerSource": "交通部 TDX 服務平臺",
-    "type": [
-        "景點",
-        "活動",
-        "美食"
+    "categoryType": [
+        {
+            "type": "scenicSpot",
+            "name": "景點"
+        },
+        {
+            "type": "activity",
+            "name": "活動"
+        },
+        {
+            "type": "restaurant",
+            "name": "美食"
+        }
     ],
     "menuConfig": [
         [

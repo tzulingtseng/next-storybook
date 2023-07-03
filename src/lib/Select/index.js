@@ -11,7 +11,7 @@ const SelectWrapper = styled.div`
     border-radius: 0.25rem;
     position: relative;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: ${(props) => props.theme.fontSize.sm};
     // TODO:refactor reset
     ul,
     li {
