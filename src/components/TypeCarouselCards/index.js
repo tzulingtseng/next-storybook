@@ -14,6 +14,7 @@ import Meta from '@/lib/Card/Meta';
 import Button from '@/lib/Button';
 
 import { useTranslation } from 'next-i18next';
+import transferTime from '@/utils/transferTime';
 
 import NoImage from '@/components/NoImage';
 import CardSkeleton from '../CardSkeleton';
@@ -133,35 +134,35 @@ const TypeCarouselCards = ({ status, type, lists }) => {
                     {status === 'success' &&
                         lists &&
                         lists.map((item) => {
-                            let PictureUrl1 =
-                                item?.Picture?.PictureUrl1 ?? null;
-                            let formattedTime =
-                                moment(item?.StartTime, moment.ISO_8601)
-                                    .tz('Asia/Taipei')
-                                    .format('YYYY-MM-DD') +
-                                ' ~ ' +
-                                moment(item?.EndTime, moment.ISO_8601)
-                                    .tz('Asia/Taipei')
-                                    .format('YYYY-MM-DD');
-                            let time = item?.OpenTime;
-                            let openTime = time
-                                ? t('carouselConfig.moreDetails')
-                                : formattedTime;
-                            let Address = item?.Address ?? null;
+                            const {
+                                Picture: { PictureUrl1 },
+                                OpenTime,
+                                StartTime,
+                                EndTime,
+                                ActivityID,
+                                ScenicSpotID,
+                                RestaurantID,
+                                Address,
+                            } = item;
+
+                            let transferedTime = transferTime(
+                                OpenTime,
+                                StartTime,
+                                EndTime
+                            );
+
                             let itemId, type;
                             if (item?.ActivityID) {
                                 itemId = item.ActivityID;
-                                // itemName = item.ActivityName;
                                 type = 'activity';
                             } else if (item?.ScenicSpotID) {
                                 itemId = item.ScenicSpotID;
-                                // itemName = item.ScenicSpotName;
                                 type = 'scenicSpot';
                             } else if (item?.RestaurantID) {
                                 itemId = item.RestaurantID;
-                                // itemName = item.RestaurantName;
                                 type = 'restaurant';
                             }
+
                             return (
                                 <StyledSwiperSlide key={itemId}>
                                     <Link
@@ -185,7 +186,19 @@ const TypeCarouselCards = ({ status, type, lists }) => {
                                                         `${itemId}.titleName`,
                                                         { ns: `${type}Data` }
                                                     )}
-                                                    description={openTime}
+                                                    description={
+                                                        transferedTime ===
+                                                        'allDay'
+                                                            ? t(
+                                                                  'carouselConfig.allDay'
+                                                              )
+                                                            : transferedTime ===
+                                                              'moreDetails'
+                                                            ? t(
+                                                                  'carouselConfig.moreDetails'
+                                                              )
+                                                            : transferedTime
+                                                    }
                                                     address={
                                                         Address
                                                             ? t(

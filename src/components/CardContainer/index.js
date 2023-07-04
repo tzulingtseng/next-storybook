@@ -46,18 +46,19 @@ const StyledButton = styled(Button)`
 `;
 
 const CardContainer = ({
-    filteredType,
+    type,
     itemId,
     PictureUrl1,
     itemName,
-    // openTime,
     description,
-    Address,
+    address,
+    text,
+    iconClass,
 }) => {
     const { t } = useTranslation('common');
     return (
         <StyledCardContainer>
-            <Link href={`/travel/detail/${filteredType}?id=${itemId}`}>
+            <Link href={`/travel/detail/${type}?id=${itemId}`}>
                 <Card
                     cover={
                         PictureUrl1 ? (
@@ -70,9 +71,9 @@ const CardContainer = ({
                         <Meta
                             title={itemName}
                             description={description}
-                            address={Address}
-                            text={t(`carouselConfig.openTime`)}
-                            icon="fa-solid fa-location-dot"
+                            address={address}
+                            text={text}
+                            icon={iconClass}
                         />
                     }
                     footer={

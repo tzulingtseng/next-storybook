@@ -8,6 +8,7 @@ import Pagination from '@/lib/Pagination';
 import CardSkeleton from '@/components/CardSkeleton';
 import breakpoint from '@/lib/constant/breakpoint';
 import { useTranslation } from 'next-i18next';
+import transferTime from '@/utils/transferTime';
 
 const SearchResultsTitle = styled.div`
     width: 100%;
@@ -70,7 +71,7 @@ const SearchResults = ({
     pageSize,
     totalPages,
     setPage,
-    filteredType,
+    type,
 }) => {
     const { t } = useTranslation('common');
     return (
@@ -121,6 +122,7 @@ const SearchResults = ({
                     PageDataArray.map((item) => {
                         const {
                             Picture: { PictureUrl1 = null } = {},
+                            OpenTime,
                             StartTime,
                             EndTime,
                             Address,
@@ -133,51 +135,47 @@ const SearchResults = ({
                             Description,
                             DescriptionDetail,
                         } = item;
-                        let formattedTime = `${moment(
+
+                        let transferedTime = transferTime(
+                            OpenTime,
                             StartTime,
-                            moment.ISO_8601
-                        )
-                            .tz('Asia/Taipei')
-                            .format('YYYY-MM-DD')} ~ ${moment(
-                            EndTime,
-                            moment.ISO_8601
-                        )
-                            .tz('Asia/Taipei')
-                            .format('YYYY-MM-DD')}`;
-                        let time = item?.OpenTime;
-                        let openTime = time
-                            ? t('carouselConfig.moreDetails')
-                            : formattedTime;
-                        let itemId, itemName;
+                            EndTime
+                        );
+
+                        let itemId;
                         if (ActivityID) {
                             itemId = ActivityID;
-                            itemName = ActivityName;
                         } else if (ScenicSpotID) {
                             itemId = ScenicSpotID;
-                            itemName = ScenicSpotName;
                         } else if (RestaurantID) {
                             itemId = RestaurantID;
-                            itemName = RestaurantName;
                         }
 
                         return (
                             <CardContainer
                                 key={itemId}
-                                filteredType={filteredType}
+                                type={type}
                                 itemId={itemId}
-                                PictureUrl1={PictureUrl1}
-                                itemName={t(`${itemId}.titleName`, {
-                                    ns: `${filteredType}Data`,
+                                titleName={t(`${itemId}.titleName`, {
+                                    ns: `${type}Data`,
                                 })}
-                                openTime={openTime}
-                                description={openTime}
-                                Address={
+                                PictureUrl1={PictureUrl1}
+                                description={
+                                    transferedTime === 'allDay'
+                                        ? t('carouselConfig.allDay')
+                                        : transferedTime === 'moreDetails'
+                                        ? t('carouselConfig.moreDetails')
+                                        : transferedTime
+                                }
+                                address={
                                     Address
                                         ? t(`${itemId}.address`, {
-                                              ns: `${filteredType}Data`,
+                                              ns: `${type}Data`,
                                           })
                                         : t(`carouselConfig.moreDetails`)
                                 }
+                                text={t(`carouselConfig.openTime`)}
+                                iconClass="fa-solid fa-location-dot"
                             />
                         );
                     })}

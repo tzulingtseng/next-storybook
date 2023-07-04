@@ -184,11 +184,11 @@ const StyledDivider = styled('div')`
     opacity: ${(props) => (props.$isCatgoryShow === true ? 1 : 0)};
     transition: opacity 300ms ease-in-out 0s;
 `;
+
 // transform: ${(props) =>
 //     props.$isCatgoryShow === true
 //         ? 'translateY(0px)'
 //         : 'translateY(-2.5rem)'};
-
 const ChannelContainer = styled('div')`
     opacity: ${(props) => (props.$isCatgoryShow === true ? 1 : 0)};
     // transition: transform 300ms ease-in-out 0s;

@@ -109,7 +109,9 @@
         "address": "Address:",
         "moreDetails": "See Official Website",
         "introTitle": "Introduce",
-        "mapTitle": "Map"
+        "mapTitle": "Map",
+        "openTime": "Opening:",
+        "allDay": "Open 24/7"
     },
     "carouselConfig": {
         "hotActivity": "Hot Activities",
@@ -120,6 +122,7 @@
         "time": "Open 24/7.",
         "buttonText": "View Details",
         "noImg": "No photo available.",
-        "openTime": "Opening"
+        "openTime": "Opening",
+        "allDay": "Open 24/7"
     }
 }

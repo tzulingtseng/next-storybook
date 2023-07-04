@@ -29,6 +29,10 @@ const StyledCardContainer = styled('div')`
     overflow: hidden;
     box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
     ${(props) => variantMap[props.$variant] || variantMap['vertical']};
+    &:hover {
+        transform: scale(0.98);
+        transition: transform 0.5s;
+    }
 `;
 
 // 卡片封面 img or video from props ReactNode

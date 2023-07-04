@@ -5,6 +5,7 @@ import moment from 'moment-timezone';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import transferTime from '@/utils/transferTime';
 
 import getActivityAPI from '@/api/getActivityAPI';
 import getScenicSpotAPI from '@/api/getScenicSpotAPI';
@@ -97,8 +98,7 @@ const Detail = ({ data }) => {
         // Location,
         Description,
         // DescriptionDetail,
-        OpenDay,
-        OpenTime,
+        formattedTime,
         // ParkingPosition,
         Phone,
         Picture,
@@ -161,14 +161,16 @@ const Detail = ({ data }) => {
                                           })
                                         : t('detailConfig.moreDetails')}
                                 </div>
-                                {/* <InfoDetailItem>
+                                <InfoDetailItem>
                                     {t('detailConfig.openTime')}
                                 </InfoDetailItem>
                                 <div>
-                                    {OpenDay === '全天候開放'
-                                        ? t('detailConfig.openAllDay')
-                                        : OpenTime}
-                                </div> */}
+                                    {formattedTime === 'allDay'
+                                        ? t('carouselConfig.allDay')
+                                        : formattedTime === 'moreDetails'
+                                        ? t('carouselConfig.moreDetails')
+                                        : formattedTime}
+                                </div>
                             </InfoDetailContainer>
                         </InfoBox>
                     </InfoContainer>
@@ -205,33 +207,28 @@ export async function getServerSideProps({ params, query, locale }) {
             });
             if (responseData?.status === 'success') {
                 // handle success (取得觀光活動資料)
-                // console.log('responseData?.data', responseData?.data);
+                let data = responseData?.data[0];
+
+                let transferedTime = transferTime(
+                    data?.OpenTime,
+                    data?.StartTime,
+                    data?.EndTime
+                );
+
                 detailData = {
                     QueryType: type,
-                    Address: responseData?.data[0]?.Address ?? null,
-                    // City: responseData?.data[0]?.City ?? null,
-                    // Location: responseData?.data[0]?.Location ?? null,
-                    Description:
-                        responseData?.data[0]?.Description ?? DescriptionDetail,
-                    OpenDay: responseData?.data[0]?.OpenTime ?? null,
-                    OpenTime:
-                        moment(
-                            responseData?.data[0]?.StartTime,
-                            moment.ISO_8601
-                        )
-                            .tz('Asia/Taipei')
-                            .format('YYYY-MM-DD') +
-                        ' ~ ' +
-                        moment(responseData?.data[0]?.EndTime, moment.ISO_8601)
-                            .tz('Asia/Taipei')
-                            .format('YYYY-MM-DD'),
-                    Phone: responseData?.data[0]?.Phone ?? null,
-                    Picture: responseData?.data[0]?.Picture ?? null,
-                    Position: responseData?.data[0]?.Position ?? null,
-                    SpotID: responseData?.data[0]?.ActivityID ?? null,
-                    SpotName: responseData?.data[0]?.ActivityName ?? null,
-                    SrcUpdateTime: responseData?.data[0]?.SrcUpdateTime ?? null,
-                    UpdateTime: responseData?.data[0]?.UpdateTime ?? null,
+                    Address: data?.Address ?? null,
+                    // City: data?.City ?? null,
+                    // Location: data?.Location ?? null,
+                    // Description: data?.Description ?? DescriptionDetail,
+                    formattedTime: transferedTime,
+                    Phone: data?.Phone ?? null,
+                    Picture: data?.Picture ?? null,
+                    Position: data?.Position ?? null,
+                    SpotID: data?.ActivityID ?? null,
+                    SpotName: data?.ActivityName ?? null,
+                    SrcUpdateTime: data?.SrcUpdateTime ?? null,
+                    UpdateTime: data?.UpdateTime ?? null,
                 };
             } else {
                 // handle error (後端錯誤) -> not found page(404 page)
@@ -248,35 +245,28 @@ export async function getServerSideProps({ params, query, locale }) {
             });
             if (responseData?.status === 'success') {
                 // handle success (取得觀光活動資料)
+                let data = responseData?.data[0];
+
+                let transferedTime = transferTime(
+                    data?.OpenTime,
+                    data?.StartTime,
+                    data?.EndTime
+                );
+
                 detailData = {
                     QueryType: type,
-                    Address: responseData?.data[0]?.Address ?? null,
-                    // City: responseData?.data[0]?.City ?? null,
-                    // Location: responseData?.data[0]?.Location ?? null,
-                    Description: responseData?.data[0]?.Description ?? null,
-                    OpenDay: responseData?.data[0]?.OpenTime,
-                    OpenTime:
-                        responseData?.data[0]?.OpenTime ??
-                        moment(
-                            responseData?.data[0]?.StartTime,
-                            moment.ISO_8601
-                        )
-                            .tz('Asia/Taipei')
-                            .format('YYYY-MM-DD') +
-                            ' ~ ' +
-                            moment(
-                                responseData?.data[0]?.EndTime,
-                                moment.ISO_8601
-                            )
-                                .tz('Asia/Taipei')
-                                .format('YYYY-MM-DD'),
-                    Phone: responseData?.data[0]?.Phone ?? null,
-                    Picture: responseData?.data[0]?.Picture ?? null,
-                    Position: responseData?.data[0]?.Position ?? null,
-                    SpotID: responseData?.data[0]?.ScenicSpotID ?? null,
-                    SpotName: responseData?.data[0]?.ScenicSpotName ?? null,
-                    SrcUpdateTime: responseData?.data[0]?.SrcUpdateTime ?? null,
-                    UpdateTime: responseData?.data[0]?.UpdateTime ?? null,
+                    Address: data?.Address ?? null,
+                    // City: data?.City ?? null,
+                    // Location: data?.Location ?? null,
+                    Description: data?.Description ?? null,
+                    formattedTime: transferedTime,
+                    Phone: data?.Phone ?? null,
+                    Picture: data?.Picture ?? null,
+                    Position: data?.Position ?? null,
+                    SpotID: data?.ScenicSpotID ?? null,
+                    SpotName: data?.ScenicSpotName ?? null,
+                    SrcUpdateTime: data?.SrcUpdateTime ?? null,
+                    UpdateTime: data?.UpdateTime ?? null,
                 };
             } else {
                 // handle error (後端錯誤) -> not found page(404 page)
@@ -293,35 +283,28 @@ export async function getServerSideProps({ params, query, locale }) {
             });
             if (responseData?.status === 'success') {
                 // handle success (取得觀光活動資料)
+                let data = responseData?.data[0];
+
+                let transferedTime = transferTime(
+                    data?.OpenTime,
+                    data?.StartTime,
+                    data?.EndTime
+                );
+
                 detailData = {
                     QueryType: type,
-                    Address: responseData?.data[0]?.Address ?? null,
-                    // City: responseData?.data[0]?.City ?? null,
-                    // Location: responseData?.data[0]?.Location ?? null,
-                    Description: responseData?.data[0]?.Description ?? null,
-                    OpenDay: responseData?.data[0]?.OpenTime,
-                    OpenTime:
-                        responseData?.data[0]?.OpenTime ??
-                        moment(
-                            responseData?.data[0]?.StartTime,
-                            moment.ISO_8601
-                        )
-                            .tz('Asia/Taipei')
-                            .format('YYYY-MM-DD') +
-                            ' ~ ' +
-                            moment(
-                                responseData?.data[0]?.EndTime,
-                                moment.ISO_8601
-                            )
-                                .tz('Asia/Taipei')
-                                .format('YYYY-MM-DD'),
-                    Phone: responseData?.data[0]?.Phone ?? null,
-                    Picture: responseData?.data[0]?.Picture ?? null,
-                    Position: responseData?.data[0]?.Position ?? null,
-                    SpotID: responseData?.data[0]?.RestaurantID ?? null,
-                    SpotName: responseData?.data[0]?.RestaurantName ?? null,
-                    SrcUpdateTime: responseData?.data[0]?.SrcUpdateTime ?? null,
-                    UpdateTime: responseData?.data[0]?.UpdateTime ?? null,
+                    Address: data?.Address ?? null,
+                    // City: data?.City ?? null,
+                    // Location: data?.Location ?? null,
+                    Description: data?.Description ?? null,
+                    formattedTime: transferedTime,
+                    Phone: data?.Phone ?? null,
+                    Picture: data?.Picture ?? null,
+                    Position: data?.Position ?? null,
+                    SpotID: data?.RestaurantID ?? null,
+                    SpotName: data?.RestaurantName ?? null,
+                    SrcUpdateTime: data?.SrcUpdateTime ?? null,
+                    UpdateTime: data?.UpdateTime ?? null,
                 };
             } else {
                 // handle error (後端錯誤) -> not found page(404 page)

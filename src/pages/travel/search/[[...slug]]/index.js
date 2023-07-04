@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import path from 'path';
+import fs from 'fs/promises';
 
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
@@ -19,19 +21,20 @@ import getRestaurantAPI from '@/api/getRestaurantAPI';
 import scrollToTop from '@/utils/scrollToTop';
 
 const search = () => {
-    const { locale, push } = useRouter();
-    const [selectedValue, setSelectedValue] = useState(locale);
+    const router = useRouter();
+    const { locale, push, query } = useRouter();
+    const { type, slug } = query; // TODO:slug 待確認用法
+
     const { t } = useTranslation('common');
 
-    const [filteredType, setFilteredType] = useState(null);
+    const [selectedValue, setSelectedValue] = useState(locale);
     const [typeStatus, setTypeStatus] = useState(undefined);
     const [typeData, setTypeData] = useState([]);
     const [typeError, setTypeError] = useState(null);
     const [bannerImgSrc, setBannerImgSrc] = useState(null);
-
     const [page, setPage] = useState(null);
     const [pageSize, setPageSize] = useState(8);
-    const [totalPages, setTotalPages] = useState(0);
+    const [totalPages, setTotalPages] = useState(20);
     const [PageDataArray, setPageDataArray] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [inputCountyValue, setInputCountyValue] = useState('');
@@ -39,11 +42,6 @@ const search = () => {
     const [searchedInputCountyValue, setSearchedInputCountyValue] =
         useState('');
     const [results, setResults] = useState([]);
-
-    const router = useRouter();
-    const { query } = useRouter(); // client side
-    const { type } = query;
-    const { slug } = query; // TODO:待確認用法
 
     const handleData = (responseData) => {
         if (responseData?.status === 'success') {
@@ -55,7 +53,6 @@ const search = () => {
             setTypeStatus('error');
             setTypeError(responseData.desc);
         } else {
-            console.log('cancel');
             // handle cancel (取消 call api)
             setTypeStatus('cancel');
         }
@@ -135,10 +132,10 @@ const search = () => {
         });
 
         // 進階搜尋：用地區關鍵字搜尋結果，篩掉關鍵字搜尋結果，返回重複部分
-        // const mergedResults = findDuplicates(
-        //     filteredKeyword,
-        //     filteredCountyKeyword
-        // );
+        const mergedResults = findDuplicates(
+            filteredKeyword,
+            filteredCountyKeyword
+        );
 
         let filteredResults = [];
         if (keyword && countyKeyword) {
@@ -175,9 +172,8 @@ const search = () => {
     };
 
     useEffect(() => {
-        setFilteredType(type);
         const typeHandler = typeHandlers[type];
-        const { handler, title, bannerImgSrc } = typeHandler;
+        const { handler, bannerImgSrc } = typeHandler;
         handler();
         setBannerImgSrc(bannerImgSrc);
     }, [type]);
@@ -217,9 +213,9 @@ const search = () => {
             .map(([key, value]) => `&${key}=${encodeURIComponent(value)}`)
             .join('');
 
-        filteredType &&
+        type &&
             router.push(
-                `/travel/search?type=${filteredType}${queryString}`,
+                `/travel/search?type=${type}${queryString}`,
                 undefined,
                 {
                     locale: selectedValue,
@@ -268,7 +264,7 @@ const search = () => {
                 pageSize={pageSize}
                 totalPages={totalPages}
                 setPage={setPage}
-                filteredType={filteredType}
+                type={type}
             />
             <Footer />
         </ThemeProvider>

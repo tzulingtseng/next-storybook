@@ -109,7 +109,9 @@
         "address": "地址：",
         "moreDetails": "詳見官網",
         "introTitle": "介紹",
-        "mapTitle": "地圖"
+        "mapTitle": "地圖",
+        "openTime": "開放時間：",
+        "allDay": "全天候開放"
     },
     "carouselConfig": {
         "hotActivity": "熱門活動",
@@ -119,6 +121,7 @@
         "moreDetails": "詳見官網",
         "buttonText": "查看詳情",
         "noImg": "尚未提供照片",
-        "openTime": "開放時間"
+        "openTime": "開放時間",
+        "allDay": "全天候開放"
     }
 }

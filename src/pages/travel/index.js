@@ -77,15 +77,15 @@ const Travel = (props) => {
                 /> */}
                 <Container>
                     <TypeCarouselCards
-                        lists={activityData}
-                        type="activity"
-                        status={activityStatus}
-                    />
-
-                    <TypeCarouselCards
                         lists={scenicSpotData}
                         type="scenicSpot"
                         status={scenicSpotStatus}
+                    />
+
+                    <TypeCarouselCards
+                        lists={activityData}
+                        type="activity"
+                        status={activityStatus}
                     />
 
                     <TypeCarouselCards
