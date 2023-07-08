@@ -9,6 +9,8 @@ import Skeleton from 'react-loading-skeleton';
 
 import TextField from '@/lib/TextField';
 import Button from '@/lib/Button';
+import Select from '@/features/search/components/Select';
+import breakpoint from '@/lib/constant/breakpoint';
 
 const BannerContainer = styled.div`
     width: 100%;
@@ -46,12 +48,20 @@ const BannerImgBox = styled.div`
     }
 `;
 
-const BannerContentBox = styled.div`
+const BannerContentBox = styled('div')`
+    z-index: 1;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 50rem;
+    width: 90%;
+    ${breakpoint.mediaSM} {
+        width: 70%;
+    }
+    ${breakpoint.mediaMD} {
+        max-width: 35rem;
+        width: 100%;
+    }
 `;
 
 const BannerContent = styled.div`
@@ -62,18 +72,28 @@ const BannerTitle = styled.div`
     font-size: ${(props) => props.theme.fontSize.xxl};
     font-weight: 600;
     color: ${(props) => props.theme.colors.white};
+    margin-bottom: 2rem;
 `;
 
-const BannerSearchBox = styled.div``;
+const BannerSearchBox = styled.div`
+    height: 2.5rem;
+    line-height: 1;
+    font-size: ${(props) => props.theme.fontSize.sm};
+    display: flex;
+    justify-content: space-between;
+`;
 
 const BannerSearch = ({
     bannerTitle,
     bannerImgSrc,
     inputValue,
     setInputValue,
-    inputCountyValue,
-    setInputCountyValue,
+    selectedCounty,
+    setSelectedCounty,
     handleFilteredResults,
+    searchedInputValue,
+    setSearchedInputValue,
+    setSearchedInputCountyValue,
 }) => {
     const { t } = useTranslation('common');
     const getBannerImage = () => {
@@ -115,14 +135,24 @@ const BannerSearch = ({
                             placeholder={t(`searchConfig.searchKeyword`)}
                             value={inputValue}
                         />
-                        <TextField
+                        {/* <TextField
                             onChange={(e) =>
                                 setInputCountyValue(e.target.value)
                             }
                             placeholder={t(`searchConfig.searchKeyword`)}
                             value={inputCountyValue}
+                        /> */}
+                        <Select
+                            selectedCounty={selectedCounty}
+                            setSelectedCounty={setSelectedCounty}
                         />
-                        <Button onClick={handleFilteredResults}>
+                        <Button
+                            style={{ height: '2.5rem' }}
+                            onClick={() => {
+                                setSearchedInputValue(inputValue);
+                                setSearchedInputCountyValue(selectedCounty);
+                            }}
+                        >
                             {t(`searchConfig.searchButton`)}
                         </Button>
                     </BannerSearchBox>

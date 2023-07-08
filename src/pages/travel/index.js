@@ -25,38 +25,27 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-import useGetActivity from '@/features/home/hooks/useGetActivity';
-import useGetScenicSpot from '@/features/home/hooks/useGetScenicSpot';
-import useGetRestaurant from '@/features/home/hooks/useGetRestaurant';
+import getScenicSpotAPI from '@/api/getScenicSpotAPI';
+import getActivityAPI from '@/api/getActivityAPI';
+import getRestaurantAPI from '@/api/getRestaurantAPI';
 
 const BannerHome = styled(Image)`
     width: 100%;
     height: auto;
 `;
 
-const Travel = (props) => {
+const Travel = ({
+    scenicSpotData,
+    scenicSpotStatus,
+    activityData,
+    activityStatus,
+    restaurantData,
+    restaurantStatus,
+}) => {
     const [isLoading, setIsLoading] = useState(true);
     const { locale, push } = useRouter();
     const [selectedValue, setSelectedValue] = useState(locale);
     const { t } = useTranslation('common');
-
-    const {
-        status: activityStatus,
-        data: activityData,
-        error: activityError,
-    } = useGetActivity({ top: 10, filter: 'Picture/PictureUrl1 ne null' });
-
-    const {
-        status: scenicSpotStatus,
-        data: scenicSpotData,
-        error: scenicSpotError,
-    } = useGetScenicSpot({ top: 10, filter: 'Picture/PictureUrl1 ne null' });
-
-    const {
-        status: restaurantStatus,
-        data: restaurantData,
-        error: restaurantError,
-    } = useGetRestaurant({ top: 10, filter: 'Picture/PictureUrl1 ne null' });
 
     useEffect(() => {
         push('/travel', undefined, { locale: selectedValue });
@@ -101,7 +90,19 @@ const Travel = (props) => {
 };
 
 export async function getStaticProps({ locale }) {
-    return {
+    const scenicSpotData = await getScenicSpotAPI({
+        top: 10,
+        filter: 'Picture/PictureUrl1 ne null',
+    });
+    const activityData = await getActivityAPI({
+        top: 10,
+        filter: 'Picture/PictureUrl1 ne null',
+    });
+    const restaurantData = await getRestaurantAPI({
+        top: 10,
+        filter: 'Picture/PictureUrl1 ne null',
+    });
+    const returnData = {
         props: {
             ...(await serverSideTranslations(locale, [
                 'api_mapping',
@@ -110,8 +111,16 @@ export async function getStaticProps({ locale }) {
                 'scenicSpotData',
                 'restaurantData',
             ])),
+            scenicSpotData: scenicSpotData.data,
+            scenicSpotStatus: scenicSpotData.status,
+            activityData: activityData.data,
+            activityStatus: activityData.status,
+            restaurantData: restaurantData.data,
+            restaurantStatus: restaurantData.status,
         },
+        revalidate: 100,
     };
+    return returnData;
 }
 
 export default Travel;

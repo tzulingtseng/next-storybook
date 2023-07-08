@@ -17,6 +17,7 @@ import NavBar from '@/lib/NavBar';
 import Footer from '@/components/Footer';
 import Container from '@/components/Container';
 import TransportInfo from '@/features/detail/components/TransportInfo';
+import convertGoogleDriveURL from '@/utils/convertGoogleDriveURL';
 import breakpoint from '@/lib/constant/breakpoint';
 
 const InfoContainer = styled('div')`
@@ -42,11 +43,16 @@ const InfoImageContainer = styled('div')`
     overflow: hidden;
     width: 100%;
     border-radius: 1rem;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
     img {
         width: 100%;
         height: 100%;
         display: block;
         object-fit: cover;
+        &:hover {
+            transform: scale(1.2);
+            transition: transform 0.5s;
+        }
     }
     ${breakpoint.mediaSM} {
         width: 50%;
@@ -81,6 +87,8 @@ const IntroContainer = styled('div')`
     > .leaflet-container {
         width: 100%;
         height: 30rem;
+        border-radius: 1rem;
+        box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
     }
 `;
 
@@ -113,6 +121,8 @@ const Detail = ({ data }) => {
         // ZipCode,
     } = data.detailData;
 
+    let convertImgUrl = convertGoogleDriveURL(Picture.PictureUrl1);
+
     // http://localhost:3000/en/travel/detail/activity?id=C2_315080000H_502349
     useEffect(() => {
         router.push(`/travel/detail/${QueryType}?id=${SpotID}`, undefined, {
@@ -137,7 +147,7 @@ const Detail = ({ data }) => {
                         </InfoTitle>
                         <InfoBox>
                             <InfoImageContainer>
-                                <img src={Picture.PictureUrl1} alt={SpotName} />
+                                <img src={convertImgUrl} alt={SpotName} />
                             </InfoImageContainer>
                             <InfoDetailContainer>
                                 <InfoDetailTitle>
