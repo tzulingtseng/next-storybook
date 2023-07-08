@@ -12,10 +12,6 @@ const StyledNoImg = styled.div`
     align-items: center;
     background-color: #f5fdff;
     color: #60797c;
-    &:hover {
-        transform: scale(1.2);
-        transition: transform 0.5s;
-    }
 `;
 const StyledNoImgContent = styled.div``;
 

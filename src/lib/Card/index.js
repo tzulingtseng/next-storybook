@@ -29,10 +29,6 @@ const StyledCardContainer = styled('div')`
     overflow: hidden;
     box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
     ${(props) => variantMap[props.$variant] || variantMap['vertical']};
-    &:hover {
-        transform: scale(0.98);
-        transition: transform 0.5s;
-    }
 `;
 
 // 卡片封面 img or video from props ReactNode
@@ -55,6 +51,18 @@ const Cover = styled.div`
         }
     }
 `;
+const Badge = styled.span`
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: ${(props) => props.theme.colors.white};
+    text-shadow: 0 1px 2px #e18d0e;
+    padding: 0 7px;
+    border-top-right-radius: 0.375rem;
+    background: linear-gradient(45deg, #ffaf1e, #ffd56e);
+`;
 
 // 卡片資訊
 const CardContent = styled.div``;
@@ -69,10 +77,21 @@ const SpaceBetween = styled.div`
 /**
  * `Card` 是一個可以顯示單個主題內容及操作的元件，通常這個主題內容包含圖片、標題、描述或是一些操作。
  */
-const Card = ({ variant, cover, content, footer, children, ...props }) => {
+const Card = ({
+    variant,
+    cover,
+    content,
+    footer,
+    badgeNumber,
+    children,
+    ...props
+}) => {
     return (
         <StyledCardContainer $variant={variant}>
-            <Cover>{cover}</Cover>
+            <Cover>
+                {cover}
+                {badgeNumber ? <Badge>TOP{badgeNumber}</Badge> : ''}
+            </Cover>
             {/* <CardContent>{content}</CardContent> */}
             {/* <CardContent>
                 <div>連江縣莒光鄉田澳村67號</div>

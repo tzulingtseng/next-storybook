@@ -23,6 +23,10 @@ const Cover = styled.div`
         object-position: center;
         top: 0;
         left: 0;
+        &:hover {
+            transform: scale(1.2);
+            transition: transform 0.5s;
+        }
     }
 `;
 

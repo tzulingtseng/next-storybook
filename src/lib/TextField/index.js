@@ -27,10 +27,10 @@ const StyledTextField = styled.div`
     align-items: center;
     border: 1px solid ${(props) => props.theme.colors.grey3};
     background-color: ${(props) => props.theme.colors.white};
-    border-radius: 0.25rem;
-    padding: 1.25rem 0.5rem;
-    height: 2rem;
-
+    border-radius: 0.5rem;
+    padding: 0rem 0.75rem;
+    width: 50%;
+    height: 100%;
     &:hover {
         border: 1px solid ${(props) => props.theme.colors.grey2};
     }
@@ -45,7 +45,7 @@ const Input = styled.input`
     font-size: ${(props) => props.theme.fontSize.sm};
     color: #333;
     width: 100%;
-    border: 1px solid #ddd;
+    // border: 1px solid #ddd;
     background-color: ${(props) => props.theme.colors.white};
 `;
 

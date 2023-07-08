@@ -18,7 +18,7 @@ import MenuItems from '../MenuItems';
 import ButtonClose from '../ButtonClose';
 // import Container from '@/components/Container';
 import breakpoint from '@/lib/constant/breakpoint';
-import Select from '@/lib/Select';
+import Select from '@/components/Select';
 
 import { useTranslation } from 'next-i18next';
 
@@ -49,11 +49,6 @@ const HeaderContainer = styled.div`
     background-color: ${(props) => props.theme.colors.grey1};
     ${breakpoint.mediaMD} {
         max-width: calc(64rem + 2rem);
-        width: 100%;
-    }
-    ,
-    ${breakpoint.mediaLG} {
-        max-width: calc(75rem + 2rem);
         width: 100%;
     }
 `;
@@ -361,17 +356,17 @@ const NavBar = ({
                                     {t('navButtons.filled')}
                                 </ButtonNav> */}
                                 <Select
-                                    options={[
-                                        {
-                                            value: 'zhHant',
-                                            label: '中',
-                                        },
-                                        {
-                                            value: 'en',
-                                            label: '英',
-                                        },
-                                    ]}
-                                    placeholder="中"
+                                    // options={[
+                                    //     {
+                                    //         value: 'zhHant',
+                                    //         label: '中',
+                                    //     },
+                                    //     {
+                                    //         value: 'en',
+                                    //         label: '英',
+                                    //     },
+                                    // ]}
+                                    // placeholder="中"
                                     selectedValue={selectedValue}
                                     setSelectedValue={setSelectedValue}
                                 />

@@ -13,8 +13,24 @@ const outlinedStyle = css`
     background: ${(props) => props.$buttonSubColor};
     color: ${(props) => props.$buttonMainColor};
     border: 1px solid ${(props) => props.$buttonMainColor};
-    &:hover {
-        background: ${(props) => `${props.$buttonMainColor}10`};
+    &:hover > span {
+        color: ${(props) => props.$buttonSubColor};
+        z-index: 1;
+    }
+    &::after {
+        background: ${(props) => props.$buttonMainColor};
+        content: '';
+        position: absolute;
+    }
+    &::after {
+        height: 100%;
+        left: 0;
+        top: 0;
+        width: 0;
+        transition: all 0.3s;
+    }
+    &:hover::after {
+        width: 100%;
     }
 `;
 const textStyle = css`
@@ -47,10 +63,11 @@ const EndIcon = styled.span`
 `;
 
 const StyledButton = styled.button`
+    font-size: ${(props) => props.theme.fontSize.sm};
     border: none;
     outline: none;
     min-width: 6.25rem;
-    height: 2.5rem;
+    height: 3rem;
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -59,9 +76,10 @@ const StyledButton = styled.button`
     cursor: pointer;
     transition: color 0.2s, background-color 0.2s, border 0.2s,
         opacity 0.2s ease-in-out;
-
+    position: relative;
+    overflow: hidden;
     &:hover {
-        opacity: 0.9;
+        // opacity: 0.9;
     }
     &:active {
         opacity: 0.7;
@@ -111,6 +129,8 @@ const Button = ({
                 ></Icon>
             )}
             {startIcon && <StartIcon>{startIcon}</StartIcon>}
+            {/* <span className="hover_button"></span>
+            <span className="hover_text">{children}</span> */}
             <span>{children}</span>
             {endIcon && <EndIcon>{endIcon}</EndIcon>}
         </StyledButton>

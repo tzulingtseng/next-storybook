@@ -6,14 +6,10 @@ const StyledContainer = styled('div')`
     max-width: auto;
     width: 90%;
     margin: 0 auto;
-    ${breakpoint.mediaMD}{
+    ${breakpoint.mediaMD} {
         max-width: 64rem;
         width: 100%;
-    },
-    ${breakpoint.mediaLG}{
-        max-width: 75rem;
-        width: 100%;
-    },
+    }
 `;
 
 const Container = ({ children }) => {

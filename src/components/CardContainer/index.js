@@ -9,7 +9,7 @@ import breakpoint from '@/lib/constant/breakpoint';
 import { useTranslation } from 'next-i18next';
 
 const StyledCardContainer = styled.div`
-    width: calc(100% - 2rem);
+    width: calc(50% - 2rem);
     margin: 0 1rem;
     margin-bottom: 1rem;
     > a {
@@ -18,14 +18,11 @@ const StyledCardContainer = styled.div`
         }
     }
     ${breakpoint.mediaSM} {
-        width: calc(100% / 2 - 2rem);
+        width: calc(100% / 3 - 2rem);
     }
     ${breakpoint.mediaMD} {
         width: calc(100% / 4 - 2rem);
     }
-    // ${breakpoint.mediaLG} {
-    //     width: calc(100% / 4 - 2rem);
-    // }
 `;
 
 const Actions = styled.div`
