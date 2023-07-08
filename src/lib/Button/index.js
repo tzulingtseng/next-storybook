@@ -63,7 +63,7 @@ const EndIcon = styled.span`
 `;
 
 const StyledButton = styled.button`
-    font-size: ${(props) => props.theme.fontSize.sm};
+    font-size: 1rem;
     border: none;
     outline: none;
     min-width: 6.25rem;

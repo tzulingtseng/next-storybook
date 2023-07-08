@@ -19,7 +19,6 @@ import Meta from '@/lib/Card/Meta';
 import Container from '@/components/Container';
 import Footer from '@/components/Footer';
 import TypeCarouselCards from '@/components/TypeCarouselCards';
-import Select from '@/lib/Select';
 
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
