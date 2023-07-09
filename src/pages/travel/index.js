@@ -8,6 +8,8 @@ import { Inter } from 'next/font/google';
 import path from 'path';
 import fs from 'fs/promises';
 
+import SEO from '@/utils/seo';
+
 import Link from 'next/link';
 import ThemeProvider from '@/lib/ThemeProvider';
 import theme from '@/lib/theme';
@@ -53,6 +55,7 @@ const Travel = ({
     return (
         <>
             <ThemeProvider theme={theme}>
+                <SEO />
                 <NavBar
                     locale={locale}
                     selectedValue={selectedValue}
