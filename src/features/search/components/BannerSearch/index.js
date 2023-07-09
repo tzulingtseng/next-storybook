@@ -69,10 +69,13 @@ const BannerContent = styled.div`
 `;
 
 const BannerTitle = styled.div`
-    font-size: ${(props) => props.theme.fontSize.xxl};
+    font-size: ${(props) => props.theme.fontSize.xl};
     font-weight: 600;
     color: ${(props) => props.theme.colors.white};
     margin-bottom: 2rem;
+    ${breakpoint.mediaMD} {
+        font-size: ${(props) => props.theme.fontSize.xxl};
+    }
 `;
 
 const BannerSearchBox = styled.div`
