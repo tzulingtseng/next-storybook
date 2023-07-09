@@ -266,6 +266,7 @@ const NavBar = ({
     children,
     selectedValue,
     setSelectedValue,
+    selectLang,
     ...props
 }) => {
     const { t } = useTranslation('common');
@@ -355,21 +356,23 @@ const NavBar = ({
                                 >
                                     {t('navButtons.filled')}
                                 </ButtonNav> */}
-                                <Select
-                                    // options={[
-                                    //     {
-                                    //         value: 'zhHant',
-                                    //         label: '中',
-                                    //     },
-                                    //     {
-                                    //         value: 'en',
-                                    //         label: '英',
-                                    //     },
-                                    // ]}
-                                    // placeholder="中"
-                                    selectedValue={selectedValue}
-                                    setSelectedValue={setSelectedValue}
-                                />
+                                {selectLang && (
+                                    <Select
+                                        // options={[
+                                        //     {
+                                        //         value: 'zhHant',
+                                        //         label: '中',
+                                        //     },
+                                        //     {
+                                        //         value: 'en',
+                                        //         label: '英',
+                                        //     },
+                                        // ]}
+                                        // placeholder="中"
+                                        selectedValue={selectedValue}
+                                        setSelectedValue={setSelectedValue}
+                                    />
+                                )}
                             </div>
                             {/* <IconContainer> */}
                             {/* TODO:how to use svg */}

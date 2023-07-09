@@ -73,6 +73,14 @@ const StyledCardSkeletonContainer = styled.div`
     }
 `;
 
+const StyledEndMsg = styled.div`
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    color: ${(props) => props.theme.colors.grey2};
+    margin: 1.5rem 0;
+`;
+
 const SearchResults = ({
     status,
     searchedInputValue,
@@ -102,9 +110,7 @@ const SearchResults = ({
                     <div>
                         {t('searchConfig.keyword')}
                         <span className="highlight">
-                            {searchedInputValue
-                                ? searchedInputValue
-                                : t('searchConfig.noData')}
+                            {searchedInputValue ? searchedInputValue : '無'}
                         </span>
                     </div>
                     <div>
@@ -112,7 +118,7 @@ const SearchResults = ({
                         <span className="highlight">
                             {searchedInputCountyValue !== ''
                                 ? searchedInputCountyValue
-                                : t('countyOptions.all')}
+                                : '全部縣市'}
                         </span>
                     </div>
                 </SearchInfo>
@@ -129,7 +135,11 @@ const SearchResults = ({
                                 <CardSkeleton />
                             </StyledCardSkeletonContainer>
                         ))}
-                    endMessage={<p>No more data to load.</p>}
+                    endMessage={
+                        <StyledEndMsg>
+                            <div>已經到底囉！</div>
+                        </StyledEndMsg>
+                    }
                 >
                     {(status === undefined ||
                         status === 'loading' ||
@@ -169,23 +179,24 @@ const SearchResults = ({
                             let convertImgUrl =
                                 convertGoogleDriveURL(PictureUrl1);
 
-                            let itemId;
+                            let itemId, itemName;
                             if (ActivityID) {
                                 itemId = ActivityID;
+                                itemName = ActivityName;
                             } else if (ScenicSpotID) {
                                 itemId = ScenicSpotID;
+                                itemName = ScenicSpotName;
                             } else if (RestaurantID) {
                                 itemId = RestaurantID;
+                                itemName = RestaurantName;
                             }
 
                             return (
                                 <CardContainer
-                                    key={i}
+                                    key={itemId}
                                     type={type}
                                     itemId={itemId}
-                                    itemName={t(`${itemId}.titleName`, {
-                                        ns: `${type}Data`,
-                                    })}
+                                    itemName={itemName}
                                     PictureUrl1={convertImgUrl}
                                     description={
                                         transferedTime === 'allDay'
@@ -194,13 +205,7 @@ const SearchResults = ({
                                             ? t('carouselConfig.moreDetails')
                                             : transferedTime
                                     }
-                                    address={
-                                        Address
-                                            ? t(`${itemId}.address`, {
-                                                  ns: `${type}Data`,
-                                              })
-                                            : t(`carouselConfig.moreDetails`)
-                                    }
+                                    address={Address ? Address : '詳見官網'}
                                     text={t(`carouselConfig.openTime`)}
                                     iconClass="fa-solid fa-location-dot"
                                 />

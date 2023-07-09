@@ -44,6 +44,7 @@ const Travel = ({
     const [isLoading, setIsLoading] = useState(true);
     const { locale, push } = useRouter();
     const [selectedValue, setSelectedValue] = useState(locale);
+    const [selectLang, setSelectLang] = useState(true);
     const { t } = useTranslation('common');
 
     useEffect(() => {
@@ -57,6 +58,7 @@ const Travel = ({
                     locale={locale}
                     selectedValue={selectedValue}
                     setSelectedValue={setSelectedValue}
+                    selectLang={selectLang}
                 />
                 {/* <BannerHome
                     src={BannerHomeSrc}

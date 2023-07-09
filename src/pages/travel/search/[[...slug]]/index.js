@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import path from 'path';
 import fs from 'fs/promises';
 
@@ -50,57 +50,29 @@ const search = ({ typeStatus, typeData, type }) => {
         useState('');
     const [results, setResults] = useState([]);
     const [hasResults, setHasResults] = useState(true);
-    // const [topNum, setTopNum] = useState(8);
-    // const [skipNum, setSkipNum] = useState(0);
     const [times, setTimes] = useState(0);
+    const [selectLang, setSelectLang] = useState(false);
 
     useEffect(() => {
         setResults(typeData);
     }, []);
 
     const fetchMoreNum = () => {
-        // if (searchedInputValue || searchedInputCountyValue) {
-        //     fetchMoreData();
-        // }
         setTimes(times + 1);
     };
 
     useEffect(() => {
-        if (searchedInputValue || searchedInputCountyValue) {
-            fetchMoreKeywordData();
-        } else {
-            fetchMoreData();
-        }
+        fetchMoreData();
     }, [times]);
 
     const fetchMoreData = async () => {
-        if (results.length < 20 || results.length === 20) {
-            let skipNum = 8 * times;
-            const moreData = await getActivityAPI({
-                top: 8,
-                skip: skipNum,
-                filter: null,
-            });
-            setResults(results.concat(moreData.data));
-            console.log('moreData', moreData);
-        } else {
-            setHasMore(false);
-        }
-    };
-    const fetchMoreKeywordData = async () => {
-        if (results.length < 8 || results.length === 8) {
-            setHasMore(false);
-        } else {
-            console.log('fetchMoreKeywordData');
-            let skipNum = results.length;
-            const moreData = await getActivityAPI({
-                top: 24,
-                skip: skipNum,
-                filter: `contains(Address, '${searchedInputCountyValue}')`,
-            });
-            setResults(results.concat(moreData.data));
-            console.log('moreData', moreData);
-        }
+        let skipNum = 8 * times;
+        const moreData = await getActivityAPI({
+            top: 8,
+            skip: skipNum,
+            filter: null,
+        });
+        setResults(results.concat(moreData.data));
     };
 
     const handleFilteredResults = () => {
@@ -108,17 +80,17 @@ const search = ({ typeStatus, typeData, type }) => {
         setSearchedInputCountyValue(inputCountyValue);
     };
 
-    useEffect(() => {
-        if (searchedInputValue || searchedInputCountyValue) {
-            (async () => {
-                const filteredData = await getActivityAPI({
-                    top: 24,
-                    filter: `contains(Address, '${searchedInputCountyValue}')`,
-                });
-                setResults(filteredData.data);
-            })();
-        }
-    }, [searchedInputValue, searchedInputCountyValue]);
+    // useEffect(() => {
+    //     if (searchedInputValue || searchedInputCountyValue) {
+    //         (async () => {
+    //             const filteredData = await getActivityAPI({
+    //                 top: 24,
+    //                 filter: `contains(Address, '${searchedInputCountyValue}')`,
+    //             });
+    //             setResults(filteredData.data);
+    //         })();
+    //     }
+    // }, [searchedInputValue, searchedInputCountyValue]);
 
     const typeHandlers = {
         activity: {
@@ -206,6 +178,8 @@ const search = ({ typeStatus, typeData, type }) => {
                 locale={locale}
                 selectedValue={selectedValue}
                 setSelectedValue={setSelectedValue}
+                selectLang={selectLang}
+                setSelectLang={setSelectLang}
             />
             <BannerSearch
                 bannerTitle={t(`searchConfig.${type}BannerTitle`)}

@@ -98,6 +98,7 @@ const Detail = ({ data }) => {
     const router = useRouter();
     const { locale, push } = useRouter();
     const [selectedValue, setSelectedValue] = useState(locale);
+    const [selectLang, setSelectLang] = useState(false);
     const { t } = useTranslation('common');
     const {
         QueryType,
@@ -137,14 +138,11 @@ const Detail = ({ data }) => {
                     locale={locale}
                     selectedValue={selectedValue}
                     setSelectedValue={setSelectedValue}
+                    selectLang={selectLang}
                 />
                 <Container>
                     <InfoContainer>
-                        <InfoTitle>
-                            {t(`${SpotID}.titleName`, {
-                                ns: `${QueryType}Data`,
-                            })}
-                        </InfoTitle>
+                        <InfoTitle>{SpotName}</InfoTitle>
                         <InfoBox>
                             <InfoImageContainer>
                                 <img src={convertImgUrl} alt={SpotName} />
@@ -164,13 +162,7 @@ const Detail = ({ data }) => {
                                 <InfoDetailItem>
                                     {t('detailConfig.address')}
                                 </InfoDetailItem>
-                                <div>
-                                    {Address
-                                        ? t(`${SpotID}.address`, {
-                                              ns: `${QueryType}Data`,
-                                          })
-                                        : t('detailConfig.moreDetails')}
-                                </div>
+                                <div>{Address ? Address : '詳見官網'}</div>
                                 <InfoDetailItem>
                                     {t('detailConfig.openTime')}
                                 </InfoDetailItem>
