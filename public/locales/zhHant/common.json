@@ -27,61 +27,24 @@
         [
             {
                 "id": "menuTitle_01",
-                "text": "最新",
+                "text": "探索景點",
+                "url": "/travel/search?type=scenicSpot",
                 "divider": true
             }
         ],
         [
             {
                 "id": "menuTitle_02",
-                "text": "深度專題"
-            },
-            {
-                "id": "menuTitle_03",
-                "text": "議題",
-                "children": [
-                    {
-                        "id": "menuSubTitle_01",
-                        "text": "環境永續 "
-                    },
-                    {
-                        "id": "menuSubTitle_02",
-                        "text": "經濟產業"
-                    },
-                    {
-                        "id": "menuSubTitle_03",
-                        "text": "文化生活"
-                    }
-                ]
-            },
-            {
-                "id": "menuTitle_04",
-                "text": "評論",
-                "children": [
-                    {
-                        "id": "menuSubTitle_04",
-                        "text": "書摘與書評 "
-                    },
-                    {
-                        "id": "menuSubTitle_05",
-                        "text": "讀者評論"
-                    }
-                ],
+                "text": "探索活動",
+                "url": "/travel/search?type=activity",
                 "divider": true
             }
         ],
         [
             {
-                "id": "menuTitle_05",
-                "text": "關於我們"
-            },
-            {
-                "id": "menuTitle_06",
-                "text": "影響力報告"
-            },
-            {
-                "id": "menuTitle_07",
-                "text": "報導者開放實驗室",
+                "id": "menuTitle_03",
+                "text": "探索美食",
+                "url": "/travel/search?type=restaurant",
                 "divider": true
             }
         ]

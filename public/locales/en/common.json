@@ -27,61 +27,24 @@
         [
             {
                 "id": "menuTitle_01",
-                "text": "Latest",
+                "text": "Explore ScenicSpot",
+                "url": "/travel/search?type=scenicSpot",
                 "divider": true
             }
         ],
         [
             {
                 "id": "menuTitle_02",
-                "text": "In-depth Projects"
-            },
-            {
-                "id": "menuTitle_03",
-                "text": "Issues",
-                "children": [
-                    {
-                        "id": "menuSubTitle_01",
-                        "text": "Environmental Sustainability"
-                    },
-                    {
-                        "id": "menuSubTitle_02",
-                        "text": "Economic Industries"
-                    },
-                    {
-                        "id": "menuSubTitle_03",
-                        "text": "Cultural Life"
-                    }
-                ]
-            },
-            {
-                "id": "menuTitle_04",
-                "text": "Reviews",
-                "children": [
-                    {
-                        "id": "menuSubTitle_04",
-                        "text": "Book Excerpts and Reviews"
-                    },
-                    {
-                        "id": "menuSubTitle_05",
-                        "text": "Reader Reviews"
-                    }
-                ],
+                "text": "Explore Activity",
+                "url": "/travel/search?type=activity",
                 "divider": true
             }
         ],
         [
             {
-                "id": "menuTitle_05",
-                "text": "About Us"
-            },
-            {
-                "id": "menuTitle_06",
-                "text": "Impact Report"
-            },
-            {
-                "id": "menuTitle_07",
-                "text": "Reporter Open Lab",
+                "id": "menuTitle_03",
+                "text": "Explore Food",
+                "url": "/travel/search?type=restaurant",
                 "divider": true
             }
         ]

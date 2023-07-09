@@ -1,5 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import styled from 'styled-components';
+import Link from 'next/link';
 import propTypes from 'prop-types';
 import Icon from '../Icon';
 import Typography from '../Typography';
@@ -15,6 +16,9 @@ const StyledMenuContainer = styled.div`
     flex-direction: row;
     justify-content: space-between;
     padding: 1rem 4rem;
+    &:hover {
+        background: ${(props) => props.theme.colors.grey0};
+    }
 `;
 
 // icon
@@ -47,7 +51,7 @@ const StyledDivider = styled('div')`
     border-color: ${(props) => props.theme.colors.grey3};
     height: 0px;
     max-width: 33rem;
-    width: 100%;
+    width: 80%;
     margin: 1rem auto;
 `;
 
@@ -79,6 +83,7 @@ const MenuItem = ({
     children,
     text,
     icon,
+    url,
     open,
     haschild,
     hasdivder,
@@ -86,17 +91,19 @@ const MenuItem = ({
 }) => {
     return (
         <Fragment>
-            <StyledMenuContainer {...props}>
-                {/* <MenuIcon icon={icon} /> */}
-                <MenuText $open={open} variant="content">
-                    {text}
-                </MenuText>
-                <MenuExtent
-                    $open={open}
-                    $haschild={haschild.toString()}
-                    icon="fa-angle-right"
-                />
-            </StyledMenuContainer>
+            <Link href={url}>
+                <StyledMenuContainer {...props}>
+                    {/* <MenuIcon icon={icon} /> */}
+                    <MenuText $open={open} variant="content">
+                        {text}
+                    </MenuText>
+                    <MenuExtent
+                        $open={open}
+                        $haschild={haschild.toString()}
+                        icon="fa-angle-right"
+                    />
+                </StyledMenuContainer>
+            </Link>
             {hasdivder && <StyledDivider></StyledDivider>}
         </Fragment>
     );
@@ -122,6 +129,7 @@ const MenuItems = ({ items, ...props }) => {
                 icon={item.icon}
                 haschild={hasChild}
                 hasdivder={hasDivder}
+                url={item.url}
             />
         );
     };

@@ -426,7 +426,7 @@ const NavBar = ({
                             <Image src={youtubeIcon} alt="youtube" />
                         </a>
                     </SocialIcons>
-                    <HamburgerButtonNav>
+                    {/* <HamburgerButtonNav>
                         <ButtonNav
                             className={ButtonNavOutline}
                             $variant="outlined"
@@ -441,7 +441,7 @@ const NavBar = ({
                         >
                             {t('navButtons.filled')}
                         </ButtonNav>
-                    </HamburgerButtonNav>
+                    </HamburgerButtonNav> */}
                 </HamburgerContainer>
                 {/* </Container> */}
             </HeaderSection>
