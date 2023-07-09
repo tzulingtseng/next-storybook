@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 
 import Button from '@/lib/Button';
@@ -88,17 +88,17 @@ const SearchResults = ({
     totalPages,
     setPage,
     type,
-    hasMore,
-    setHasMore,
-    fetchMoreData,
-    fetchMoreNum,
-    fetchMoreKeywordNum,
 }) => {
-    console.log('results', results);
+    const scrollRef = useRef(null);
     const { t } = useTranslation('common');
+    useEffect(() => {
+        if (scrollRef.current) {
+            scrollRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [page]);
     return (
         <Container>
-            <SearchResultsTitle>
+            <SearchResultsTitle ref={scrollRef}>
                 <SearchResultsTitleText>
                     {t('searchConfig.searchResults')}
                 </SearchResultsTitleText>
