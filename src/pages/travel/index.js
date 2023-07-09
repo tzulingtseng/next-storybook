@@ -1,8 +1,6 @@
 // import Image from 'next/image';
 import React, { useState, useEffect, Fragment } from 'react';
 import styled, { css } from 'styled-components';
-import Image from 'next/image';
-import BannerHomeSrc from '@/assets/images/banner-home.png';
 
 import { Inter } from 'next/font/google';
 import path from 'path';
@@ -21,7 +19,7 @@ import Meta from '@/lib/Card/Meta';
 import Container from '@/components/Container';
 import Footer from '@/components/Footer';
 import TypeCarouselCards from '@/components/TypeCarouselCards';
-import breakpoint from '@/lib/constant/breakpoint';
+import BannerHome from '@/features/home/components/BannerHome';
 
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
@@ -30,49 +28,6 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import getScenicSpotAPI from '@/api/getScenicSpotAPI';
 import getActivityAPI from '@/api/getActivityAPI';
 import getRestaurantAPI from '@/api/getRestaurantAPI';
-
-const BannerHomeWrapper = styled.div`
-    width: 100%;
-    position: relative;
-    &::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        background-color: rgba(0, 0, 0, 0.3);
-    }
-`;
-
-const BannerHome = styled(Image)`
-    width: 100%;
-    height: auto;
-    display: block;
-`;
-
-const BannerText = styled.div`
-    z-index: 1;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    color: ${(props) => props.theme.colors.white};
-    font-weight: 600;
-    width: 100%;
-    .title {
-        font-size: ${(props) => props.theme.fontSize.xl};
-    }
-    ${breakpoint.mediaMD} {
-        .title {
-            font-size: ${(props) => props.theme.fontSize.xxl};
-        }
-    }
-    .sub_title {
-        font-size: ${(props) => props.theme.fontSize.lg};
-    }
-`;
 
 const Travel = ({
     scenicSpotData,
@@ -105,18 +60,7 @@ const Travel = ({
                     setSelectedValue={setSelectedValue}
                     selectLang={selectLang}
                 />
-                <BannerHomeWrapper>
-                    <BannerHome
-                        src={BannerHomeSrc}
-                        alt="banner"
-                        priority={true}
-                    />
-                    <BannerText>
-                        <div className="title">探索臺灣之美</div>
-                        <div className="title"> 讓我們更親近這片土地</div>
-                        <div className="sub_title">景點、 美食、 活動</div>
-                    </BannerText>
-                </BannerHomeWrapper>
+                <BannerHome />
                 <Container>
                     <TypeCarouselCards
                         lists={scenicSpotData}
