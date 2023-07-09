@@ -19,6 +19,7 @@ import getScenicSpotAPI from '@/api/getScenicSpotAPI';
 import getRestaurantAPI from '@/api/getRestaurantAPI';
 
 import scrollToTop from '@/utils/scrollToTop';
+import SEO from '@/utils/seo';
 
 const search = () => {
     const router = useRouter();
@@ -234,6 +235,11 @@ const search = () => {
      */
     return (
         <ThemeProvider theme={theme}>
+            <SEO
+                title={t('title')}
+                keywords={t('keywords')}
+                description={t('description')}
+            />
             <NavBar
                 locale={locale}
                 selectedValue={selectedValue}

@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import transferTime from '@/utils/transferTime';
+import SEO from '@/utils/seo';
 
 import getActivityAPI from '@/api/getActivityAPI';
 import getScenicSpotAPI from '@/api/getScenicSpotAPI';
@@ -136,6 +137,11 @@ const Detail = ({ data }) => {
     return (
         <>
             <ThemeProvider theme={theme}>
+                <SEO
+                    title={t('title')}
+                    keywords={t('keywords')}
+                    description={t('description')}
+                />
                 <NavBar
                     locale={locale}
                     selectedValue={selectedValue}
