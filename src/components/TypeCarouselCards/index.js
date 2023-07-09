@@ -135,7 +135,6 @@ const TypeCarouselCards = ({ status, type, lists }) => {
     const swiperRef = useRef(null);
     const [isBeginning, setIsBeginning] = useState(true);
     const [isEnd, setisEnd] = useState(false);
-
     let titleName;
     switch (type) {
         case 'activity':
@@ -180,7 +179,16 @@ const TypeCarouselCards = ({ status, type, lists }) => {
                         </StyledTitleLink>
                     </StyledTitleContainer>
                     {/* TODO:優化寫法 */}
-                    <CarouselBox ref={swiperRef} {...swiperParams}>
+                    <CarouselBox
+                        ref={swiperRef}
+                        {...swiperParams}
+                        onRealIndexChange={() => {
+                            setIsBeginning(
+                                swiperRef.current.swiper.isBeginning
+                            );
+                            setisEnd(swiperRef.current.swiper.isEnd);
+                        }}
+                    >
                         {(status === undefined ||
                             status === 'loading' ||
                             status === 'cancel') &&
@@ -303,9 +311,9 @@ const TypeCarouselCards = ({ status, type, lists }) => {
                         $isEnd={isEnd}
                         onClick={() => {
                             swiperRef.current.swiper.slideNext();
-                            swiperRef.current.swiper.update();
-                            setIsBeginning(false);
-                            setisEnd(swiperRef.current.swiper.isEnd);
+                            // swiperRef.current.swiper.update();
+                            // setIsBeginning(false);
+                            // setisEnd(swiperRef.current.swiper.isEnd);
                         }}
                     ></SwiperArrowButton>
                     {/* 上一個箭頭 */}
@@ -314,11 +322,11 @@ const TypeCarouselCards = ({ status, type, lists }) => {
                         $isBeginning={isBeginning}
                         onClick={() => {
                             swiperRef.current.swiper.slidePrev();
-                            swiperRef.current.swiper.update();
-                            setisEnd(false);
-                            setIsBeginning(
-                                swiperRef.current.swiper.isBeginning
-                            );
+                            // swiperRef.current.swiper.update();
+                            // setisEnd(false);
+                            // setIsBeginning(
+                            //     swiperRef.current.swiper.isBeginning
+                            // );
                         }}
                     ></SwiperArrowButton>
                 </CarouselContainer>
