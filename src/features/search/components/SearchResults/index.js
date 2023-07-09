@@ -1,6 +1,5 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import InfiniteScroll from 'react-infinite-scroll-component';
 
 import Button from '@/lib/Button';
 import Container from '@/components/Container';
@@ -34,19 +33,10 @@ const SearchInfo = styled.div`
 `;
 
 const SearchResultsContainer = styled.div`
-    // width: calc(100% + 1rem * 2);
-    // margin: 0 -1rem;
-    // display: flex;
-    // flex-wrap: wrap;
-    .infinite-scroll-component__outerdiv {
-        width: 100%;
-        .infinite-scroll-component {
-            display: flex;
-            width: calc(100% + 1rem * 2);
-            margin: 0 -1rem;
-            flex-wrap: wrap;
-        }
-    }
+    width: calc(100% + 1rem * 2);
+    margin: 0 -1rem;
+    display: flex;
+    flex-wrap: wrap;
 `;
 
 const PaginationContainer = styled.div`
@@ -81,12 +71,18 @@ const StyledEndMsg = styled.div`
     margin: 1.5rem 0;
 `;
 
+const StyledNoResults = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+`;
+
 const SearchResults = ({
     status,
     searchedInputValue,
     searchedInputCountyValue,
     results,
-    // PageDataArray,
+    pageDataArray,
     page,
     pageSize,
     totalPages,
@@ -124,99 +120,82 @@ const SearchResults = ({
                 </SearchInfo>
             </SearchResultsTitle>
             <SearchResultsContainer>
-                <InfiniteScroll
-                    dataLength={results.length}
-                    next={fetchMoreNum}
-                    hasMore={hasMore} // Replace with a condition based on your data source
-                    loader={Array(8)
+                {(status === undefined ||
+                    status === 'loading' ||
+                    status === 'cancel') &&
+                    Array(8)
                         .fill(0)
                         .map((item, i) => (
                             <StyledCardSkeletonContainer key={i}>
                                 <CardSkeleton />
                             </StyledCardSkeletonContainer>
                         ))}
-                    endMessage={
-                        <StyledEndMsg>
-                            <div>已經到底囉！</div>
-                        </StyledEndMsg>
-                    }
-                >
-                    {(status === undefined ||
-                        status === 'loading' ||
-                        status === 'cancel') &&
-                        Array(8)
-                            .fill(0)
-                            .map((item, i) => (
-                                <StyledCardSkeletonContainer key={i}>
-                                    <CardSkeleton />
-                                </StyledCardSkeletonContainer>
-                            ))}
-                    {status === 'success' &&
-                        results &&
-                        results.map((item, i) => {
-                            const {
-                                Picture: { PictureUrl1 = null } = {},
-                                OpenTime,
-                                StartTime,
-                                EndTime,
-                                Address,
-                                ActivityID,
-                                ActivityName,
-                                ScenicSpotID,
-                                ScenicSpotName,
-                                RestaurantID,
-                                RestaurantName,
-                                Description,
-                                DescriptionDetail,
-                            } = item;
+                {status === 'success' &&
+                    pageDataArray &&
+                    pageDataArray.map((item, i) => {
+                        const {
+                            Picture: { PictureUrl1 = null } = {},
+                            OpenTime,
+                            StartTime,
+                            EndTime,
+                            Address,
+                            ActivityID,
+                            ActivityName,
+                            ScenicSpotID,
+                            ScenicSpotName,
+                            RestaurantID,
+                            RestaurantName,
+                            Description,
+                            DescriptionDetail,
+                        } = item;
 
-                            let transferedTime = transferTime(
-                                OpenTime,
-                                StartTime,
-                                EndTime
-                            );
+                        let transferedTime = transferTime(
+                            OpenTime,
+                            StartTime,
+                            EndTime
+                        );
 
-                            let convertImgUrl =
-                                convertGoogleDriveURL(PictureUrl1);
+                        let convertImgUrl = convertGoogleDriveURL(PictureUrl1);
 
-                            let itemId, itemName;
-                            if (ActivityID) {
-                                itemId = ActivityID;
-                                itemName = ActivityName;
-                            } else if (ScenicSpotID) {
-                                itemId = ScenicSpotID;
-                                itemName = ScenicSpotName;
-                            } else if (RestaurantID) {
-                                itemId = RestaurantID;
-                                itemName = RestaurantName;
-                            }
+                        let itemId, itemName;
+                        if (ActivityID) {
+                            itemId = ActivityID;
+                            itemName = ActivityName;
+                        } else if (ScenicSpotID) {
+                            itemId = ScenicSpotID;
+                            itemName = ScenicSpotName;
+                        } else if (RestaurantID) {
+                            itemId = RestaurantID;
+                            itemName = RestaurantName;
+                        }
 
-                            return (
-                                <CardContainer
-                                    key={itemId}
-                                    type={type}
-                                    itemId={itemId}
-                                    itemName={itemName}
-                                    PictureUrl1={convertImgUrl}
-                                    description={
-                                        transferedTime === 'allDay'
-                                            ? t('carouselConfig.allDay')
-                                            : transferedTime === 'moreDetails'
-                                            ? t('carouselConfig.moreDetails')
-                                            : transferedTime
-                                    }
-                                    address={Address ? Address : '詳見官網'}
-                                    text={t(`carouselConfig.openTime`)}
-                                    iconClass="fa-solid fa-location-dot"
-                                />
-                            );
-                        })}
-                    {status === 'success' &&
-                        !results &&
-                        t(`searchConfig.noResults`)}
-                </InfiniteScroll>
+                        return (
+                            <CardContainer
+                                key={itemId}
+                                type={type}
+                                itemId={itemId}
+                                itemName={itemName}
+                                PictureUrl1={convertImgUrl}
+                                description={
+                                    transferedTime === 'allDay'
+                                        ? t('carouselConfig.allDay')
+                                        : transferedTime === 'moreDetails'
+                                        ? t('carouselConfig.moreDetails')
+                                        : transferedTime
+                                }
+                                address={Address ? Address : '詳見官網'}
+                                text={t(`carouselConfig.openTime`)}
+                                iconClass="fa-solid fa-location-dot"
+                            />
+                        );
+                    })}
+                {status === 'success' && results.length === 0 && (
+                    <StyledNoResults>
+                        <div>{t(`searchConfig.noResults`)}</div>
+                    </StyledNoResults>
+                )}
             </SearchResultsContainer>
-            {/* {status === 'success' && (
+            {status === 'success' && (
                 <PaginationContainer>
                     <Pagination
                         page={page}
@@ -226,7 +205,7 @@ const SearchResults = ({
                         withEllipsis
                     />
                 </PaginationContainer>
-            )} */}
+            )}
         </Container>
     );
 };

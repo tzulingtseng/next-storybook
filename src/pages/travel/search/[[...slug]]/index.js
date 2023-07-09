@@ -1,14 +1,6 @@
-import React, { useState, useEffect, use } from 'react';
+import React, { useState, useEffect } from 'react';
 import path from 'path';
 import fs from 'fs/promises';
-
-import useGetActivity from '@/features/home/hooks/useGetActivity';
-import useGetScenicSpot from '@/features/home/hooks/useGetScenicSpot';
-import useGetRestaurant from '@/features/home/hooks/useGetRestaurant';
-
-import getActivityAPI from '@/api/getActivityAPI';
-import getScenicSpotAPI from '@/api/getScenicSpotAPI';
-import getRestaurantAPI from '@/api/getRestaurantAPI';
 
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
@@ -22,148 +14,216 @@ import NavBar from '@/lib/NavBar';
 import BannerSearch from '@/features/search/components/BannerSearch';
 import SearchResults from '@/features/search/components/SearchResults';
 
-import scrollToTop from '@/utils/scrollToTop';
-import transferTime from '@/utils/transferTime';
+import getActivityAPI from '@/api/getActivityAPI';
+import getScenicSpotAPI from '@/api/getScenicSpotAPI';
+import getRestaurantAPI from '@/api/getRestaurantAPI';
 
-const search = ({ typeStatus, typeData, type }) => {
+import scrollToTop from '@/utils/scrollToTop';
+
+const search = () => {
     const router = useRouter();
     const { locale, push, query } = useRouter();
-    console.log('type', type);
+    const { type, slug } = query; // TODO:slug 待確認用法
+
     const { t } = useTranslation('common');
 
-    const [hasMore, setHasMore] = useState(true);
-
     const [selectedValue, setSelectedValue] = useState(locale);
-    const [selectedCounty, setSelectedCounty] = useState('');
-    // const [typeStatus, setTypeStatus] = useState(undefined);
-    // const [typeData, setTypeData] = useState([]);
+    const [typeStatus, setTypeStatus] = useState(undefined);
+    const [typeData, setTypeData] = useState([]);
     const [typeError, setTypeError] = useState(null);
     const [bannerImgSrc, setBannerImgSrc] = useState(null);
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(8);
     const [totalPages, setTotalPages] = useState(20);
-    const [PageDataArray, setPageDataArray] = useState([]);
+    const [pageDataArray, setPageDataArray] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [inputCountyValue, setInputCountyValue] = useState('');
     const [searchedInputValue, setSearchedInputValue] = useState('');
     const [searchedInputCountyValue, setSearchedInputCountyValue] =
         useState('');
     const [results, setResults] = useState([]);
-    const [hasResults, setHasResults] = useState(true);
-    const [times, setTimes] = useState(0);
-    const [selectLang, setSelectLang] = useState(false);
+    const [selectedCounty, setSelectedCounty] = useState('');
 
-    useEffect(() => {
-        setResults(typeData);
-    }, []);
-
-    const fetchMoreNum = () => {
-        setTimes(times + 1);
+    const handleData = (responseData) => {
+        if (responseData?.status === 'success') {
+            // handle success
+            setTypeStatus('success');
+            setTypeData(responseData?.data);
+        } else if (responseData?.status === 'error') {
+            // handle error (後端錯誤)
+            setTypeStatus('error');
+            setTypeError(responseData.desc);
+        } else {
+            // handle cancel (取消 call api)
+            setTypeStatus('cancel');
+        }
     };
 
-    useEffect(() => {
-        fetchMoreData();
-    }, [times]);
-
-    const fetchMoreData = async () => {
-        let skipNum = 8 * times;
-        const moreData = await getActivityAPI({
-            top: 8,
-            skip: skipNum,
+    const handleActivityData = async () => {
+        const responseData = await getActivityAPI({
+            top: 30,
             filter: null,
         });
-        setResults(results.concat(moreData.data));
+        handleData(responseData);
+    };
+
+    const handleScenicSpotData = async () => {
+        const responseData = await getScenicSpotAPI({
+            top: 30,
+            filter: null,
+        });
+        handleData(responseData);
+    };
+
+    const handleRestaurantData = async () => {
+        const responseData = await getRestaurantAPI({
+            top: 30,
+            filter: null,
+        });
+        handleData(responseData);
+    };
+
+    /**
+     *
+     * @param {*} a
+     * @param {*} b
+     * @returns duplicates 重複的物件
+     */
+    const findDuplicates = (a, b) => {
+        const newArray = a.filter((item1) => {
+            return b.some(
+                (item2) =>
+                    (item2.ScenicSpotID &&
+                        item2.ScenicSpotID === item1.ScenicSpotID) ||
+                    (item2.ActivityID &&
+                        item2.ActivityID === item1.ActivityID) ||
+                    (item2.RestaurantId &&
+                        item2.RestaurantId === item1.RestaurantId)
+            );
+        });
+        return newArray;
     };
 
     const handleFilteredResults = () => {
-        setSearchedInputValue(inputValue);
-        setSearchedInputCountyValue(inputCountyValue);
-    };
+        const keyword = searchedInputValue.toLowerCase();
+        const countyKeyword = searchedInputCountyValue.toLowerCase();
 
-    // useEffect(() => {
-    //     if (searchedInputValue || searchedInputCountyValue) {
-    //         (async () => {
-    //             const filteredData = await getActivityAPI({
-    //                 top: 24,
-    //                 filter: `contains(Address, '${searchedInputCountyValue}')`,
-    //             });
-    //             setResults(filteredData.data);
-    //         })();
-    //     }
-    // }, [searchedInputValue, searchedInputCountyValue]);
+        // 關鍵字針對地址和活動名稱的搜尋
+        const filteredKeyword = typeData.filter((item) => {
+            const itemName =
+                item?.ActivityName?.toLowerCase() ||
+                item?.ScenicSpotName?.toLowerCase() ||
+                item?.RestaurantName?.toLowerCase();
+            const address = item?.Address?.toLowerCase() ?? '';
+            return itemName.includes(keyword) || address?.includes(keyword);
+        });
+
+        // 地區關鍵字針對地址的搜尋
+        const filteredCountyKeyword = typeData.filter((item) => {
+            const address = item?.Address?.toLowerCase() ?? '';
+            return address.includes(countyKeyword);
+        });
+
+        // 進階搜尋：用地區關鍵字搜尋結果，篩掉關鍵字搜尋結果，返回重複部分
+        const mergedResults = findDuplicates(
+            filteredKeyword,
+            filteredCountyKeyword
+        );
+
+        let filteredResults = [];
+        if (keyword && countyKeyword) {
+            filteredResults = mergedResults;
+        } else if (countyKeyword) {
+            filteredResults = filteredCountyKeyword;
+        } else if (keyword) {
+            filteredResults = filteredKeyword;
+        } else {
+            filteredResults = typeData; // 如果沒有關鍵字輸入，返回所有資料
+        }
+
+        // if (filteredResults.length === 0) {
+        //     // 處理沒有符合關鍵字的搜尋結果
+        //     // 可以在這裡添加相應的處理邏輯，例如顯示提示訊息或執行其他操作
+        // }
+
+        setResults(filteredResults);
+    };
 
     const typeHandlers = {
         activity: {
-            // handler: handleActivityData,
+            handler: handleActivityData,
             bannerImgSrc: 'BannerActivity',
         },
         scenicSpot: {
-            // handler: handleScenicSpotData,
+            handler: handleScenicSpotData,
             bannerImgSrc: 'BannerScenicSpot',
         },
         restaurant: {
-            // handler: handleRestaurantData,
+            handler: handleRestaurantData,
             bannerImgSrc: 'BannerRestaurant',
         },
     };
 
     useEffect(() => {
-        if (!type) return;
+        // 當頁面載入時，回到頁面頂部
+        scrollToTop(true);
         const typeHandler = typeHandlers[type];
-        const { bannerImgSrc } = typeHandler;
+        const { handler, bannerImgSrc } = typeHandler;
+        handler();
         setBannerImgSrc(bannerImgSrc);
     }, [type]);
 
-    // useEffect(() => {
-    //     // 當頁面載入時，回到頁面頂部
-    //     scrollToTop(true);
-    //     if (typeData.length === 0) return;
-    //     handleFilteredResults();
-    // }, [typeData]);
+    useEffect(() => {
+        handleFilteredResults();
+    }, [typeData]);
 
-    // useEffect(() => {
-    //     // 換頁時，回到頁面頂部
-    //     scrollToTop(true);
-    //     /**
-    //      * 每頁的資料
-    //      */
-    //     const chunkedData = Array.from(
-    //         { length: Math.ceil(results.length / pageSize) },
-    //         (_, index) =>
-    //             results.slice(index * pageSize, (index + 1) * pageSize)
-    //     );
-    //     setPageDataArray(chunkedData[page - 1]);
-    //     setTotalPages(results.length);
-    // }, [results, page]);
+    useEffect(() => {
+        // 換頁時，回到頁面頂部
+        // scrollToTop(true);
+        /**
+         * 每頁的資料
+         */
+        const chunkedData = Array.from(
+            { length: Math.ceil(results.length / pageSize) },
+            (_, index) =>
+                results.slice(index * pageSize, (index + 1) * pageSize)
+        );
+        setPageDataArray(chunkedData[page - 1]);
+        setTotalPages(results.length);
 
-    // useEffect(() => {
-    //     /**
-    //      * 有新的關鍵字和地區關鍵字重新搜尋
-    //      */
-    //     handleFilteredResults();
-    //     /**
-    //      * 處理不同情境(keyword,area,page)下的查詢參數
-    //      * ex. http://localhost:3000/travel/search?type=activity&page=2
-    //      */
-    //     const query = {
-    //         keyword: searchedInputValue,
-    //         area: searchedInputCountyValue,
-    //         // page: page > 1 ? page : undefined, // page>1，出現參數 page
-    //     };
-    //     const queryString = Object.entries(query)
-    //         .filter(([key, value]) => value !== undefined && value !== '')
-    //         .map(([key, value]) => `&${key}=${encodeURIComponent(value)}`)
-    //         .join('');
+        /**
+         * 處理不同情境(keyword,area,page)下的查詢參數
+         * ex. http://localhost:3000/travel/search?type=activity&page=2
+         */
+        const query = {
+            keyword: searchedInputValue,
+            area: searchedInputCountyValue,
+            // page: page > 1 ? page : undefined, // page>1，出現參數 page
+        };
 
-    //     type &&
-    //         router.push(
-    //             `/travel/search?type=${type}${queryString}`,
-    //             undefined,
-    //             {
-    //                 locale: selectedValue,
-    //             }
-    //         );
-    // }, [searchedInputValue, searchedInputCountyValue, selectedValue]);
+        const queryString = Object.entries(query)
+            .filter(([key, value]) => value !== undefined && value !== '')
+            .map(([key, value]) => `&${key}=${encodeURIComponent(value)}`)
+            .join('');
+
+        type &&
+            router.push(
+                `/travel/search?type=${type}${queryString}`,
+                undefined,
+                {
+                    locale: selectedValue,
+                    shallow: true,
+                }
+            );
+    }, [page, results, selectedValue]);
+
+    /**
+     * 處理當頁碼不等於1時，有新的關鍵字和地區關鍵字重新搜尋
+     */
+    useEffect(() => {
+        handleFilteredResults();
+        setPage(1);
+    }, [searchedInputValue, searchedInputCountyValue]);
 
     /**
      * TODO:
@@ -178,8 +238,6 @@ const search = ({ typeStatus, typeData, type }) => {
                 locale={locale}
                 selectedValue={selectedValue}
                 setSelectedValue={setSelectedValue}
-                selectLang={selectLang}
-                setSelectLang={setSelectLang}
             />
             <BannerSearch
                 bannerTitle={t(`searchConfig.${type}BannerTitle`)}
@@ -193,86 +251,28 @@ const search = ({ typeStatus, typeData, type }) => {
                 setSelectedCounty={setSelectedCounty}
                 searchedInputValue={searchedInputValue}
                 setSearchedInputValue={setSearchedInputValue}
-                setSearchedInputCountyValue={setSearchedInputCountyValue}
                 searchedInputCountyValue={searchedInputCountyValue}
+                setSearchedInputCountyValue={setSearchedInputCountyValue}
             />
             <SearchResults
                 status={typeStatus}
                 searchedInputValue={searchedInputValue}
                 searchedInputCountyValue={searchedInputCountyValue}
                 results={results}
-                // page={page}
-                // pageSize={pageSize}
-                // totalPages={totalPages}
+                pageDataArray={pageDataArray}
+                page={page}
+                pageSize={pageSize}
+                totalPages={totalPages}
                 setPage={setPage}
                 type={type}
-                hasMore={hasMore}
-                setHasMore={setHasMore}
-                fetchMoreData={fetchMoreData}
-                fetchMoreNum={fetchMoreNum}
             />
             <Footer />
         </ThemeProvider>
     );
 };
 
-export async function getServerSideProps({ query, locale }) {
-    const { type } = query;
-    let responseData;
-    let typeData;
-    let typeStatus;
-    switch (type) {
-        case 'activity':
-            responseData = await getActivityAPI({
-                top: 8,
-                filter: null,
-            });
-            if (responseData?.status === 'success') {
-                typeData = responseData.data;
-                typeStatus = responseData.status;
-            } else {
-                // handle error (後端錯誤) -> not found page(404 page)
-                // TODO:為啥用 notFound 處理錯誤
-                return {
-                    notFound: true,
-                };
-            }
-            break;
-        case 'scenicSpot':
-            responseData = await getScenicSpotAPI({
-                top: 8,
-                filter: null,
-            });
-            if (responseData?.status === 'success') {
-                typeData = responseData.data;
-                typeStatus = responseData.status;
-            } else {
-                // handle error (後端錯誤) -> not found page(404 page)
-                // TODO:為啥用 notFound 處理錯誤
-                return {
-                    notFound: true,
-                };
-            }
-            break;
-        case 'restaurant':
-            responseData = await getRestaurantAPI({
-                top: 8,
-                filter: null,
-            });
-            if (responseData?.status === 'success') {
-                typeData = responseData.data;
-                typeStatus = responseData.status;
-            } else {
-                // handle error (後端錯誤) -> not found page(404 page)
-                // TODO:為啥用 notFound 處理錯誤
-                return {
-                    notFound: true,
-                };
-            }
-            break;
-    }
-
-    const returnData = {
+export async function getServerSideProps({ locale }) {
+    return {
         props: {
             ...(await serverSideTranslations(locale, [
                 'api_mapping',
@@ -281,12 +281,8 @@ export async function getServerSideProps({ query, locale }) {
                 'scenicSpotData',
                 'restaurantData',
             ])),
-            typeData,
-            typeStatus,
-            type,
         },
     };
-    return returnData;
 }
 
 export default search;
