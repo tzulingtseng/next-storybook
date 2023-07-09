@@ -55,7 +55,11 @@ const Travel = ({
     return (
         <>
             <ThemeProvider theme={theme}>
-                <SEO />
+                <SEO
+                    title={t('title')}
+                    keywords={t('keywords')}
+                    description={t('description')}
+                />
                 <NavBar
                     locale={locale}
                     selectedValue={selectedValue}

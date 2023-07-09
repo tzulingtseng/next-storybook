@@ -1,5 +1,7 @@
 {
-    "title": "Homepage",
+    "title": "TaiFun Taiwan Travel",
+    "keywords": "Taiwan - Travel - Attractions - Activities - FoodTaiwan - TaiFun",
+    "description": "TaiFun provides all the information about dining, drinking, sightseeing, and leisure activities at the best travel destinations in Taiwan.",
     "subTitle": "ScenicSpot × Activity × Food",
     "headerLogo": "/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FTaiFun.a6ae6503.png&w=256&q=75",
     "navButtons": {

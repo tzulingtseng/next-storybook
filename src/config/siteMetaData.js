@@ -10,7 +10,7 @@
  */
 
 const siteMetaData = {
-    title: 'TaiFun',
+    title: 'TaiFun 台灣旅遊網',
     keywords: '台灣、旅遊、景點、活動、美食、Taiwan、TaiFun',
     description: 'TaiFun 提供所有台灣旅遊好去處的吃、喝、玩、樂活動資訊。',
     // google_site_verification: `${GOOGLE_SITE_VERIFICATION}`,
