@@ -97,8 +97,8 @@ const search = () => {
                         item2.ScenicSpotID === item1.ScenicSpotID) ||
                     (item2.ActivityID &&
                         item2.ActivityID === item1.ActivityID) ||
-                    (item2.RestaurantId &&
-                        item2.RestaurantId === item1.RestaurantId)
+                    (item2.RestaurantID &&
+                        item2.RestaurantID === item1.RestaurantID)
             );
         });
         return newArray;

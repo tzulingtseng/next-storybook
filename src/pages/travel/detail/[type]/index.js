@@ -19,6 +19,7 @@ import Container from '@/components/Container';
 import TransportInfo from '@/features/detail/components/TransportInfo';
 import convertGoogleDriveURL from '@/utils/convertGoogleDriveURL';
 import breakpoint from '@/lib/constant/breakpoint';
+import NoImage from '@/components/NoImage';
 
 const InfoContainer = styled('div')`
     margin-top: 3rem;
@@ -40,6 +41,7 @@ const InfoBox = styled('div')`
 `;
 
 const InfoImageContainer = styled('div')`
+    position: relative;
     overflow: hidden;
     width: 100%;
     border-radius: 1rem;
@@ -145,7 +147,11 @@ const Detail = ({ data }) => {
                         <InfoTitle>{SpotName}</InfoTitle>
                         <InfoBox>
                             <InfoImageContainer>
-                                <img src={convertImgUrl} alt={SpotName} />
+                                {convertImgUrl ? (
+                                    <img src={convertImgUrl} alt={SpotName} />
+                                ) : (
+                                    <NoImage />
+                                )}
                             </InfoImageContainer>
                             <InfoDetailContainer>
                                 <InfoDetailTitle>
@@ -178,11 +184,7 @@ const Detail = ({ data }) => {
                     </InfoContainer>
                     <IntroContainer>
                         <InfoTitle>{t('detailConfig.introTitle')}</InfoTitle>
-                        <div>
-                            {t(`${SpotID}.description`, {
-                                ns: `${QueryType}Data`,
-                            })}
-                        </div>
+                        <div>{Description}</div>
                         <InfoTitle>{t('detailConfig.mapTitle')}</InfoTitle>
                         <TransportInfo position={Position} />
                     </IntroContainer>
@@ -222,7 +224,7 @@ export async function getServerSideProps({ params, query, locale }) {
                     Address: data?.Address ?? null,
                     // City: data?.City ?? null,
                     // Location: data?.Location ?? null,
-                    // Description: data?.Description ?? DescriptionDetail,
+                    Description: data?.Description ?? DescriptionDetail,
                     formattedTime: transferedTime,
                     Phone: data?.Phone ?? null,
                     Picture: data?.Picture ?? null,

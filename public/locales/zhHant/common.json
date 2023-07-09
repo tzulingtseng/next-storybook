@@ -109,7 +109,7 @@
         "searchButton": "搜尋",
         "activityBannerTitle": "尋找活動",
         "scenicSpotBannerTitle": "尋找景點",
-        "restaurantSpotBannerTitle": "尋找餐廳"
+        "restaurantBannerTitle": "尋找餐廳"
     },
     "detailConfig": {
         "information": "資訊",

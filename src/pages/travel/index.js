@@ -46,7 +46,6 @@ const Travel = ({
     const [selectedValue, setSelectedValue] = useState(locale);
     const [selectLang, setSelectLang] = useState(true);
     const { t } = useTranslation('common');
-
     useEffect(() => {
         push('/travel', undefined, { locale: selectedValue });
     }, [selectedValue]);
@@ -60,11 +59,7 @@ const Travel = ({
                     setSelectedValue={setSelectedValue}
                     selectLang={selectLang}
                 />
-                {/* <BannerHome
-                    src={BannerHomeSrc}
-                    alt="首頁 banner"
-                    priority={true}
-                /> */}
+                {/* <BannerHome src={BannerHomeSrc} alt="banner" priority={true} /> */}
                 <Container>
                     <TypeCarouselCards
                         lists={scenicSpotData}
