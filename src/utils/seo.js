@@ -58,6 +58,7 @@ const SEO = ({
         <Head>
             {/* normal */}
             <title>{outputData.title}</title>
+            <link rel="icon" href={outputData.image} />
             <meta name="keywords" content={outputData.keywords} />
             <meta name="description" content={outputData.description} />
 
