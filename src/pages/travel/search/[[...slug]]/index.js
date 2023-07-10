@@ -153,15 +153,15 @@ const search = () => {
     const typeHandlers = {
         activity: {
             handler: handleActivityData,
-            bannerImgSrc: 'BannerActivity',
+            // bannerImgSrc: 'BannerActivity',
         },
         scenicSpot: {
             handler: handleScenicSpotData,
-            bannerImgSrc: 'BannerScenicSpot',
+            // bannerImgSrc: 'BannerScenicSpot',
         },
         restaurant: {
             handler: handleRestaurantData,
-            bannerImgSrc: 'BannerRestaurant',
+            // bannerImgSrc: 'BannerRestaurant',
         },
     };
 
@@ -246,6 +246,7 @@ const search = () => {
                 setSelectedValue={setSelectedValue}
             />
             <BannerSearch
+                type={type}
                 bannerTitle={t(`searchConfig.${type}BannerTitle`)}
                 bannerImgSrc={bannerImgSrc}
                 inputValue={inputValue}

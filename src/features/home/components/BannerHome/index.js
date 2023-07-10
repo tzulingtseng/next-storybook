@@ -1,12 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
-import BannerHomeSrc from '@/assets/images/banner-home.png';
+import BannerHomeSrcPC from '@/assets/images/banner-home-pc.jpg';
+import BannerHomeSrcMb from '@/assets/images/banner-home-mb.jpg';
 import breakpoint from '@/lib/constant/breakpoint';
 
 const BannerHomeWrapper = styled.div`
-    width: 100%;
     position: relative;
+    background-position: center;
+    background-size: cover;
     &::after {
         content: '';
         position: absolute;
@@ -21,7 +23,20 @@ const BannerHomeWrapper = styled.div`
 const BannerImg = styled(Image)`
     width: 100%;
     height: auto;
-    display: block;
+    &.show-pc {
+        display: none;
+    }
+    &.show-mb {
+        display: block;
+    }
+    ${breakpoint.mediaMD} {
+        &.show-pc {
+            display: block;
+        }
+        &.show-mb {
+            display: none;
+        }
+    }
 `;
 
 const BannerText = styled.div`
@@ -50,7 +65,18 @@ const BannerText = styled.div`
 const BannerHome = () => {
     return (
         <BannerHomeWrapper>
-            <BannerImg src={BannerHomeSrc} alt="banner" priority={true} />
+            <BannerImg
+                className="show-pc"
+                src={BannerHomeSrcPC}
+                alt="banner"
+                priority={true}
+            />
+            <BannerImg
+                className="show-mb"
+                src={BannerHomeSrcMb}
+                alt="banner"
+                priority={true}
+            />
             <BannerText>
                 <div className="title">探索臺灣之美</div>
                 <div className="title"> 讓我們更親近這片土地</div>
