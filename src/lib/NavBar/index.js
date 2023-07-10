@@ -196,10 +196,10 @@ const HamburgerContainer = styled('div')`
     z-index: 4;
     position: fixed;
     top: 0px;
-    left: 0;
+    left: -60%;
     transition: transform 300ms ease-in-out 0s;
     transform: ${(props) =>
-        !props.$hamburgerContainerShow ? 'translateX(-100%)' : 'translateX(0)'};
+        props.$hamburgerContainerShow ? 'translateX(100%)' : 'translateX(0%)'};
     height: 100vh;
     width: 60%;
     ${breakpoint.mediaXL} {
