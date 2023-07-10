@@ -47,7 +47,7 @@ const PaginationContainer = styled.div`
 
 const StyledCardSkeletonContainer = styled.div`
     display: inline-flex;
-    width: calc(100% - 2rem);
+    width: calc(100% / 2 - 2rem);
     margin: 0 1rem;
     margin-bottom: 1rem;
     > a {
