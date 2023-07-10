@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'next-i18next';
+import breakpoint from '@/lib/constant/breakpoint';
 
 const FooterContainer = styled.div`
     width: 100%;
@@ -20,6 +21,14 @@ const FooterContent = styled.div`
     justify-content: center;
     font-size: ${(props) => props.theme.fontSize.sm};
     color: ${(props) => props.theme.colors.grey2};
+    > br {
+        display: block;
+    }
+    ${breakpoint.mediaXS} {
+        > br {
+            display: none;
+        }
+    }
 `;
 
 const Footer = () => {
@@ -28,7 +37,8 @@ const Footer = () => {
         <FooterContainer>
             <FooterContentBox>
                 <FooterContent>
-                    Copyright © The F2E Taiwan. Source: {t('footerSource')}
+                    Copyright © The F2E Taiwan. <br className="" />
+                    Source: {t('footerSource')}
                 </FooterContent>
             </FooterContentBox>
         </FooterContainer>
