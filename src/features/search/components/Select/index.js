@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 
 const SelectWrapper = styled.div`
-    width: 8rem; // TODO:確認寬度
+    width: 9rem; // TODO:確認寬度
     height: 100%;
     display: inline-block; // TODO:完成後，改成
     position: relative;

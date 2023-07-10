@@ -29,7 +29,7 @@ const StyledTextField = styled.div`
     background-color: ${(props) => props.theme.colors.white};
     border-radius: 0.5rem;
     padding: 0rem 0.75rem;
-    width: 50%;
+    width: 45%;
     height: 100%;
     &:hover {
         border: 1px solid ${(props) => props.theme.colors.grey2};
