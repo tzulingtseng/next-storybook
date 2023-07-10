@@ -14,7 +14,7 @@ const StyledMenuContainer = styled.div`
     display: flex;
     cursor: pointer;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     padding: 1rem 4rem;
     &:hover {
         background: ${(props) => props.theme.colors.grey0};

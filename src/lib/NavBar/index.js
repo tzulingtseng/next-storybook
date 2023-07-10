@@ -176,7 +176,7 @@ const StyledDivider = styled('div')`
         props.$isCatgoryShow === true
             ? 'translateY(0px)'
             : 'translateY(-2.5rem)'};
-    opacity: ${(props) => (props.$isCatgoryShow === true ? 1 : 0)};
+    opacity: ${(props) => (props.$isCatgoryShow ? 1 : 0)};
     transition: opacity 300ms ease-in-out 0s;
 `;
 
@@ -185,7 +185,7 @@ const StyledDivider = styled('div')`
 //         ? 'translateY(0px)'
 //         : 'translateY(-2.5rem)'};
 const ChannelContainer = styled('div')`
-    opacity: ${(props) => (props.$isCatgoryShow === true ? 1 : 0)};
+    opacity: ${(props) => (props.$isCatgoryShow ? 1 : 0)};
     // transition: transform 300ms ease-in-out 0s;
     flex-direction: column;
     align-items: center;
@@ -199,15 +199,13 @@ const HamburgerContainer = styled('div')`
     left: 0;
     transition: transform 300ms ease-in-out 0s;
     transform: ${(props) =>
-        props.$hamburgerContainerShow === true
-            ? 'translateX(0)'
-            : 'translateX(-100%)'};
+        !props.$hamburgerContainerShow ? 'translateX(-100%)' : 'translateX(0)'};
     height: 100vh;
-    width: 100%;
+    width: 60%;
     ${breakpoint.mediaXL} {
         left: -17.5rem;
         transform: ${(props) =>
-            props.$hamburgerContainerShow === true
+            props.$hamburgerContainerShow
                 ? 'translateX(17.5rem)'
                 : 'translateX(0px)'};
         width: 17.5rem;
