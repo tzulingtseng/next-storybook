@@ -137,11 +137,7 @@ const Detail = ({ data }) => {
     return (
         <>
             <ThemeProvider theme={theme}>
-                <SEO
-                    title={t('title')}
-                    keywords={t('keywords')}
-                    description={t('description')}
-                />
+                <SEO title={SpotName} />
                 <NavBar
                     locale={locale}
                     selectedValue={selectedValue}

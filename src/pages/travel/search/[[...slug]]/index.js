@@ -235,11 +235,7 @@ const search = () => {
      */
     return (
         <ThemeProvider theme={theme}>
-            <SEO
-                title={t('title')}
-                keywords={t('keywords')}
-                description={t('description')}
-            />
+            <SEO title={t(`searchConfig.${type}BannerTitle`)} />
             <NavBar
                 locale={locale}
                 selectedValue={selectedValue}
