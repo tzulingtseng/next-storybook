@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import moment from 'moment-timezone';
 
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import transferTime from '@/utils/transferTime';
+import SEO from '@/utils/seo';
 
 import getActivityAPI from '@/api/getActivityAPI';
 import getScenicSpotAPI from '@/api/getScenicSpotAPI';
@@ -16,7 +18,9 @@ import NavBar from '@/lib/NavBar';
 import Footer from '@/components/Footer';
 import Container from '@/components/Container';
 import TransportInfo from '@/features/detail/components/TransportInfo';
+import convertGoogleDriveURL from '@/utils/convertGoogleDriveURL';
 import breakpoint from '@/lib/constant/breakpoint';
+import NoImage from '@/components/NoImage';
 
 const InfoContainer = styled('div')`
     margin-top: 3rem;
@@ -38,14 +42,20 @@ const InfoBox = styled('div')`
 `;
 
 const InfoImageContainer = styled('div')`
+    position: relative;
     overflow: hidden;
     width: 100%;
     border-radius: 1rem;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
     img {
         width: 100%;
         height: 100%;
         display: block;
         object-fit: cover;
+        &:hover {
+            transform: scale(1.2);
+            transition: transform 0.5s;
+        }
     }
     ${breakpoint.mediaSM} {
         width: 50%;
@@ -80,14 +90,18 @@ const IntroContainer = styled('div')`
     > .leaflet-container {
         width: 100%;
         height: 30rem;
+        border-radius: 1rem;
+        box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
     }
 `;
 
 const MapContainer = styled('div')``;
 
 const Detail = ({ data }) => {
-    const { locale } = useRouter();
+    const router = useRouter();
+    const { locale, push } = useRouter();
     const [selectedValue, setSelectedValue] = useState(locale);
+    const [selectLang, setSelectLang] = useState(false);
     const { t } = useTranslation('common');
     const {
         QueryType,
@@ -96,8 +110,7 @@ const Detail = ({ data }) => {
         // Location,
         Description,
         // DescriptionDetail,
-        OpenDay,
-        OpenTime,
+        formattedTime,
         // ParkingPosition,
         Phone,
         Picture,
@@ -112,24 +125,35 @@ const Detail = ({ data }) => {
         // ZipCode,
     } = data.detailData;
 
+    let convertImgUrl = convertGoogleDriveURL(Picture.PictureUrl1);
+
+    // http://localhost:3000/en/travel/detail/activity?id=C2_315080000H_502349
+    useEffect(() => {
+        router.push(`/travel/detail/${QueryType}?id=${SpotID}`, undefined, {
+            locale: selectedValue,
+        });
+    }, [selectedValue]);
+
     return (
         <>
             <ThemeProvider theme={theme}>
+                <SEO title={SpotName} />
                 <NavBar
                     locale={locale}
                     selectedValue={selectedValue}
                     setSelectedValue={setSelectedValue}
+                    selectLang={selectLang}
                 />
                 <Container>
                     <InfoContainer>
-                        <InfoTitle>
-                            {t(`${SpotID}.titleName`, {
-                                ns: `${QueryType}Data`,
-                            })}
-                        </InfoTitle>
+                        <InfoTitle>{SpotName}</InfoTitle>
                         <InfoBox>
                             <InfoImageContainer>
-                                <img src={Picture.PictureUrl1} alt={SpotName} />
+                                {convertImgUrl ? (
+                                    <img src={convertImgUrl} alt={SpotName} />
+                                ) : (
+                                    <NoImage />
+                                )}
                             </InfoImageContainer>
                             <InfoDetailContainer>
                                 <InfoDetailTitle>
@@ -146,31 +170,23 @@ const Detail = ({ data }) => {
                                 <InfoDetailItem>
                                     {t('detailConfig.address')}
                                 </InfoDetailItem>
-                                <div>
-                                    {Address
-                                        ? t(`${SpotID}.address`, {
-                                              ns: `${QueryType}Data`,
-                                          })
-                                        : t('detailConfig.moreDetails')}
-                                </div>
-                                {/* <InfoDetailItem>
+                                <div>{Address ? Address : '詳見官網'}</div>
+                                <InfoDetailItem>
                                     {t('detailConfig.openTime')}
                                 </InfoDetailItem>
                                 <div>
-                                    {OpenDay === '全天候開放'
-                                        ? t('detailConfig.openAllDay')
-                                        : OpenTime}
-                                </div> */}
+                                    {formattedTime === 'allDay'
+                                        ? t('carouselConfig.allDay')
+                                        : formattedTime === 'moreDetails'
+                                        ? t('carouselConfig.moreDetails')
+                                        : formattedTime}
+                                </div>
                             </InfoDetailContainer>
                         </InfoBox>
                     </InfoContainer>
                     <IntroContainer>
                         <InfoTitle>{t('detailConfig.introTitle')}</InfoTitle>
-                        <div>
-                            {t(`${SpotID}.description`, {
-                                ns: `${QueryType}Data`,
-                            })}
-                        </div>
+                        <div>{Description}</div>
                         <InfoTitle>{t('detailConfig.mapTitle')}</InfoTitle>
                         <TransportInfo position={Position} />
                     </IntroContainer>
@@ -197,33 +213,28 @@ export async function getServerSideProps({ params, query, locale }) {
             });
             if (responseData?.status === 'success') {
                 // handle success (取得觀光活動資料)
-                // console.log('responseData?.data', responseData?.data);
+                let data = responseData?.data[0];
+
+                let transferedTime = transferTime(
+                    data?.OpenTime,
+                    data?.StartTime,
+                    data?.EndTime
+                );
+
                 detailData = {
                     QueryType: type,
-                    Address: responseData?.data[0]?.Address ?? null,
-                    // City: responseData?.data[0]?.City ?? null,
-                    // Location: responseData?.data[0]?.Location ?? null,
-                    Description:
-                        responseData?.data[0]?.Description ?? DescriptionDetail,
-                    OpenDay: responseData?.data[0]?.OpenTime ?? null,
-                    OpenTime:
-                        moment(
-                            responseData?.data[0]?.StartTime,
-                            moment.ISO_8601
-                        )
-                            .tz('Asia/Taipei')
-                            .format('YYYY-MM-DD') +
-                        ' ~ ' +
-                        moment(responseData?.data[0]?.EndTime, moment.ISO_8601)
-                            .tz('Asia/Taipei')
-                            .format('YYYY-MM-DD'),
-                    Phone: responseData?.data[0]?.Phone ?? null,
-                    Picture: responseData?.data[0]?.Picture ?? null,
-                    Position: responseData?.data[0]?.Position ?? null,
-                    SpotID: responseData?.data[0]?.ActivityID ?? null,
-                    SpotName: responseData?.data[0]?.ActivityName ?? null,
-                    SrcUpdateTime: responseData?.data[0]?.SrcUpdateTime ?? null,
-                    UpdateTime: responseData?.data[0]?.UpdateTime ?? null,
+                    Address: data?.Address ?? null,
+                    // City: data?.City ?? null,
+                    // Location: data?.Location ?? null,
+                    Description: data?.Description ?? DescriptionDetail,
+                    formattedTime: transferedTime,
+                    Phone: data?.Phone ?? null,
+                    Picture: data?.Picture ?? null,
+                    Position: data?.Position ?? null,
+                    SpotID: data?.ActivityID ?? null,
+                    SpotName: data?.ActivityName ?? null,
+                    SrcUpdateTime: data?.SrcUpdateTime ?? null,
+                    UpdateTime: data?.UpdateTime ?? null,
                 };
             } else {
                 // handle error (後端錯誤) -> not found page(404 page)
@@ -240,35 +251,28 @@ export async function getServerSideProps({ params, query, locale }) {
             });
             if (responseData?.status === 'success') {
                 // handle success (取得觀光活動資料)
+                let data = responseData?.data[0];
+
+                let transferedTime = transferTime(
+                    data?.OpenTime,
+                    data?.StartTime,
+                    data?.EndTime
+                );
+
                 detailData = {
                     QueryType: type,
-                    Address: responseData?.data[0]?.Address ?? null,
-                    // City: responseData?.data[0]?.City ?? null,
-                    // Location: responseData?.data[0]?.Location ?? null,
-                    Description: responseData?.data[0]?.Description ?? null,
-                    OpenDay: responseData?.data[0]?.OpenTime,
-                    OpenTime:
-                        responseData?.data[0]?.OpenTime ??
-                        moment(
-                            responseData?.data[0]?.StartTime,
-                            moment.ISO_8601
-                        )
-                            .tz('Asia/Taipei')
-                            .format('YYYY-MM-DD') +
-                            ' ~ ' +
-                            moment(
-                                responseData?.data[0]?.EndTime,
-                                moment.ISO_8601
-                            )
-                                .tz('Asia/Taipei')
-                                .format('YYYY-MM-DD'),
-                    Phone: responseData?.data[0]?.Phone ?? null,
-                    Picture: responseData?.data[0]?.Picture ?? null,
-                    Position: responseData?.data[0]?.Position ?? null,
-                    SpotID: responseData?.data[0]?.ScenicSpotID ?? null,
-                    SpotName: responseData?.data[0]?.ScenicSpotName ?? null,
-                    SrcUpdateTime: responseData?.data[0]?.SrcUpdateTime ?? null,
-                    UpdateTime: responseData?.data[0]?.UpdateTime ?? null,
+                    Address: data?.Address ?? null,
+                    // City: data?.City ?? null,
+                    // Location: data?.Location ?? null,
+                    Description: data?.Description ?? null,
+                    formattedTime: transferedTime,
+                    Phone: data?.Phone ?? null,
+                    Picture: data?.Picture ?? null,
+                    Position: data?.Position ?? null,
+                    SpotID: data?.ScenicSpotID ?? null,
+                    SpotName: data?.ScenicSpotName ?? null,
+                    SrcUpdateTime: data?.SrcUpdateTime ?? null,
+                    UpdateTime: data?.UpdateTime ?? null,
                 };
             } else {
                 // handle error (後端錯誤) -> not found page(404 page)
@@ -285,35 +289,28 @@ export async function getServerSideProps({ params, query, locale }) {
             });
             if (responseData?.status === 'success') {
                 // handle success (取得觀光活動資料)
+                let data = responseData?.data[0];
+
+                let transferedTime = transferTime(
+                    data?.OpenTime,
+                    data?.StartTime,
+                    data?.EndTime
+                );
+
                 detailData = {
                     QueryType: type,
-                    Address: responseData?.data[0]?.Address ?? null,
-                    // City: responseData?.data[0]?.City ?? null,
-                    // Location: responseData?.data[0]?.Location ?? null,
-                    Description: responseData?.data[0]?.Description ?? null,
-                    OpenDay: responseData?.data[0]?.OpenTime,
-                    OpenTime:
-                        responseData?.data[0]?.OpenTime ??
-                        moment(
-                            responseData?.data[0]?.StartTime,
-                            moment.ISO_8601
-                        )
-                            .tz('Asia/Taipei')
-                            .format('YYYY-MM-DD') +
-                            ' ~ ' +
-                            moment(
-                                responseData?.data[0]?.EndTime,
-                                moment.ISO_8601
-                            )
-                                .tz('Asia/Taipei')
-                                .format('YYYY-MM-DD'),
-                    Phone: responseData?.data[0]?.Phone ?? null,
-                    Picture: responseData?.data[0]?.Picture ?? null,
-                    Position: responseData?.data[0]?.Position ?? null,
-                    SpotID: responseData?.data[0]?.RestaurantID ?? null,
-                    SpotName: responseData?.data[0]?.RestaurantName ?? null,
-                    SrcUpdateTime: responseData?.data[0]?.SrcUpdateTime ?? null,
-                    UpdateTime: responseData?.data[0]?.UpdateTime ?? null,
+                    Address: data?.Address ?? null,
+                    // City: data?.City ?? null,
+                    // Location: data?.Location ?? null,
+                    Description: data?.Description ?? null,
+                    formattedTime: transferedTime,
+                    Phone: data?.Phone ?? null,
+                    Picture: data?.Picture ?? null,
+                    Position: data?.Position ?? null,
+                    SpotID: data?.RestaurantID ?? null,
+                    SpotName: data?.RestaurantName ?? null,
+                    SrcUpdateTime: data?.SrcUpdateTime ?? null,
+                    UpdateTime: data?.UpdateTime ?? null,
                 };
             } else {
                 // handle error (後端錯誤) -> not found page(404 page)

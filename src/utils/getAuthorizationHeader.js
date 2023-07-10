@@ -1,10 +1,10 @@
 import jsSHA from 'jssha';
-import { TDXKey, TDXId } from '@/config/';
+import { TDXKey, TDXId } from '@/config/config';
 
 /**
  * Utils: 取得 API 驗證
  * @param  {...any} args
- * 
+ *
  * @return {object}
  */
 export function getAuthorizationHeader() {

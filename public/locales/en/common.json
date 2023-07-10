@@ -1,83 +1,66 @@
 {
-    "title": "Homepage",
+    "title": "TaiFun Taiwan Travel",
+    "keywords": "Taiwan - Travel - Attractions - Activities - FoodTaiwan - TaiFun",
+    "description": "TaiFun provides all the information about dining, drinking, sightseeing, and leisure activities at the best travel destinations in Taiwan.",
     "subTitle": "ScenicSpot × Activity × Food",
     "headerLogo": "/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FTaiFun.a6ae6503.png&w=256&q=75",
     "navButtons": {
         "outline": "Subscribe",
         "filled": "Donate"
     },
-    "type": [
-        "ScenicSpot",
-        "Activity",
-        "Food"
+    "footerSource": "MOTC TDX Service Platform",
+    "categoryType": [
+        {
+            "type": "scenicSpot",
+            "name": "ScenicSpot"
+        },
+        {
+            "type": "activity",
+            "name": "Activity"
+        },
+        {
+            "type": "restaurant",
+            "name": "Food"
+        }
     ],
     "menuConfig": [
         [
             {
                 "id": "menuTitle_01",
-                "text": "Latest",
+                "text": "Explore ScenicSpot",
+                "url": "/travel/search?type=scenicSpot",
                 "divider": true
             }
         ],
         [
             {
                 "id": "menuTitle_02",
-                "text": "In-depth Projects"
-            },
-            {
-                "id": "menuTitle_03",
-                "text": "Issues",
-                "children": [
-                    {
-                        "id": "menuSubTitle_01",
-                        "text": "Environmental Sustainability"
-                    },
-                    {
-                        "id": "menuSubTitle_02",
-                        "text": "Economic Industries"
-                    },
-                    {
-                        "id": "menuSubTitle_03",
-                        "text": "Cultural Life"
-                    }
-                ]
-            },
-            {
-                "id": "menuTitle_04",
-                "text": "Reviews",
-                "children": [
-                    {
-                        "id": "menuSubTitle_04",
-                        "text": "Book Excerpts and Reviews"
-                    },
-                    {
-                        "id": "menuSubTitle_05",
-                        "text": "Reader Reviews"
-                    }
-                ],
+                "text": "Explore Activity",
+                "url": "/travel/search?type=activity",
                 "divider": true
             }
         ],
         [
             {
-                "id": "menuTitle_05",
-                "text": "About Us"
-            },
-            {
-                "id": "menuTitle_06",
-                "text": "Impact Report"
-            },
-            {
-                "id": "menuTitle_07",
-                "text": "Reporter Open Lab",
+                "id": "menuTitle_03",
+                "text": "Explore Food",
+                "url": "/travel/search?type=restaurant",
                 "divider": true
             }
         ]
     ],
     "langOptions": {
-        "zhHant": "ch",
-        "en": "en",
-        "placeholder": "ch"
+        "options": [
+            {
+                "value": "zhHant",
+                "label": "中"
+            },
+            {
+                "value": "en",
+                "label": "En"
+            }
+        ],
+        "placeholder": "中"
     },
     "searchConfig": {
         "searchResults": "Search Results",
@@ -85,7 +68,7 @@
         "area": ", Area:",
         "total": ", A total of",
         "records": "records.",
-        "noResults": "There are currently no matching results.",
+        "noResults": "No matching results.",
         "noData": "none",
         "searchKeyword": "Enter keyword",
         "searchButton": "search",
@@ -99,7 +82,9 @@
         "address": "Address:",
         "moreDetails": "See Official Website",
         "introTitle": "Introduce",
-        "mapTitle": "Map"
+        "mapTitle": "Map",
+        "openTime": "Opening:",
+        "allDay": "Open 24/7"
     },
     "carouselConfig": {
         "hotActivity": "Hot Activities",
@@ -110,6 +95,101 @@
         "time": "Open 24/7.",
         "buttonText": "View Details",
         "noImg": "No photo available.",
-        "openTime": "Opening"
+        "openTime": "Opening",
+        "allDay": "Open 24/7"
+    },
+    "countyOptions": {
+        "area": [
+            {
+                "id": 1,
+                "name": "Taipei City"
+            },
+            {
+                "id": 2,
+                "name": "Keelung City"
+            },
+            {
+                "id": 3,
+                "name": "New Taipei City"
+            },
+            {
+                "id": 4,
+                "name": "Lienchiang County"
+            },
+            {
+                "id": 5,
+                "name": "Yilan County"
+            },
+            {
+                "id": 6,
+                "name": "Hsinchu City"
+            },
+            {
+                "id": 7,
+                "name": "Hsinchu County"
+            },
+            {
+                "id": 8,
+                "name": "Taoyuan City"
+            },
+            {
+                "id": 9,
+                "name": "Miaoli County"
+            },
+            {
+                "id": 10,
+                "name": "Taichung City"
+            },
+            {
+                "id": 11,
+                "name": "Changhua County"
+            },
+            {
+                "id": 12,
+                "name": "Nantou County"
+            },
+            {
+                "id": 13,
+                "name": "Chiayi City"
+            },
+            {
+                "id": 14,
+                "name": "Chiayi County"
+            },
+            {
+                "id": 15,
+                "name": "Yunlin County"
+            },
+            {
+                "id": 16,
+                "name": "Tainan City"
+            },
+            {
+                "id": 17,
+                "name": "Kaohsiung City"
+            },
+            {
+                "id": 18,
+                "name": "Penghu County"
+            },
+            {
+                "id": 19,
+                "name": "Kinmen County"
+            },
+            {
+                "id": 20,
+                "name": "Pingtung County"
+            },
+            {
+                "id": 21,
+                "name": "Taitung County"
+            },
+            {
+                "id": 22,
+                "name": "Hualien County"
+            }
+        ],
+        "placeholder": "Select county",
+        "all": "All"
     }
 }

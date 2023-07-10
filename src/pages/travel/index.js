@@ -1,12 +1,12 @@
 // import Image from 'next/image';
-import React, { useState, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import styled, { css } from 'styled-components';
-import Image from 'next/image';
-import BannerHomeSrc from '@/assets/images/banner-home.png';
 
 import { Inter } from 'next/font/google';
 import path from 'path';
 import fs from 'fs/promises';
+
+import SEO from '@/utils/seo';
 
 import Link from 'next/link';
 import ThemeProvider from '@/lib/ThemeProvider';
@@ -19,69 +19,59 @@ import Meta from '@/lib/Card/Meta';
 import Container from '@/components/Container';
 import Footer from '@/components/Footer';
 import TypeCarouselCards from '@/components/TypeCarouselCards';
-import Select from '@/lib/Select';
+import BannerHome from '@/features/home/components/BannerHome';
 
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-import useGetActivity from '@/features/home/hooks/useGetActivity';
-import useGetScenicSpot from '@/features/home/hooks/useGetScenicSpot';
-import useGetRestaurant from '@/features/home/hooks/useGetRestaurant';
+import getScenicSpotAPI from '@/api/getScenicSpotAPI';
+import getActivityAPI from '@/api/getActivityAPI';
+import getRestaurantAPI from '@/api/getRestaurantAPI';
 
-const BannerHome = styled(Image)`
-    width: 100%;
-    height: auto;
-`;
-
-const Travel = (props) => {
+const Travel = ({
+    scenicSpotData,
+    scenicSpotStatus,
+    activityData,
+    activityStatus,
+    restaurantData,
+    restaurantStatus,
+}) => {
     const [isLoading, setIsLoading] = useState(true);
-    const { locale } = useRouter();
+    const { locale, push } = useRouter();
     const [selectedValue, setSelectedValue] = useState(locale);
+    const [selectLang, setSelectLang] = useState(true);
     const { t } = useTranslation('common');
-
-    const {
-        status: activityStatus,
-        data: activityData,
-        error: activityError,
-    } = useGetActivity({ top: 10, filter: 'Picture/PictureUrl1 ne null' });
-
-    const {
-        status: scenicSpotStatus,
-        data: scenicSpotData,
-        error: scenicSpotError,
-    } = useGetScenicSpot({ top: 10, filter: 'Picture/PictureUrl1 ne null' });
-
-    const {
-        status: restaurantStatus,
-        data: restaurantData,
-        error: restaurantError,
-    } = useGetRestaurant({ top: 10, filter: 'Picture/PictureUrl1 ne null' });
+    useEffect(() => {
+        push('/travel', undefined, { locale: selectedValue });
+    }, [selectedValue]);
 
     return (
         <>
             <ThemeProvider theme={theme}>
+                <SEO
+                    title={t('title')}
+                    keywords={t('keywords')}
+                    description={t('description')}
+                />
                 <NavBar
                     locale={locale}
                     selectedValue={selectedValue}
                     setSelectedValue={setSelectedValue}
+                    selectLang={selectLang}
                 />
-                {/* <BannerHome
-                    src={BannerHomeSrc}
-                    alt="首頁 banner"
-                    priority={true}
-                /> */}
+                <BannerHome />
                 <Container>
-                    <TypeCarouselCards
-                        lists={activityData}
-                        type="activity"
-                        status={activityStatus}
-                    />
-
                     <TypeCarouselCards
                         lists={scenicSpotData}
                         type="scenicSpot"
                         status={scenicSpotStatus}
+                    />
+
+                    <TypeCarouselCards
+                        lists={activityData}
+                        type="activity"
+                        status={activityStatus}
                     />
 
                     <TypeCarouselCards
@@ -90,14 +80,26 @@ const Travel = (props) => {
                         status={restaurantStatus}
                     />
                 </Container>
-                {/* <Footer></Footer> */}
+                <Footer />
             </ThemeProvider>
         </>
     );
 };
 
 export async function getStaticProps({ locale }) {
-    return {
+    const scenicSpotData = await getScenicSpotAPI({
+        top: 10,
+        filter: 'Picture/PictureUrl1 ne null',
+    });
+    const activityData = await getActivityAPI({
+        top: 10,
+        filter: 'Picture/PictureUrl1 ne null',
+    });
+    const restaurantData = await getRestaurantAPI({
+        top: 10,
+        filter: 'Picture/PictureUrl1 ne null',
+    });
+    const returnData = {
         props: {
             ...(await serverSideTranslations(locale, [
                 'api_mapping',
@@ -106,8 +108,16 @@ export async function getStaticProps({ locale }) {
                 'scenicSpotData',
                 'restaurantData',
             ])),
+            scenicSpotData: scenicSpotData.data,
+            scenicSpotStatus: scenicSpotData.status,
+            activityData: activityData.data,
+            activityStatus: activityData.status,
+            restaurantData: restaurantData.data,
+            restaurantStatus: restaurantData.status,
         },
+        revalidate: 100,
     };
+    return returnData;
 }
 
 export default Travel;

@@ -25,6 +25,7 @@ const SelectBoxWrapper = styled.div`
     width: 100%;
     margin-bottom: 0.25rem;
     padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
     background-color: ${(props) => props.theme.colors.white};
     z-index: 1;
     position: relative;
@@ -35,6 +36,7 @@ const SelectBoxWrapper = styled.div`
                 : props.theme.colors.grey3};
     &:hover {
         border: 1px solid ${(props) => props.theme.colors.grey2};
+        border-radius: 0.5rem;
     }
 `;
 
@@ -54,11 +56,13 @@ const SelectItems = styled.div`
     opacity: ${(props) => (props.$isOpen ? 1 : 0)};
     width: 100%;
     height: auto;
+    border-radius: 0.5rem;
     border: 1px solid ${(props) => props.theme.colors.grey3};
     background-color: ${(props) => props.theme.colors.white};
     box-shadow: rgba(0, 0, 0, 0.12) 0px 3px 6px -4px,
         rgba(0, 0, 0, 0.08) 0px 6px 16px 0px,
         rgba(0, 0, 0, 0.05) 0px 9px 28px 8px;
+    overflow: hidden;
     li {
         width: 100%;
         padding: 0.5rem 0.75rem;
@@ -108,7 +112,11 @@ const Select = ({
                 <SelectBox>
                     <div>
                         {selectedValue
-                            ? t(`langOptions.${selectedValue}`)
+                            ? t('langOptions.options', {
+                                  returnObjects: true,
+                              }).find(
+                                  (option) => option.value === selectedValue
+                              ).label
                             : t(`langOptions.placeholder`)}
                     </div>
                     <SelectIcon
@@ -121,26 +129,29 @@ const Select = ({
             {/* options */}
             <SelectItems $isOpen={open}>
                 <ul>
-                    {options &&
-                        options.map((item, i) => (
-                            <li
-                                role="option"
-                                key={i}
-                                value={item.value}
-                                onClick={(e) => {
-                                    changeLanguage(e);
-                                }}
-                                // TODO:優化寫法，placeholder 的選項需亮色
-                                style={{
-                                    color:
-                                        selectedValue === item.value
-                                            ? theme.colors.primary
-                                            : theme.colors.black,
-                                }}
-                            >
-                                {t(`langOptions.${item.value}`)}
-                            </li>
-                        ))}
+                    {t('langOptions.options', { returnObjects: true }).map(
+                        (item, i) => {
+                            return (
+                                <li
+                                    role="option"
+                                    key={i}
+                                    value={item.value}
+                                    onClick={(e) => {
+                                        changeLanguage(e);
+                                    }}
+                                    // TODO:優化寫法，placeholder 的選項需亮色
+                                    style={{
+                                        color:
+                                            selectedValue === item.value
+                                                ? theme.colors.primary
+                                                : theme.colors.black,
+                                    }}
+                                >
+                                    {item.label}
+                                </li>
+                            );
+                        }
+                    )}
                 </ul>
             </SelectItems>
         </SelectWrapper>

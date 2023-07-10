@@ -18,13 +18,13 @@ const Icon = ({ icon, ...props }) => {
 
 Icon.propTypes = {
     icon: propTypes.string,
-    size: propTypes.number,
+    size: propTypes.string,
     style: propTypes.object,
 };
 
 Icon.defaultProps = {
     icon: '',
-    size: 16,
+    size: '1rem',
     style: {},
 };
 

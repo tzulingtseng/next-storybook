@@ -1,10 +1,11 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useRef, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import Skeleton from 'react-loading-skeleton';
 import moment from 'moment-timezone';
 import Link from 'next/link';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
+
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
@@ -14,12 +15,19 @@ import Meta from '@/lib/Card/Meta';
 import Button from '@/lib/Button';
 
 import { useTranslation } from 'next-i18next';
+import transferTime from '@/utils/transferTime';
+import convertGoogleDriveURL from '@/utils/convertGoogleDriveURL';
 
 import NoImage from '@/components/NoImage';
 import CardSkeleton from '../CardSkeleton';
 import breakpoint from '@/lib/constant/breakpoint';
 
-const CarouselContainer = styled.div``;
+const CarouselContainer = styled.div`
+    .swiper-button-prev,
+    .swiper-button-next {
+        display: none;
+    }
+`;
 
 const CarouselBox = styled(Swiper)`
     padding-bottom: 2.5rem;
@@ -53,6 +61,11 @@ const StyledTitleLink = styled.div`
     }
 `;
 
+const SwiperContainer = styled.div`
+    position: relative;
+    width: 100%;
+`;
+
 const StyledSwiperSlide = styled(SwiperSlide)`
     width: 60%;
     margin-right: 1rem;
@@ -80,7 +93,48 @@ const StyledButton = styled(Button)`
     margin-bottom: 1rem;
     font-size: ${(props) => props.theme.fontSize.sm};
 `;
+
+const SwiperArrowButton = styled.div`
+    ${breakpoint.mediaMD} {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1rem;
+        font-family: swiper-icons;
+        cursor: pointer;
+        color: ${(props) => props.theme.colors.black};
+        width: 2.5rem;
+        height: 2.5rem;
+        background-color: ${(props) => props.theme.colors.white};
+        box-shadow: 0 4px 10px 0 rgba(60, 64, 67, 0.2);
+        border-radius: 100%;
+        justify-content: center;
+        align-items: center;
+        z-index: 1;
+        &::after {
+            position: relative;
+        }
+        &.button-prev {
+            display: ${(props) => (props.$isBeginning ? 'none' : 'flex')};
+            left: -3.5rem;
+            &::after {
+                content: 'prev';
+            }
+        }
+        &.button-next {
+            display: ${(props) => (props.$isEnd ? 'none' : 'flex')};
+            right: -3.5rem;
+            &::after {
+                content: 'next';
+            }
+        }
+    }
+`;
+
 const TypeCarouselCards = ({ status, type, lists }) => {
+    const swiperRef = useRef(null);
+    const [isBeginning, setIsBeginning] = useState(true);
+    const [isEnd, setisEnd] = useState(false);
     let titleName;
     switch (type) {
         case 'activity':
@@ -95,131 +149,188 @@ const TypeCarouselCards = ({ status, type, lists }) => {
     }
 
     const swiperParams = {
-        slidesPerView: 'auto', // 根据容器宽度自动调整每页显示的滑块数量
-        // spaceBetween: '1rem', // 滑块之间的间距
-        modules: [Pagination],
-        navigation: false,
+        slidesPerView: 'auto', // 根據容器寬度自動調整每頁顯示的 slide 數量
+        modules: [Navigation, Pagination],
         pagination: { clickable: true, dynamicBullets: true },
+        // navigation: {
+        //     nextEl: `#swiper_control_${type} .button-next`,
+        //     preEl: `#swiper_control_${type} .button-prev`,
+        // },
+        navigation: true,
+        observer: true,
+        observeParents: true,
     };
+
     const { t } = useTranslation('common');
 
     return (
         <>
-            <CarouselContainer>
-                <StyledTitleContainer>
-                    {/* <StyledTitleText>{titleName}</StyledTitleText> */}
-                    <StyledTitleText>
-                        {t(`carouselConfig.${titleName}`)}
-                    </StyledTitleText>
-                    <StyledTitleLink>
-                        <Link href={`/travel/search?type=${type}`}>
-                            {' '}
-                            {t(`carouselConfig.more`)}
-                        </Link>
-                    </StyledTitleLink>
-                </StyledTitleContainer>
-                {/* TODO:優化寫法 */}
-                <CarouselBox {...swiperParams}>
-                    {(status === undefined ||
-                        status === 'loading' ||
-                        status === 'cancel') &&
-                        Array(10)
-                            .fill(0)
-                            .map((item, i) => (
-                                <StyledSwiperSlide key={i}>
-                                    <CardSkeleton />
-                                </StyledSwiperSlide>
-                            ))}
-                    {status === 'success' &&
-                        lists &&
-                        lists.map((item) => {
-                            let PictureUrl1 =
-                                item?.Picture?.PictureUrl1 ?? null;
-                            let formattedTime =
-                                moment(item?.StartTime, moment.ISO_8601)
-                                    .tz('Asia/Taipei')
-                                    .format('YYYY-MM-DD') +
-                                ' ~ ' +
-                                moment(item?.EndTime, moment.ISO_8601)
-                                    .tz('Asia/Taipei')
-                                    .format('YYYY-MM-DD');
-                            let time = item?.OpenTime;
-                            let openTime = time
-                                ? t('carouselConfig.moreDetails')
-                                : formattedTime;
-                            let Address = item?.Address ?? null;
-                            let itemId, type;
-                            if (item?.ActivityID) {
-                                itemId = item.ActivityID;
-                                // itemName = item.ActivityName;
-                                type = 'activity';
-                            } else if (item?.ScenicSpotID) {
-                                itemId = item.ScenicSpotID;
-                                // itemName = item.ScenicSpotName;
-                                type = 'scenicSpot';
-                            } else if (item?.RestaurantID) {
-                                itemId = item.RestaurantID;
-                                // itemName = item.RestaurantName;
-                                type = 'restaurant';
-                            }
-                            return (
-                                <StyledSwiperSlide key={itemId}>
-                                    <Link
-                                        href={`/travel/detail/${type}?id=${itemId}`}
-                                    >
-                                        <Card
-                                            cover={
-                                                PictureUrl1 ? (
-                                                    <img
-                                                        src={PictureUrl1}
-                                                        alt="觀光"
-                                                    />
-                                                ) : (
-                                                    <NoImage />
-                                                )
-                                            }
-                                            children={
-                                                <Meta
-                                                    // avatarUrl={item.Picture.PictureUrl1}
-                                                    title={t(
-                                                        `${itemId}.titleName`,
-                                                        { ns: `${type}Data` }
-                                                    )}
-                                                    description={openTime}
-                                                    address={
-                                                        Address
-                                                            ? t(
-                                                                  `${itemId}.address`,
-                                                                  {
-                                                                      ns: `${type}Data`,
-                                                                  }
-                                                              )
-                                                            : t(
-                                                                  `carouselConfig.moreDetails`
-                                                              )
-                                                    }
-                                                    text={t(
-                                                        `carouselConfig.openTime`
-                                                    )}
-                                                    icon="fa-solid fa-location-dot"
-                                                />
-                                            }
-                                            footer={
-                                                <Actions>
-                                                    <StyledButton variant="outlined">
-                                                        {t(
-                                                            `carouselConfig.buttonText`
-                                                        )}
-                                                    </StyledButton>
-                                                </Actions>
-                                            }
-                                        ></Card>
-                                    </Link>
-                                </StyledSwiperSlide>
+            <SwiperContainer id={`swiper_control_${type}`}>
+                <CarouselContainer>
+                    <StyledTitleContainer>
+                        <StyledTitleText>
+                            {t(`carouselConfig.${titleName}`)}
+                        </StyledTitleText>
+                        <StyledTitleLink>
+                            <Link href={`/travel/search?type=${type}`}>
+                                {' '}
+                                {t(`carouselConfig.more`)}
+                            </Link>
+                        </StyledTitleLink>
+                    </StyledTitleContainer>
+                    {/* TODO:優化寫法 */}
+                    <CarouselBox
+                        ref={swiperRef}
+                        {...swiperParams}
+                        onRealIndexChange={() => {
+                            setIsBeginning(
+                                swiperRef.current.swiper.isBeginning
                             );
-                        })}
-                </CarouselBox>
-            </CarouselContainer>
+                            setisEnd(swiperRef.current.swiper.isEnd);
+                        }}
+                    >
+                        {(status === undefined ||
+                            status === 'loading' ||
+                            status === 'cancel') &&
+                            Array(10)
+                                .fill(0)
+                                .map((item, i) => (
+                                    <StyledSwiperSlide key={i}>
+                                        <CardSkeleton />
+                                    </StyledSwiperSlide>
+                                ))}
+                        {status === 'success' &&
+                            lists &&
+                            lists.map((item, i) => {
+                                const {
+                                    Picture: { PictureUrl1 },
+                                    OpenTime,
+                                    StartTime,
+                                    EndTime,
+                                    ActivityID,
+                                    ScenicSpotID,
+                                    RestaurantID,
+                                    Address,
+                                } = item;
+
+                                let transferedTime = transferTime(
+                                    OpenTime,
+                                    StartTime,
+                                    EndTime
+                                );
+                                let convertImgUrl =
+                                    convertGoogleDriveURL(PictureUrl1);
+
+                                let itemId, type;
+                                if (item?.ActivityID) {
+                                    itemId = item.ActivityID;
+                                    type = 'activity';
+                                } else if (item?.ScenicSpotID) {
+                                    itemId = item.ScenicSpotID;
+                                    type = 'scenicSpot';
+                                } else if (item?.RestaurantID) {
+                                    itemId = item.RestaurantID;
+                                    type = 'restaurant';
+                                }
+
+                                return (
+                                    <StyledSwiperSlide key={itemId}>
+                                        <Link
+                                            href={`/travel/detail/${type}?id=${itemId}`}
+                                        >
+                                            <Card
+                                                cover={
+                                                    convertImgUrl ? (
+                                                        <img
+                                                            src={convertImgUrl}
+                                                            alt="觀光"
+                                                        />
+                                                    ) : (
+                                                        <NoImage />
+                                                    )
+                                                }
+                                                badgeNumber={i + 1}
+                                                children={
+                                                    <Meta
+                                                        // avatarUrl={item.Picture.PictureUrl1}
+                                                        title={t(
+                                                            `${itemId}.titleName`,
+                                                            {
+                                                                ns: `${type}Data`,
+                                                            }
+                                                        )}
+                                                        description={
+                                                            transferedTime ===
+                                                            'allDay'
+                                                                ? t(
+                                                                      'carouselConfig.allDay'
+                                                                  )
+                                                                : transferedTime ===
+                                                                  'moreDetails'
+                                                                ? t(
+                                                                      'carouselConfig.moreDetails'
+                                                                  )
+                                                                : transferedTime
+                                                        }
+                                                        address={
+                                                            Address
+                                                                ? t(
+                                                                      `${itemId}.address`,
+                                                                      {
+                                                                          ns: `${type}Data`,
+                                                                      }
+                                                                  )
+                                                                : t(
+                                                                      `carouselConfig.moreDetails`
+                                                                  )
+                                                        }
+                                                        text={t(
+                                                            `carouselConfig.openTime`
+                                                        )}
+                                                        icon="fa-solid fa-location-dot"
+                                                    />
+                                                }
+                                                footer={
+                                                    <Actions>
+                                                        <StyledButton variant="outlined">
+                                                            {t(
+                                                                `carouselConfig.buttonText`
+                                                            )}
+                                                        </StyledButton>
+                                                    </Actions>
+                                                }
+                                            ></Card>
+                                        </Link>
+                                    </StyledSwiperSlide>
+                                );
+                            })}
+                    </CarouselBox>
+                    {/* 下一個箭頭 */}
+                    <SwiperArrowButton
+                        className="button-next"
+                        $isEnd={isEnd}
+                        onClick={() => {
+                            swiperRef.current.swiper.slideNext();
+                            // swiperRef.current.swiper.update();
+                            // setIsBeginning(false);
+                            // setisEnd(swiperRef.current.swiper.isEnd);
+                        }}
+                    ></SwiperArrowButton>
+                    {/* 上一個箭頭 */}
+                    <SwiperArrowButton
+                        className="button-prev"
+                        $isBeginning={isBeginning}
+                        onClick={() => {
+                            swiperRef.current.swiper.slidePrev();
+                            // swiperRef.current.swiper.update();
+                            // setisEnd(false);
+                            // setIsBeginning(
+                            //     swiperRef.current.swiper.isBeginning
+                            // );
+                        }}
+                    ></SwiperArrowButton>
+                </CarouselContainer>
+            </SwiperContainer>
         </>
     );
 };

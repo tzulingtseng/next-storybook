@@ -18,7 +18,7 @@ import MenuItems from '../MenuItems';
 import ButtonClose from '../ButtonClose';
 // import Container from '@/components/Container';
 import breakpoint from '@/lib/constant/breakpoint';
-import Select from '@/lib/Select';
+import Select from '@/components/Select';
 
 import { useTranslation } from 'next-i18next';
 
@@ -30,6 +30,7 @@ const StyledNavBar = styled('header')`
     left: 0;
     right: 0;
     background-color: ${(props) => props.theme.colors.grey1};
+    z-index: 3;
 `;
 
 const HeaderSection = styled.div`
@@ -43,16 +44,11 @@ const HeaderContainer = styled.div`
     position: sticky;
     top: 0px;
     max-width: auto;
-    width: 90%;
+    width: calc(90% + 2rem);
     margin: 0 auto;
     background-color: ${(props) => props.theme.colors.grey1};
     ${breakpoint.mediaMD} {
-        max-width: 64rem;
-        width: 100%;
-    }
-    ,
-    ${breakpoint.mediaLG} {
-        max-width: 75rem;
+        max-width: calc(64rem + 2rem);
         width: 100%;
     }
 `;
@@ -180,19 +176,18 @@ const StyledDivider = styled('div')`
         props.$isCatgoryShow === true
             ? 'translateY(0px)'
             : 'translateY(-2.5rem)'};
-    opacity: ${(props) => (props.$isCatgoryShow === true ? 1 : 0)};
+    opacity: ${(props) => (props.$isCatgoryShow ? 1 : 0)};
     transition: opacity 300ms ease-in-out 0s;
 `;
 
+// transform: ${(props) =>
+//     props.$isCatgoryShow === true
+//         ? 'translateY(0px)'
+//         : 'translateY(-2.5rem)'};
 const ChannelContainer = styled('div')`
-    transform: ${(props) =>
-        props.$isCatgoryShow === true
-            ? 'translateY(0px)'
-            : 'translateY(-2.5rem)'};
-    opacity: ${(props) => (props.$isCatgoryShow === true ? 1 : 0)};
-    transition: transform 300ms ease-in-out 0s;
+    opacity: ${(props) => (props.$isCatgoryShow ? 1 : 0)};
+    // transition: transform 300ms ease-in-out 0s;
     flex-direction: column;
-    -webkit-box-align: center;
     align-items: center;
 `;
 
@@ -201,18 +196,16 @@ const HamburgerContainer = styled('div')`
     z-index: 4;
     position: fixed;
     top: 0px;
-    left: 0;
+    left: -60%;
     transition: transform 300ms ease-in-out 0s;
     transform: ${(props) =>
-        props.$hamburgerContainerShow === true
-            ? 'translateX(0)'
-            : 'translateX(-100%)'};
+        props.$hamburgerContainerShow ? 'translateX(100%)' : 'translateX(0%)'};
     height: 100vh;
-    width: 100%;
+    width: 60%;
     ${breakpoint.mediaXL} {
         left: -17.5rem;
         transform: ${(props) =>
-            props.$hamburgerContainerShow === true
+            props.$hamburgerContainerShow
                 ? 'translateX(17.5rem)'
                 : 'translateX(0px)'};
         width: 17.5rem;
@@ -264,6 +257,14 @@ const LogoLink = styled(Link)`
     display: inline-flex;
     align-items: center;
     margin-right: 1rem;
+    & .logoIcon {
+        width: auto;
+        height: 3.5rem;
+    }
+    & .logoImg {
+        width: auto;
+        height: 1.25rem;
+    }
 `;
 
 const NavBar = ({
@@ -271,6 +272,7 @@ const NavBar = ({
     children,
     selectedValue,
     setSelectedValue,
+    selectLang,
     ...props
 }) => {
     const { t } = useTranslation('common');
@@ -283,29 +285,29 @@ const NavBar = ({
         setHamburgerContainerShow(!hamburgerContainerShow);
     };
 
-    useEffect(() => {
-        const handleScroll = () => {
-            const scrollTop =
-                window.pageYOffset || document.documentElement.scrollTop;
-            const isCatgoryShow = scrollTop < 20;
+    // useEffect(() => {
+    //     const handleScroll = () => {
+    //         const scrollTop =
+    //             window.pageYOffset || document.documentElement.scrollTop;
+    //         const isCatgoryShow = scrollTop < 20;
 
-            setIsCatgoryShow(isCatgoryShow);
+    //         setIsCatgoryShow(isCatgoryShow);
 
-            if (isCatgoryShow) {
-                setIsHeaderShow(true);
-            } else {
-                if (scrollTop > 20) {
-                    setIsHeaderShow(false);
-                }
-            }
-        };
+    //         if (isCatgoryShow) {
+    //             setIsHeaderShow(true);
+    //         } else {
+    //             if (scrollTop > 20) {
+    //                 setIsHeaderShow(false);
+    //             }
+    //         }
+    //     };
 
-        window.addEventListener('scroll', handleScroll);
-        return () => {
-            // 確保滾動事件監聽器被正確移除
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
+    //     window.addEventListener('scroll', handleScroll);
+    //     return () => {
+    //         // 確保滾動事件監聽器被正確移除
+    //         window.removeEventListener('scroll', handleScroll);
+    //     };
+    // }, []);
 
     return (
         <StyledNavBar>
@@ -325,15 +327,17 @@ const NavBar = ({
                                     {/* TODO:svg 切換多國語 */}
                                     <Image
                                         // width={221}
-                                        height={48}
+                                        // height={48}
                                         src={logoIcon}
                                         alt="logo"
+                                        className="logoIcon"
                                     />
                                     <Image
                                         // width={221}
-                                        height={20}
+                                        // height={20}
                                         src={logoImg}
                                         alt="logo text"
+                                        className="logoImg"
                                     />
                                     {/* <img
                                             src={`/_next/static/media/TaiFun.ba21988b.png`}
@@ -345,7 +349,8 @@ const NavBar = ({
                         </BrandWrapper>
                         <IconGroupNav>
                             <div>
-                                <ButtonNav
+                                {/* 訂閱 & 贊助 button */}
+                                {/* <ButtonNav
                                     className={ButtonNavOutline}
                                     $variant="outlined"
                                     $locale={locale}
@@ -358,22 +363,24 @@ const NavBar = ({
                                     $locale={locale}
                                 >
                                     {t('navButtons.filled')}
-                                </ButtonNav>
-                                <Select
-                                    options={[
-                                        {
-                                            value: 'zhHant',
-                                            label: '中',
-                                        },
-                                        {
-                                            value: 'en',
-                                            label: '英',
-                                        },
-                                    ]}
-                                    placeholder="中"
-                                    selectedValue={selectedValue}
-                                    setSelectedValue={setSelectedValue}
-                                />
+                                </ButtonNav> */}
+                                {selectLang && (
+                                    <Select
+                                        // options={[
+                                        //     {
+                                        //         value: 'zhHant',
+                                        //         label: '中',
+                                        //     },
+                                        //     {
+                                        //         value: 'en',
+                                        //         label: '英',
+                                        //     },
+                                        // ]}
+                                        // placeholder="中"
+                                        selectedValue={selectedValue}
+                                        setSelectedValue={setSelectedValue}
+                                    />
+                                )}
                             </div>
                             {/* <IconContainer> */}
                             {/* TODO:how to use svg */}
@@ -427,7 +434,7 @@ const NavBar = ({
                             <Image src={youtubeIcon} alt="youtube" />
                         </a>
                     </SocialIcons>
-                    <HamburgerButtonNav>
+                    {/* <HamburgerButtonNav>
                         <ButtonNav
                             className={ButtonNavOutline}
                             $variant="outlined"
@@ -442,7 +449,7 @@ const NavBar = ({
                         >
                             {t('navButtons.filled')}
                         </ButtonNav>
-                    </HamburgerButtonNav>
+                    </HamburgerButtonNav> */}
                 </HamburgerContainer>
                 {/* </Container> */}
             </HeaderSection>

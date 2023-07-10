@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import styled, { css } from 'styled-components';
-import moment from 'moment-timezone';
 
+import Button from '@/lib/Button';
 import Container from '@/components/Container';
 import CardContainer from '@/components/CardContainer';
 import Pagination from '@/lib/Pagination';
 import CardSkeleton from '@/components/CardSkeleton';
 import breakpoint from '@/lib/constant/breakpoint';
 import { useTranslation } from 'next-i18next';
+import transferTime from '@/utils/transferTime';
+import convertGoogleDriveURL from '@/utils/convertGoogleDriveURL';
 
 const SearchResultsTitle = styled.div`
     width: 100%;
@@ -44,7 +46,8 @@ const PaginationContainer = styled.div`
 `;
 
 const StyledCardSkeletonContainer = styled.div`
-    width: calc(100% - 2rem);
+    display: inline-flex;
+    width: calc(100% / 2 - 2rem);
     margin: 0 1rem;
     margin-bottom: 1rem;
     > a {
@@ -60,22 +63,42 @@ const StyledCardSkeletonContainer = styled.div`
     }
 `;
 
+const StyledEndMsg = styled.div`
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    color: ${(props) => props.theme.colors.grey2};
+    margin: 1.5rem 0;
+`;
+
+const StyledNoResults = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+`;
+
 const SearchResults = ({
     status,
     searchedInputValue,
     searchedInputCountyValue,
     results,
-    PageDataArray,
+    pageDataArray,
     page,
     pageSize,
     totalPages,
     setPage,
-    filteredType,
+    type,
 }) => {
+    const scrollRef = useRef(null);
     const { t } = useTranslation('common');
+    useEffect(() => {
+        if (scrollRef.current) {
+            scrollRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [page]);
     return (
         <Container>
-            <SearchResultsTitle>
+            <SearchResultsTitle ref={scrollRef}>
                 <SearchResultsTitleText>
                     {t('searchConfig.searchResults')}
                 </SearchResultsTitleText>
@@ -83,33 +106,24 @@ const SearchResults = ({
                     <div>
                         {t('searchConfig.keyword')}
                         <span className="highlight">
-                            {searchedInputValue
-                                ? searchedInputValue
-                                : t('searchConfig.noData')}
+                            {searchedInputValue ? searchedInputValue : '無'}
                         </span>
                     </div>
                     <div>
                         {t('searchConfig.area')}
                         <span className="highlight">
-                            {searchedInputCountyValue
+                            {searchedInputCountyValue !== ''
                                 ? searchedInputCountyValue
-                                : t('searchConfig.noData')}
+                                : '全部縣市'}
                         </span>
                     </div>
-                    {/* <div>
-                        {t('searchConfig.total')}
-                        <span className="highlight">
-                            {results ? results.length : 0}
-                        </span>
-                        {t('searchConfig.records')}
-                    </div> */}
                 </SearchInfo>
             </SearchResultsTitle>
             <SearchResultsContainer>
                 {(status === undefined ||
                     status === 'loading' ||
                     status === 'cancel') &&
-                    Array(10)
+                    Array(8)
                         .fill(0)
                         .map((item, i) => (
                             <StyledCardSkeletonContainer key={i}>
@@ -117,10 +131,11 @@ const SearchResults = ({
                             </StyledCardSkeletonContainer>
                         ))}
                 {status === 'success' &&
-                    PageDataArray &&
-                    PageDataArray.map((item) => {
+                    pageDataArray &&
+                    pageDataArray.map((item, i) => {
                         const {
                             Picture: { PictureUrl1 = null } = {},
+                            OpenTime,
                             StartTime,
                             EndTime,
                             Address,
@@ -133,21 +148,15 @@ const SearchResults = ({
                             Description,
                             DescriptionDetail,
                         } = item;
-                        let formattedTime = `${moment(
+
+                        let transferedTime = transferTime(
+                            OpenTime,
                             StartTime,
-                            moment.ISO_8601
-                        )
-                            .tz('Asia/Taipei')
-                            .format('YYYY-MM-DD')} ~ ${moment(
-                            EndTime,
-                            moment.ISO_8601
-                        )
-                            .tz('Asia/Taipei')
-                            .format('YYYY-MM-DD')}`;
-                        let time = item?.OpenTime;
-                        let openTime = time
-                            ? t('carouselConfig.moreDetails')
-                            : formattedTime;
+                            EndTime
+                        );
+
+                        let convertImgUrl = convertGoogleDriveURL(PictureUrl1);
+
                         let itemId, itemName;
                         if (ActivityID) {
                             itemId = ActivityID;
@@ -163,27 +172,28 @@ const SearchResults = ({
                         return (
                             <CardContainer
                                 key={itemId}
-                                filteredType={filteredType}
+                                type={type}
                                 itemId={itemId}
-                                PictureUrl1={PictureUrl1}
-                                itemName={t(`${itemId}.titleName`, {
-                                    ns: `${filteredType}Data`,
-                                })}
-                                openTime={openTime}
-                                description={openTime}
-                                Address={
-                                    Address
-                                        ? t(`${itemId}.address`, {
-                                              ns: `${filteredType}Data`,
-                                          })
-                                        : t(`carouselConfig.moreDetails`)
+                                itemName={itemName}
+                                PictureUrl1={convertImgUrl}
+                                description={
+                                    transferedTime === 'allDay'
+                                        ? t('carouselConfig.allDay')
+                                        : transferedTime === 'moreDetails'
+                                        ? t('carouselConfig.moreDetails')
+                                        : transferedTime
                                 }
+                                address={Address ? Address : '詳見官網'}
+                                text={t(`carouselConfig.openTime`)}
+                                iconClass="fa-solid fa-location-dot"
                             />
                         );
                     })}
-                {status === 'success' &&
-                    !PageDataArray &&
-                    t(`searchConfig.noResults`)}
+                {status === 'success' && results.length === 0 && (
+                    <StyledNoResults>
+                        <div>{t(`searchConfig.noResults`)}</div>
+                    </StyledNoResults>
+                )}
             </SearchResultsContainer>
             {status === 'success' && (
                 <PaginationContainer>

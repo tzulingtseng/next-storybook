@@ -37,7 +37,7 @@ const Content = styled.div`
     }
     .meta__title {
         overflow: hidden;
-        color: #000000d9;
+        color: ${(props) => props.theme.colors.black};
         font-weight: 500;
         font-size: ${(props) => props.theme.fontSize.sm};
         white-space: nowrap;
@@ -46,7 +46,7 @@ const Content = styled.div`
     }
     .meta__description {
         font-size: ${(props) => props.theme.fontSize.xs};
-        color: #00000073;
+        color: ${(props) => props.theme.colors.grey2};
         white-space: nowrap;
         text-overflow: ellipsis;
     }
@@ -71,7 +71,7 @@ const Meta = ({
                     {address && (
                         <StyledIcon
                             icon={icon}
-                            style={{ marginRight: '8px' }}
+                            style={{ marginRight: '0.5rem' }}
                         ></StyledIcon>
                     )}
                     <span>{address}</span>

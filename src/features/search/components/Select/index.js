@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 import Icon from '@/lib/Icon';
 
@@ -6,9 +6,9 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 
 const SelectWrapper = styled.div`
-    width: 4rem; // TODO:確認寬度
+    width: 9rem; // TODO:確認寬度
+    height: 100%;
     display: inline-block; // TODO:完成後，改成
-    border-radius: 0.25rem;
     position: relative;
     cursor: pointer;
     font-size: ${(props) => props.theme.fontSize.sm};
@@ -23,8 +23,11 @@ const SelectWrapper = styled.div`
 
 const SelectBoxWrapper = styled.div`
     width: 100%;
+    height: 100%;
+    border-radius: 0.5rem;
+    display: inline-flex;
     margin-bottom: 0.25rem;
-    padding: 0.5rem 0.75rem;
+    padding: 0rem 0.75rem;
     background-color: ${(props) => props.theme.colors.white};
     z-index: 1;
     position: relative;
@@ -46,6 +49,8 @@ const SelectBox = styled.div`
 `;
 
 const SelectItems = styled.div`
+    overflow-y: scroll;
+    text-align: left;
     position: absolute;
     transition: all 0.2s ease;
     transform: ${(props) =>
@@ -53,12 +58,14 @@ const SelectItems = styled.div`
     display: ${(props) => (props.$isOpen ? 'block' : 'none')};
     opacity: ${(props) => (props.$isOpen ? 1 : 0)};
     width: 100%;
-    height: auto;
+    height: 400%;
+
     border: 1px solid ${(props) => props.theme.colors.grey3};
     background-color: ${(props) => props.theme.colors.white};
     box-shadow: rgba(0, 0, 0, 0.12) 0px 3px 6px -4px,
         rgba(0, 0, 0, 0.08) 0px 6px 16px 0px,
         rgba(0, 0, 0, 0.05) 0px 9px 28px 8px;
+    border-radius: 0.5rem;
     li {
         width: 100%;
         padding: 0.5rem 0.75rem;
@@ -83,16 +90,25 @@ const Select = ({
     options,
     selectedValue,
     setSelectedValue,
+    selectedCounty,
+    setSelectedCounty,
     ...props
 }) => {
     const { locale } = useRouter();
     const [open, setOpen] = useState(false);
+    const [isAllCounty, setisAllCounty] = useState(false);
     const theme = useTheme();
 
     const { t } = useTranslation('common');
 
-    const changeLanguage = (e) => {
-        setSelectedValue(e.currentTarget.getAttribute('value'));
+    const selectCounty = (e) => {
+        if (e.target.innerHTML === t('countyOptions.all')) {
+            setSelectedCounty('');
+            setisAllCounty(true);
+        } else {
+            setSelectedCounty(e.target.innerHTML);
+        }
+
         setOpen(false);
     };
 
@@ -107,9 +123,11 @@ const Select = ({
             >
                 <SelectBox>
                     <div>
-                        {selectedValue
-                            ? t(`langOptions.${selectedValue}`)
-                            : t(`langOptions.placeholder`)}
+                        {selectedCounty !== ''
+                            ? selectedCounty
+                            : isAllCounty
+                            ? t('countyOptions.all')
+                            : t('countyOptions.placeholder')}
                     </div>
                     <SelectIcon
                         $isOpen={open}
@@ -121,26 +139,35 @@ const Select = ({
             {/* options */}
             <SelectItems $isOpen={open}>
                 <ul>
-                    {options &&
-                        options.map((item, i) => (
+                    <li
+                        onClick={(e) => {
+                            selectCounty(e);
+                        }}
+                    >
+                        {t('countyOptions.all')}
+                    </li>
+                    {t('countyOptions.area', {
+                        returnObjects: true,
+                    }).map((item) => {
+                        return (
                             <li
                                 role="option"
-                                key={i}
-                                value={item.value}
+                                key={item.id}
                                 onClick={(e) => {
-                                    changeLanguage(e);
+                                    selectCounty(e);
                                 }}
                                 // TODO:優化寫法，placeholder 的選項需亮色
-                                style={{
-                                    color:
-                                        selectedValue === item.value
-                                            ? theme.colors.primary
-                                            : theme.colors.black,
-                                }}
+                                // style={{
+                                //     color:
+                                //         selectedCounty === item
+                                //             ? theme.colors.primary
+                                //             : theme.colors.black,
+                                // }}
                             >
-                                {t(`langOptions.${item.value}`)}
+                                {item.name}
                             </li>
-                        ))}
+                        );
+                    })}
                 </ul>
             </SelectItems>
         </SelectWrapper>

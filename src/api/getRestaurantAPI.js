@@ -1,7 +1,7 @@
 import { i18n } from 'next-i18next';
 import axios from 'axios';
 
-import { API_HOSTNAME_URL } from 'src/config/';
+import { API_HOSTNAME_URL } from '@/config/config';
 import { getAuthorizationHeader } from '@/utils/getAuthorizationHeader';
 
 const getRestaurantAPI = async ({

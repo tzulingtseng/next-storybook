@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
+import React, { useState, useEffect, useRef } from 'react';
+import path from 'path';
+import fs from 'fs/promises';
 
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import styled, { css } from 'styled-components';
 
 import ThemeProvider from '@/lib/ThemeProvider';
 import theme from '@/lib/theme';
@@ -19,35 +19,31 @@ import getScenicSpotAPI from '@/api/getScenicSpotAPI';
 import getRestaurantAPI from '@/api/getRestaurantAPI';
 
 import scrollToTop from '@/utils/scrollToTop';
+import SEO from '@/utils/seo';
 
 const search = () => {
-    const { locale, locales, push } = useRouter();
-    const [selectedValue, setSelectedValue] = useState(locale);
+    const router = useRouter();
+    const { locale, push, query } = useRouter();
+    const { type, slug } = query; // TODO:slug 待確認用法
+
     const { t } = useTranslation('common');
 
-    const [filteredType, setFilteredType] = useState(null);
+    const [selectedValue, setSelectedValue] = useState(locale);
     const [typeStatus, setTypeStatus] = useState(undefined);
     const [typeData, setTypeData] = useState([]);
     const [typeError, setTypeError] = useState(null);
-
-    const [bannerTitle, setBannerTitle] = useState(null);
     const [bannerImgSrc, setBannerImgSrc] = useState(null);
-
-    const [page, setPage] = useState(null);
-    const [pageSize, setPageSize] = useState(20);
-    const [totalPages, setTotalPages] = useState(0);
-    const [PageDataArray, setPageDataArray] = useState([]);
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(8);
+    const [totalPages, setTotalPages] = useState(20);
+    const [pageDataArray, setPageDataArray] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [inputCountyValue, setInputCountyValue] = useState('');
     const [searchedInputValue, setSearchedInputValue] = useState('');
     const [searchedInputCountyValue, setSearchedInputCountyValue] =
         useState('');
     const [results, setResults] = useState([]);
-
-    const router = useRouter();
-    const { query } = useRouter(); // client side
-    const { type } = query;
-    const { slug } = query; // TODO:待確認用法
+    const [selectedCounty, setSelectedCounty] = useState('');
 
     const handleData = (responseData) => {
         if (responseData?.status === 'success') {
@@ -66,7 +62,7 @@ const search = () => {
 
     const handleActivityData = async () => {
         const responseData = await getActivityAPI({
-            top: 20,
+            top: 30,
             filter: null,
         });
         handleData(responseData);
@@ -74,7 +70,7 @@ const search = () => {
 
     const handleScenicSpotData = async () => {
         const responseData = await getScenicSpotAPI({
-            top: 20,
+            top: 30,
             filter: null,
         });
         handleData(responseData);
@@ -82,7 +78,7 @@ const search = () => {
 
     const handleRestaurantData = async () => {
         const responseData = await getRestaurantAPI({
-            top: 20,
+            top: 30,
             filter: null,
         });
         handleData(responseData);
@@ -95,29 +91,21 @@ const search = () => {
      * @returns duplicates 重複的物件
      */
     const findDuplicates = (a, b) => {
-        const duplicates = [];
-
-        for (const objA of a) {
-            for (const objB of b) {
-                if (objA.ActivityID === objB.ActivityID) {
-                    duplicates.push(objA);
-                    break;
-                }
-            }
-        }
-
-        return duplicates;
+        const newArray = a.filter((item1) => {
+            return b.some(
+                (item2) =>
+                    (item2.ScenicSpotID &&
+                        item2.ScenicSpotID === item1.ScenicSpotID) ||
+                    (item2.ActivityID &&
+                        item2.ActivityID === item1.ActivityID) ||
+                    (item2.RestaurantID &&
+                        item2.RestaurantID === item1.RestaurantID)
+            );
+        });
+        return newArray;
     };
 
-    // const findDuplicates = (a, b) => {
-    //     return a.filter((objA) =>
-    //         b.some((objB) => objA.ActivityID === objB.ActivityID)
-    //     );
-    // };
-
     const handleFilteredResults = () => {
-        setSearchedInputValue(inputValue);
-        setSearchedInputCountyValue(inputCountyValue);
         const keyword = searchedInputValue.toLowerCase();
         const countyKeyword = searchedInputCountyValue.toLowerCase();
 
@@ -165,41 +153,34 @@ const search = () => {
     const typeHandlers = {
         activity: {
             handler: handleActivityData,
-            // title: '活動',
-            bannerImgSrc: 'BannerActivity',
+            // bannerImgSrc: 'BannerActivity',
         },
         scenicSpot: {
             handler: handleScenicSpotData,
-            // title: '景點',
-            bannerImgSrc: 'BannerScenicSpot',
+            // bannerImgSrc: 'BannerScenicSpot',
         },
         restaurant: {
             handler: handleRestaurantData,
-            // title: '美食',
-            bannerImgSrc: 'BannerRestaurant',
+            // bannerImgSrc: 'BannerRestaurant',
         },
     };
 
     useEffect(() => {
-        setFilteredType(type);
-        const typeHandler = typeHandlers[type];
-        if (typeHandler) {
-            const { handler, title, bannerImgSrc } = typeHandler;
-            handler();
-            setBannerTitle(title);
-            setBannerImgSrc(bannerImgSrc);
-        }
-    }, [query?.type]);
-
-    useEffect(() => {
         // 當頁面載入時，回到頁面頂部
         scrollToTop(true);
+        const typeHandler = typeHandlers[type];
+        const { handler, bannerImgSrc } = typeHandler;
+        handler();
+        setBannerImgSrc(bannerImgSrc);
+    }, [type]);
+
+    useEffect(() => {
         handleFilteredResults();
     }, [typeData]);
 
     useEffect(() => {
         // 換頁時，回到頁面頂部
-        scrollToTop(true);
+        // scrollToTop(true);
         /**
          * 每頁的資料
          */
@@ -218,7 +199,7 @@ const search = () => {
         const query = {
             keyword: searchedInputValue,
             area: searchedInputCountyValue,
-            page: page > 1 ? page : undefined, // page>1，出現參數 page
+            // page: page > 1 ? page : undefined, // page>1，出現參數 page
         };
 
         const queryString = Object.entries(query)
@@ -226,15 +207,16 @@ const search = () => {
             .map(([key, value]) => `&${key}=${encodeURIComponent(value)}`)
             .join('');
 
-        filteredType &&
+        type &&
             router.push(
-                `/travel/search?type=${filteredType}${queryString}`,
+                `/travel/search?type=${type}${queryString}`,
                 undefined,
                 {
+                    locale: selectedValue,
                     shallow: true,
                 }
             );
-    }, [page, results]);
+    }, [page, results, selectedValue]);
 
     /**
      * 處理當頁碼不等於1時，有新的關鍵字和地區關鍵字重新搜尋
@@ -253,12 +235,14 @@ const search = () => {
      */
     return (
         <ThemeProvider theme={theme}>
+            <SEO title={t(`searchConfig.${type}BannerTitle`)} />
             <NavBar
                 locale={locale}
                 selectedValue={selectedValue}
                 setSelectedValue={setSelectedValue}
             />
             <BannerSearch
+                type={type}
                 bannerTitle={t(`searchConfig.${type}BannerTitle`)}
                 bannerImgSrc={bannerImgSrc}
                 inputValue={inputValue}
@@ -266,18 +250,24 @@ const search = () => {
                 inputCountyValue={inputCountyValue}
                 setInputCountyValue={setInputCountyValue}
                 handleFilteredResults={handleFilteredResults}
+                selectedCounty={selectedCounty}
+                setSelectedCounty={setSelectedCounty}
+                searchedInputValue={searchedInputValue}
+                setSearchedInputValue={setSearchedInputValue}
+                searchedInputCountyValue={searchedInputCountyValue}
+                setSearchedInputCountyValue={setSearchedInputCountyValue}
             />
             <SearchResults
                 status={typeStatus}
                 searchedInputValue={searchedInputValue}
                 searchedInputCountyValue={searchedInputCountyValue}
                 results={results}
-                PageDataArray={PageDataArray}
+                pageDataArray={pageDataArray}
                 page={page}
                 pageSize={pageSize}
                 totalPages={totalPages}
                 setPage={setPage}
-                filteredType={filteredType}
+                type={type}
             />
             <Footer />
         </ThemeProvider>
