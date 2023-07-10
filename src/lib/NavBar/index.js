@@ -257,6 +257,14 @@ const LogoLink = styled(Link)`
     display: inline-flex;
     align-items: center;
     margin-right: 1rem;
+    & .logoIcon {
+        width: auto;
+        height: 3.5rem;
+    }
+    & .logoImg {
+        width: auto;
+        height: 1.25rem;
+    }
 `;
 
 const NavBar = ({
@@ -319,15 +327,17 @@ const NavBar = ({
                                     {/* TODO:svg 切換多國語 */}
                                     <Image
                                         // width={221}
-                                        height={48}
+                                        // height={48}
                                         src={logoIcon}
                                         alt="logo"
+                                        className="logoIcon"
                                     />
                                     <Image
                                         // width={221}
-                                        height={20}
+                                        // height={20}
                                         src={logoImg}
                                         alt="logo text"
+                                        className="logoImg"
                                     />
                                     {/* <img
                                             src={`/_next/static/media/TaiFun.ba21988b.png`}
