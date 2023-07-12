@@ -86,27 +86,23 @@ const SelectIcon = styled(Icon)`
 `;
 
 const Select = ({
-    placeholder,
-    options,
-    selectedValue,
-    setSelectedValue,
-    selectedCounty,
-    setSelectedCounty,
-    ...props
+    selectedCountyText,
+    setSelectedCountyText,
+    setSelectedCountyValue,
 }) => {
     const { locale } = useRouter();
     const [open, setOpen] = useState(false);
-    const [isAllCounty, setisAllCounty] = useState(false);
     const theme = useTheme();
 
     const { t } = useTranslation('common');
 
     const selectCounty = (e) => {
         if (e.target.innerHTML === t('countyOptions.all')) {
-            setSelectedCounty('');
-            setisAllCounty(true);
+            setSelectedCountyText('');
+            setSelectedCountyValue('');
         } else {
-            setSelectedCounty(e.target.innerHTML);
+            setSelectedCountyText(e.target.innerHTML);
+            setSelectedCountyValue(e.target.attributes.value.value);
         }
 
         setOpen(false);
@@ -123,9 +119,9 @@ const Select = ({
             >
                 <SelectBox>
                     <div>
-                        {selectedCounty !== ''
-                            ? selectedCounty
-                            : isAllCounty
+                        {selectedCountyText !== ''
+                            ? selectedCountyText
+                            : selectedCountyText === ''
                             ? t('countyOptions.all')
                             : t('countyOptions.placeholder')}
                     </div>
@@ -143,6 +139,12 @@ const Select = ({
                         onClick={(e) => {
                             selectCounty(e);
                         }}
+                        style={{
+                            color:
+                                selectedCountyText === ''
+                                    ? theme.colors.primary
+                                    : theme.colors.black,
+                        }}
                     >
                         {t('countyOptions.all')}
                     </li>
@@ -153,16 +155,18 @@ const Select = ({
                             <li
                                 role="option"
                                 key={item.id}
+                                value={item.value}
                                 onClick={(e) => {
                                     selectCounty(e);
                                 }}
                                 // TODO:優化寫法，placeholder 的選項需亮色
-                                // style={{
-                                //     color:
-                                //         selectedCounty === item
-                                //             ? theme.colors.primary
-                                //             : theme.colors.black,
-                                // }}
+                                // 當選到縣市或全部縣市時，選單中對應的選項需亮色
+                                style={{
+                                    color:
+                                        selectedCountyText === item.name
+                                            ? theme.colors.primary
+                                            : theme.colors.black,
+                                }}
                             >
                                 {item.name}
                             </li>

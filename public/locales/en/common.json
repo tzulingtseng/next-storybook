@@ -102,78 +102,97 @@
         "area": [
             {
                 "id": 1,
+                "value": "Taipei",
                 "name": "Taipei City"
             },
             {
                 "id": 2,
+                "value": "Keelung",
                 "name": "Keelung City"
             },
             {
                 "id": 3,
+                "value": "NewTaipei",
                 "name": "New Taipei City"
             },
             {
                 "id": 4,
+                "value": "LienchiangCounty",
                 "name": "Lienchiang County"
             },
             {
                 "id": 5,
+                "value": "YilanCounty",
                 "name": "Yilan County"
             },
             {
                 "id": 6,
+                "value": "Hsinchu",
                 "name": "Hsinchu City"
             },
             {
                 "id": 7,
+                "value": "HsinchuCounty",
                 "name": "Hsinchu County"
             },
             {
                 "id": 8,
+                "value": "Taoyuan",
                 "name": "Taoyuan City"
             },
             {
                 "id": 9,
+                "value": "MiaoliCounty",
                 "name": "Miaoli County"
             },
             {
                 "id": 10,
+                "value": "Taichung",
                 "name": "Taichung City"
             },
             {
                 "id": 11,
+                "value": "ChanghuaCounty",
                 "name": "Changhua County"
             },
             {
                 "id": 12,
+                "value": "NantouCounty",
                 "name": "Nantou County"
             },
             {
                 "id": 13,
+                "value": "Chiayi",
                 "name": "Chiayi City"
             },
             {
                 "id": 14,
+                "value": "ChiayiCounty",
                 "name": "Chiayi County"
             },
             {
                 "id": 15,
+                "value": "YunlinCounty",
                 "name": "Yunlin County"
             },
             {
                 "id": 16,
+                "value": "Tainan",
                 "name": "Tainan City"
             },
             {
                 "id": 17,
+                "value": "Kaohsiung",
                 "name": "Kaohsiung City"
             },
             {
                 "id": 18,
+                "value": "PenghuCounty",
                 "name": "Penghu County"
             },
             {
                 "id": 19,
+                "value": "KinmenCounty",
                 "name": "Kinmen County"
             },
             {
@@ -182,10 +201,12 @@
             },
             {
                 "id": 21,
+                "value": "TaitungCounty",
                 "name": "Taitung County"
             },
             {
                 "id": 22,
+                "value": "HualienCounty",
                 "name": "Hualien County"
             }
         ],

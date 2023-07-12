@@ -6,8 +6,10 @@ import { getAuthorizationHeader } from '@/utils/getAuthorizationHeader';
 
 const getScenicSpotAPI = async ({
     top = undefined,
+    skip = undefined,
     // filter = 'Picture/PictureUrl1 ne null',
     filter = undefined,
+    area = null,
 }) => {
     let returnData = {
         status: undefined,
@@ -21,7 +23,7 @@ const getScenicSpotAPI = async ({
      */
     let params = {
         $top: top,
-        // $skip: skip,
+        $skip: skip,
         $format: 'JSON',
         $filter: filter,
         // $spatialFilter: spatialFilter,
@@ -29,15 +31,20 @@ const getScenicSpotAPI = async ({
     };
 
     await axios
-        .get(`https://${API_HOSTNAME_URL}/v2/Tourism/ScenicSpot`, {
-            // TODO: 研究 useEffect 怎麼控制
-            // signal: typeof signal === 'object' ? signal : undefined,
-            params,
-            headers: getAuthorizationHeader(),
-            validateStatus: (status) => {
-                return status < 600; // 有效的 HTTP 狀態碼範圍是從 100 到 599
-            },
-        })
+        .get(
+            `https://${API_HOSTNAME_URL}/v2/Tourism/ScenicSpot${
+                area ? '/' + area : ''
+            }`,
+            {
+                // TODO: 研究 useEffect 怎麼控制
+                // signal: typeof signal === 'object' ? signal : undefined,
+                params,
+                headers: getAuthorizationHeader(),
+                validateStatus: (status) => {
+                    return status < 600; // 有效的 HTTP 狀態碼範圍是從 100 到 599
+                },
+            }
+        )
         .then((response) => {
             if (response.status === 200) {
                 // handle success
