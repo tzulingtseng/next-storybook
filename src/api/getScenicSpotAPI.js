@@ -7,7 +7,6 @@ import { getAuthorizationHeader } from '@/utils/getAuthorizationHeader';
 const getScenicSpotAPI = async ({
     top = undefined,
     skip = undefined,
-    // filter = 'Picture/PictureUrl1 ne null',
     filter = undefined,
     area = undefined,
 }) => {
@@ -22,9 +21,9 @@ const getScenicSpotAPI = async ({
      * api query parameter
      */
     let params = {
+        $format: 'JSON',
         $top: top,
         $skip: skip,
-        $format: 'JSON',
         $filter: filter,
         // $spatialFilter: spatialFilter,
         // $select: select,

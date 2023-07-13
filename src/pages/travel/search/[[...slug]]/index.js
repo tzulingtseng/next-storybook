@@ -47,14 +47,39 @@ const Search = ({ typeStatus, typeData, type, area, keyword }) => {
         setIsLoading(true);
         setError(null);
         try {
-            const response = await getScenicSpotAPI({
-                top: 8,
-                skip: skip,
-                filter: keyword
-                    ? `contains(ScenicSpotName, '${keyword}')`
-                    : null,
-                area: area ? area : null,
-            });
+            let response;
+            switch (type) {
+                case 'activity':
+                    response = await getActivityAPI({
+                        top: 8,
+                        skip: skip,
+                        filter: keyword
+                            ? `contains(ActivityName, '${keyword}')`
+                            : null,
+                        area: area ? area : null,
+                    });
+                    break;
+                case 'scenicSpot':
+                    response = await getScenicSpotAPI({
+                        top: 8,
+                        skip: skip,
+                        filter: keyword
+                            ? `contains(ScenicSpotName, '${keyword}')`
+                            : null,
+                        area: area ? area : null,
+                    });
+                    break;
+                case 'restaurant':
+                    response = await getRestaurantAPI({
+                        top: 8,
+                        skip: skip,
+                        filter: keyword
+                            ? `contains(RestaurantName, '${keyword}')`
+                            : null,
+                        area: area ? area : null,
+                    });
+                    break;
+            }
             if (skip === 0) {
                 setFilteredData(response.data);
                 setResults(response.data);
@@ -263,8 +288,8 @@ export async function getServerSideProps({ query, locale }) {
             typeData,
             typeStatus,
             type,
-            area: area || '',
             keyword: keyword || '',
+            area: area || '',
         },
     };
     return returnData;
