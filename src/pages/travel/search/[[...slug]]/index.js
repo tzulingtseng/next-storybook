@@ -21,18 +21,21 @@ import SEO from '@/utils/seo';
 const Search = ({ typeStatus, typeData, type, area, keyword }) => {
     const router = useRouter();
     const { locale } = router;
-    // console.log('csr area', area);
-    // console.log('csr keyword', keyword);
-    // console.log('-------------');
     const { t } = useTranslation('common');
 
     const [selectedValue, setSelectedValue] = useState(locale);
-    const [inputValue, setInputValue] = useState('');
+    const [inputValue, setInputValue] = useState(keyword ? keyword : '');
     const [selectedCountyText, setSelectedCountyText] = useState('');
-    const [selectedCountyValue, setSelectedCountyValue] = useState('');
-    const [searchedInputValue, setSearchedInputValue] = useState('');
+    const [selectedCountyValue, setSelectedCountyValue] = useState(
+        area ? area : ''
+    );
+    const [searchedInputValue, setSearchedInputValue] = useState(
+        keyword ? keyword : ''
+    );
     const [searchedCountyText, setSearchedCountyText] = useState('');
-    const [searchedCountyValue, setSearchedCountyValue] = useState('');
+    const [searchedCountyValue, setSearchedCountyValue] = useState(
+        area ? area : ''
+    );
     const [results, setResults] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [skip, setSkip] = useState(0);
@@ -50,7 +53,7 @@ const Search = ({ typeStatus, typeData, type, area, keyword }) => {
                 filter: keyword
                     ? `contains(ScenicSpotName, '${keyword}')`
                     : null,
-                area: area,
+                area: area ? area : null,
             });
             if (skip === 0) {
                 setFilteredData(response.data);
@@ -73,6 +76,7 @@ const Search = ({ typeStatus, typeData, type, area, keyword }) => {
     };
 
     useEffect(() => {
+        setResults(typeData);
         setSkip(0);
         setResults([]);
         setFilteredData([]);
@@ -85,9 +89,6 @@ const Search = ({ typeStatus, typeData, type, area, keyword }) => {
             url += '&keyword=' + keyword;
             setInputValue(keyword);
             setSearchedInputValue(keyword);
-        } else {
-            setInputValue('');
-            setSearchedInputValue('');
         }
 
         if (area) {
@@ -99,7 +100,12 @@ const Search = ({ typeStatus, typeData, type, area, keyword }) => {
             setSearchedCountyValue(area);
             setSelectedCountyText(chName);
             setSearchedCountyText(chName);
-        } else {
+        }
+
+        if (area === '' && keyword === '') {
+            url += '';
+            setInputValue('');
+            setSearchedInputValue('');
             setSelectedCountyValue('');
             setSearchedCountyValue('');
             setSelectedCountyText('');
@@ -110,11 +116,6 @@ const Search = ({ typeStatus, typeData, type, area, keyword }) => {
             locale: selectedValue,
         });
     }, []);
-
-    useEffect(() => {
-        if (searchedInputValue || searchedCountyValue) return;
-        setResults(typeData);
-    }, [typeData]);
 
     useEffect(() => {
         // isLoading 初始值為 false
@@ -141,40 +142,41 @@ const Search = ({ typeStatus, typeData, type, area, keyword }) => {
     }, [isLoading]);
 
     useEffect(() => {
-        if (searchedInputValue || searchedCountyValue) {
-            // 有搜尋關鍵字或搜尋地址時，push url
-            let url = '/travel/search?type=' + type;
-
-            if (searchedInputValue) {
-                url += '&keyword=' + searchedInputValue;
-            }
-
-            if (searchedCountyValue) {
-                url += '&area=' + searchedCountyValue;
-            }
-
-            router.push(url, undefined, {
-                locale: selectedValue,
-            });
-            setSkip(0);
-            setResults([]);
-            setIsEnd(false);
+        // 有搜尋關鍵字或搜尋地址時，push url
+        let url = '/travel/search?type=' + type;
+        // if(!searchedInputValue || )
+        if (searchedInputValue) {
+            url += '&keyword=' + searchedInputValue;
         }
+
+        if (searchedCountyValue) {
+            url += '&area=' + searchedCountyValue;
+        }
+
+        if (searchedInputValue === '' && searchedCountyValue === '') {
+            url += '';
+        }
+
+        router.push(url, undefined, {
+            locale: selectedValue,
+        });
+        setSkip(0);
+        setResults([]);
+        setIsEnd(false);
     }, [searchedInputValue, searchedCountyValue]);
 
     useEffect(() => {
         setSkip(0);
         setResults([]);
         setIsEnd(false);
-
         if (area && keyword) {
             fetchFilteredData(keyword, area);
         } else if (keyword) {
-            fetchFilteredData(keyword, null);
+            fetchFilteredData(keyword, '');
         } else if (area) {
-            fetchFilteredData(null, area);
+            fetchFilteredData('', area);
         } else {
-            fetchFilteredData(null, null);
+            fetchFilteredData('', '');
         }
     }, [area, keyword]);
 
@@ -244,8 +246,6 @@ export async function getServerSideProps({ query, locale }) {
         typeData = responseData.data;
         typeStatus = responseData.status;
     } else {
-        // handle error (後端錯誤) -> not found page(404 page)
-        // TODO:為啥用 notFound 處理錯誤
         return {
             notFound: true,
         };
@@ -263,8 +263,8 @@ export async function getServerSideProps({ query, locale }) {
             typeData,
             typeStatus,
             type,
-            area: area || null,
-            keyword: keyword || null,
+            area: area || '',
+            keyword: keyword || '',
         },
     };
     return returnData;

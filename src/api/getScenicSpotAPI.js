@@ -9,7 +9,7 @@ const getScenicSpotAPI = async ({
     skip = undefined,
     // filter = 'Picture/PictureUrl1 ne null',
     filter = undefined,
-    area = null,
+    area = undefined,
 }) => {
     let returnData = {
         status: undefined,
