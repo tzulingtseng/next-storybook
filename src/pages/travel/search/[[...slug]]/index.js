@@ -7,6 +7,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import ThemeProvider from '@/lib/ThemeProvider';
 import theme from '@/lib/theme';
 import NavBar from '@/lib/NavBar';
+import Container from '@/components/Container';
 import Footer from '@/components/Footer';
 import BannerSearch from '@/features/search/components/BannerSearch';
 import SearchResults from '@/features/search/components/SearchResults';
@@ -216,34 +217,36 @@ const Search = ({ typeStatus, typeData, type, area, keyword }) => {
     return (
         <ThemeProvider theme={theme}>
             <SEO title={t(`searchConfig.${type}BannerTitle`)} />
-            <NavBar
-                locale={locale}
-                selectedValue={selectedValue}
-                setSelectedValue={setSelectedValue}
-            />
-            <BannerSearch
-                type={type}
-                bannerTitle={t(`searchConfig.${type}BannerTitle`)}
-                selectedCountyText={selectedCountyText}
-                setSelectedCountyText={setSelectedCountyText}
-                setSelectedCountyValue={setSelectedCountyValue}
-                setSearchedInputValue={setSearchedInputValue}
-                setSearchedCountyText={setSearchedCountyText}
-                setSearchedCountyValue={setSearchedCountyValue}
-                inputValue={inputValue}
-                setInputValue={setInputValue}
-                selectedCountyValue={selectedCountyValue}
-            />
-            <SearchResults
-                type={type}
-                status={typeStatus}
-                results={results}
-                isLoading={isLoading}
-                isEnd={isEnd}
-                searchedInputValue={searchedInputValue}
-                searchedCountyText={searchedCountyText}
-            />
-            <Footer />
+            <Container>
+                <NavBar
+                    locale={locale}
+                    selectedValue={selectedValue}
+                    setSelectedValue={setSelectedValue}
+                />
+                <BannerSearch
+                    type={type}
+                    bannerTitle={t(`searchConfig.${type}BannerTitle`)}
+                    selectedCountyText={selectedCountyText}
+                    setSelectedCountyText={setSelectedCountyText}
+                    setSelectedCountyValue={setSelectedCountyValue}
+                    setSearchedInputValue={setSearchedInputValue}
+                    setSearchedCountyText={setSearchedCountyText}
+                    setSearchedCountyValue={setSearchedCountyValue}
+                    inputValue={inputValue}
+                    setInputValue={setInputValue}
+                    selectedCountyValue={selectedCountyValue}
+                />
+                <SearchResults
+                    type={type}
+                    status={typeStatus}
+                    results={results}
+                    isLoading={isLoading}
+                    isEnd={isEnd}
+                    searchedInputValue={searchedInputValue}
+                    searchedCountyText={searchedCountyText}
+                />
+                <Footer />
+            </Container>
         </ThemeProvider>
     );
 };

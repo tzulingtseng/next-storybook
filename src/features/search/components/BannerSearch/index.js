@@ -86,6 +86,16 @@ const BannerSearchBox = styled.div`
     justify-content: space-between;
 `;
 
+const SearchButton = styled(Button)`
+    height: 2.5rem;
+    &:hover {
+        background-color: rgb(38, 97, 112);
+    }
+    &:active {
+        box-shadow: rgba(30, 159, 210, 0.48) 0px 0px 0px 2px;
+    }
+`;
+
 const BannerSearch = ({
     type,
     bannerTitle,
@@ -116,8 +126,7 @@ const BannerSearch = ({
                             setSelectedCountyText={setSelectedCountyText}
                             setSelectedCountyValue={setSelectedCountyValue}
                         />
-                        <Button
-                            style={{ height: '2.5rem' }}
+                        <SearchButton
                             onClick={() => {
                                 setSearchedInputValue(inputValue);
                                 setSearchedCountyText(selectedCountyText);
@@ -125,7 +134,7 @@ const BannerSearch = ({
                             }}
                         >
                             {t(`searchConfig.searchButton`)}
-                        </Button>
+                        </SearchButton>
                     </BannerSearchBox>
                 </BannerContent>
             </BannerContentBox>

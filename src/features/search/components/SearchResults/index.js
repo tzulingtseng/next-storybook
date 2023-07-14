@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Container from '@/components/Container';
+import Wrapper from '@/components/Wrapper';
 import CardContainer from '@/components/CardContainer';
 import CardSkeleton from '@/components/CardSkeleton';
 import breakpoint from '@/lib/constant/breakpoint';
@@ -66,13 +66,21 @@ const StyledEndMsg = styled.div`
     justify-content: center;
     width: 100%;
     color: ${(props) => props.theme.colors.grey2};
+    font-size: ${(props) => props.theme.fontSize.sm};
     margin: 1.5rem 0;
 `;
 
 const StyledNoResults = styled.div`
-    width: 100%;
+    width: calc(100% - 2rem);
+    margin: 0 1rem;
+    padding: 4rem 0;
+    background-color: #f5fdff;
+    color: #60797c;
     display: flex;
     justify-content: center;
+    align-items: center;
+    border-radius: 0.5rem;
+    font-size: ${(props) => props.theme.fontSize.sm};
 `;
 
 const SearchResults = ({
@@ -86,7 +94,7 @@ const SearchResults = ({
 }) => {
     const { t } = useTranslation('common');
     return (
-        <Container>
+        <Wrapper>
             <SearchResultsTitle>
                 <SearchResultsTitleText>
                     {t('searchConfig.searchResults')}
@@ -186,7 +194,7 @@ const SearchResults = ({
                     </StyledEndMsg>
                 )}
             </SearchResultsContainer>
-        </Container>
+        </Wrapper>
     );
 };
 

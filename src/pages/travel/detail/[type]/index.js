@@ -17,6 +17,7 @@ import theme from '@/lib/theme';
 import NavBar from '@/lib/NavBar';
 import Footer from '@/components/Footer';
 import Container from '@/components/Container';
+import Wrapper from '@/components/Wrapper';
 import TransportInfo from '@/features/detail/components/TransportInfo';
 import convertGoogleDriveURL from '@/utils/convertGoogleDriveURL';
 import breakpoint from '@/lib/constant/breakpoint';
@@ -138,61 +139,68 @@ const Detail = ({ data }) => {
         <>
             <ThemeProvider theme={theme}>
                 <SEO title={SpotName} />
-                <NavBar
-                    locale={locale}
-                    selectedValue={selectedValue}
-                    setSelectedValue={setSelectedValue}
-                    selectLang={selectLang}
-                />
                 <Container>
-                    <InfoContainer>
-                        <InfoTitle>{SpotName}</InfoTitle>
-                        <InfoBox>
-                            <InfoImageContainer>
-                                {convertImgUrl ? (
-                                    <img src={convertImgUrl} alt={SpotName} />
-                                ) : (
-                                    <NoImage />
-                                )}
-                            </InfoImageContainer>
-                            <InfoDetailContainer>
-                                <InfoDetailTitle>
-                                    {t('detailConfig.information')}
-                                </InfoDetailTitle>
-                                <InfoDetailItem>
-                                    {t('detailConfig.tel')}
-                                </InfoDetailItem>
-                                <div>
-                                    {Phone
-                                        ? Phone
-                                        : t('detailConfig.moreDetails')}
-                                </div>
-                                <InfoDetailItem>
-                                    {t('detailConfig.address')}
-                                </InfoDetailItem>
-                                <div>{Address ? Address : '詳見官網'}</div>
-                                <InfoDetailItem>
-                                    {t('detailConfig.openTime')}
-                                </InfoDetailItem>
-                                <div>
-                                    {formattedTime === 'allDay'
-                                        ? t('carouselConfig.allDay')
-                                        : formattedTime === 'moreDetails'
-                                        ? t('carouselConfig.moreDetails')
-                                        : formattedTime}
-                                </div>
-                            </InfoDetailContainer>
-                        </InfoBox>
-                    </InfoContainer>
-                    <IntroContainer>
-                        <InfoTitle>{t('detailConfig.introTitle')}</InfoTitle>
-                        <div>{Description}</div>
-                        <InfoTitle>{t('detailConfig.mapTitle')}</InfoTitle>
-                        <TransportInfo position={Position} />
-                    </IntroContainer>
-                    {/* <MapContainer></MapContainer> */}
+                    <NavBar
+                        locale={locale}
+                        selectedValue={selectedValue}
+                        setSelectedValue={setSelectedValue}
+                        selectLang={selectLang}
+                    />
+                    <Wrapper>
+                        <InfoContainer>
+                            <InfoTitle>{SpotName}</InfoTitle>
+                            <InfoBox>
+                                <InfoImageContainer>
+                                    {convertImgUrl ? (
+                                        <img
+                                            src={convertImgUrl}
+                                            alt={SpotName}
+                                        />
+                                    ) : (
+                                        <NoImage />
+                                    )}
+                                </InfoImageContainer>
+                                <InfoDetailContainer>
+                                    <InfoDetailTitle>
+                                        {t('detailConfig.information')}
+                                    </InfoDetailTitle>
+                                    <InfoDetailItem>
+                                        {t('detailConfig.tel')}
+                                    </InfoDetailItem>
+                                    <div>
+                                        {Phone
+                                            ? Phone
+                                            : t('detailConfig.moreDetails')}
+                                    </div>
+                                    <InfoDetailItem>
+                                        {t('detailConfig.address')}
+                                    </InfoDetailItem>
+                                    <div>{Address ? Address : '詳見官網'}</div>
+                                    <InfoDetailItem>
+                                        {t('detailConfig.openTime')}
+                                    </InfoDetailItem>
+                                    <div>
+                                        {formattedTime === 'allDay'
+                                            ? t('carouselConfig.allDay')
+                                            : formattedTime === 'moreDetails'
+                                            ? t('carouselConfig.moreDetails')
+                                            : formattedTime}
+                                    </div>
+                                </InfoDetailContainer>
+                            </InfoBox>
+                        </InfoContainer>
+                        <IntroContainer>
+                            <InfoTitle>
+                                {t('detailConfig.introTitle')}
+                            </InfoTitle>
+                            <div>{Description}</div>
+                            <InfoTitle>{t('detailConfig.mapTitle')}</InfoTitle>
+                            <TransportInfo position={Position} />
+                        </IntroContainer>
+                        {/* <MapContainer></MapContainer> */}
+                    </Wrapper>
+                    <Footer />
                 </Container>
-                <Footer />
             </ThemeProvider>
         </>
     );

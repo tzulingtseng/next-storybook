@@ -12,6 +12,7 @@ const StyledNoImg = styled.div`
     align-items: center;
     background-color: #f5fdff;
     color: #60797c;
+    font-size: ${(props) => props.theme.fontSize.sm};
 `;
 const StyledNoImgContent = styled.div``;
 

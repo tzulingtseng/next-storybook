@@ -1,15 +1,9 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
-import breakpoint from '@/lib/constant/breakpoint';
+import styled from 'styled-components';
 
-const StyledContainer = styled('div')`
-    max-width: auto;
-    width: 90%;
-    margin: 0 auto;
-    ${breakpoint.mediaMD} {
-        max-width: 64rem;
-        width: 100%;
-    }
+const StyledContainer = styled.div`
+    position: relative;
+    min-height: 100vh;
 `;
 
 const Container = ({ children }) => {

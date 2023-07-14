@@ -17,6 +17,7 @@ import Button from '@/lib/Button';
 import { Icon } from '@/lib';
 import Meta from '@/lib/Card/Meta';
 import Container from '@/components/Container';
+import Wrapper from '@/components/Wrapper';
 import Footer from '@/components/Footer';
 import TypeCarouselCards from '@/components/TypeCarouselCards';
 import BannerHome from '@/features/home/components/BannerHome';
@@ -54,33 +55,35 @@ const Travel = ({
                     keywords={t('keywords')}
                     description={t('description')}
                 />
-                <NavBar
-                    locale={locale}
-                    selectedValue={selectedValue}
-                    setSelectedValue={setSelectedValue}
-                    selectLang={selectLang}
-                />
-                <BannerHome />
                 <Container>
-                    <TypeCarouselCards
-                        lists={scenicSpotData}
-                        type="scenicSpot"
-                        status={scenicSpotStatus}
+                    <NavBar
+                        locale={locale}
+                        selectedValue={selectedValue}
+                        setSelectedValue={setSelectedValue}
+                        selectLang={selectLang}
                     />
+                    <BannerHome />
+                    <Wrapper>
+                        <TypeCarouselCards
+                            lists={scenicSpotData}
+                            type="scenicSpot"
+                            status={scenicSpotStatus}
+                        />
 
-                    <TypeCarouselCards
-                        lists={activityData}
-                        type="activity"
-                        status={activityStatus}
-                    />
+                        <TypeCarouselCards
+                            lists={activityData}
+                            type="activity"
+                            status={activityStatus}
+                        />
 
-                    <TypeCarouselCards
-                        lists={restaurantData}
-                        type="restaurant"
-                        status={restaurantStatus}
-                    />
+                        <TypeCarouselCards
+                            lists={restaurantData}
+                            type="restaurant"
+                            status={restaurantStatus}
+                        />
+                    </Wrapper>
+                    <Footer />
                 </Container>
-                <Footer />
             </ThemeProvider>
         </>
     );
