@@ -80,19 +80,21 @@ const Search = ({ typeStatus, typeData, type, area, keyword }) => {
                     });
                     break;
             }
-            if (skip === 0) {
-                setFilteredData(response.data);
-                setResults(response.data);
-            } else {
-                setResults((fillteredData) => [
-                    ...fillteredData,
-                    ...response.data,
-                ]);
+            if (response.status === 'success') {
+                if (skip === 0) {
+                    setFilteredData(response.data);
+                    setResults(response.data);
+                } else {
+                    setResults((fillteredData) => [
+                        ...fillteredData,
+                        ...response.data,
+                    ]);
+                }
+                if (response.data.length === 0 || response.data.length < 8) {
+                    setIsEnd(true);
+                }
+                setSkip((prevSkip) => prevSkip + 8);
             }
-            if (response.data.length === 0 || response.data.length < 8) {
-                setIsEnd(true);
-            }
-            setSkip((prevSkip) => prevSkip + 8);
         } catch (error) {
             setError(error);
         } finally {
@@ -110,31 +112,35 @@ const Search = ({ typeStatus, typeData, type, area, keyword }) => {
 
         let url = '/travel/search?type=' + type;
 
+        const setInputValues = (inputValue, searchedValue) => {
+            setInputValue(inputValue);
+            setSearchedInputValue(searchedValue);
+        };
+
+        const setSelectedCountyValues = (countyValue, countyText) => {
+            setSelectedCountyValue(countyValue);
+            setSearchedCountyValue(countyValue);
+            setSelectedCountyText(countyText);
+            setSearchedCountyText(countyText);
+        };
+
         if (keyword) {
             url += '&keyword=' + keyword;
-            setInputValue(keyword);
-            setSearchedInputValue(keyword);
+            setInputValues(keyword, keyword);
         }
 
         if (area) {
             url += '&area=' + area;
-            let chName = t('countyOptions.area', {
+            let countyData = t('countyOptions.area', {
                 returnObjects: true,
-            }).filter((item) => area === item.value)[0].name;
-            setSelectedCountyValue(area);
-            setSearchedCountyValue(area);
-            setSelectedCountyText(chName);
-            setSearchedCountyText(chName);
+            }).filter((item) => area === item.value)[0];
+            setSelectedCountyValues(area, countyData.name);
         }
 
-        if (area === '' && keyword === '') {
+        if (!area && !keyword) {
             url += '';
-            setInputValue('');
-            setSearchedInputValue('');
-            setSelectedCountyValue('');
-            setSearchedCountyValue('');
-            setSelectedCountyText('');
-            setSearchedCountyText('');
+            setInputValues('', '');
+            setSelectedCountyValues('', '');
         }
 
         router.push(url, undefined, {
@@ -153,11 +159,11 @@ const Search = ({ typeStatus, typeData, type, area, keyword }) => {
                 if (area && keyword) {
                     fetchFilteredData(keyword, area);
                 } else if (keyword) {
-                    fetchFilteredData(keyword, null);
+                    fetchFilteredData(keyword, '');
                 } else if (area) {
-                    fetchFilteredData(null, area);
+                    fetchFilteredData('', area);
                 } else {
-                    fetchFilteredData(null, null);
+                    fetchFilteredData('', '');
                 }
             }
         });
@@ -169,16 +175,18 @@ const Search = ({ typeStatus, typeData, type, area, keyword }) => {
     useEffect(() => {
         // 有搜尋關鍵字或搜尋地址時，push url
         let url = '/travel/search?type=' + type;
-        // if(!searchedInputValue || )
-        if (searchedInputValue) {
+
+        if (searchedInputValue && searchedCountyValue) {
+            url +=
+                '&keyword=' +
+                searchedInputValue +
+                '&area=' +
+                searchedCountyValue;
+        } else if (searchedInputValue) {
             url += '&keyword=' + searchedInputValue;
-        }
-
-        if (searchedCountyValue) {
+        } else if (searchedCountyValue) {
             url += '&area=' + searchedCountyValue;
-        }
-
-        if (searchedInputValue === '' && searchedCountyValue === '') {
+        } else {
             url += '';
         }
 
