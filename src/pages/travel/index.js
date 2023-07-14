@@ -87,18 +87,40 @@ const Travel = ({
 };
 
 export async function getStaticProps({ locale }) {
-    const scenicSpotData = await getScenicSpotAPI({
+    let scenicSpotData, activityData, restaurantData;
+    const scenicSpotResponseData = await getScenicSpotAPI({
         top: 10,
         filter: 'Picture/PictureUrl1 ne null',
     });
-    const activityData = await getActivityAPI({
+    if (scenicSpotResponseData.status === 'success') {
+        scenicSpotData = scenicSpotResponseData;
+    } else {
+        return {
+            notFound: true,
+        };
+    }
+    const activityResponseData = await getActivityAPI({
         top: 10,
         filter: 'Picture/PictureUrl1 ne null',
     });
-    const restaurantData = await getRestaurantAPI({
+    if (activityResponseData.status === 'success') {
+        activityData = activityResponseData;
+    } else {
+        return {
+            notFound: true,
+        };
+    }
+    const restaurantResponseData = await getRestaurantAPI({
         top: 10,
         filter: 'Picture/PictureUrl1 ne null',
     });
+    if (restaurantResponseData.status === 'success') {
+        restaurantData = restaurantResponseData;
+    } else {
+        return {
+            notFound: true,
+        };
+    }
     const returnData = {
         props: {
             ...(await serverSideTranslations(locale, [
