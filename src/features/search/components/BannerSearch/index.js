@@ -1,8 +1,7 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
-import Image from 'next/image';
+import styled from 'styled-components';
 import { useTranslation } from 'next-i18next';
-import Skeleton from 'react-loading-skeleton';
+// import Skeleton from 'react-loading-skeleton';
 import breakpoint from '@/lib/constant/breakpoint';
 
 import TextField from '@/lib/TextField';
@@ -88,49 +87,21 @@ const BannerSearchBox = styled.div`
 `;
 
 const BannerSearch = ({
+    type,
     bannerTitle,
-    bannerImgSrc,
+    selectedCountyText,
+    setSelectedCountyText,
+    setSelectedCountyValue,
+    setSearchedInputValue,
+    setSearchedCountyText,
+    setSearchedCountyValue,
     inputValue,
     setInputValue,
-    selectedCounty,
-    setSelectedCounty,
-    handleFilteredResults,
-    searchedInputValue,
-    setSearchedInputValue,
-    setSearchedInputCountyValue,
-    type,
+    selectedCountyValue,
 }) => {
     const { t } = useTranslation('common');
-    // const getBannerImage = () => {
-    //     switch (bannerImgSrc) {
-    //         case 'BannerActivity':
-    //             return (
-    //                 <Image src={BannerActivity} alt="Banner" priority={true} />
-    //             );
-    //         case 'BannerScenicSpot':
-    //             return (
-    //                 <Image
-    //                     src={BannerScenicSpot}
-    //                     alt="Banner"
-    //                     priority={true}
-    //                 />
-    //             );
-    //         case 'BannerRestaurant':
-    //             return (
-    //                 <Image
-    //                     src={BannerRestaurant}
-    //                     alt="Banner"
-    //                     priority={true}
-    //                 />
-    //             );
-    //         default:
-    //             return <Skeleton height="100%" />;
-    //     }
-    // };
     return (
         <BannerContainer $type={type}>
-            {/* <BannerImgBox>{getBannerImage()}</BannerImgBox> */}
-            {/* <BannerImgBox /> */}
             <BannerContentBox>
                 <BannerContent>
                     <BannerTitle>{bannerTitle}</BannerTitle>
@@ -140,22 +111,17 @@ const BannerSearch = ({
                             placeholder={t(`searchConfig.searchKeyword`)}
                             value={inputValue}
                         />
-                        {/* <TextField
-                            onChange={(e) =>
-                                setInputCountyValue(e.target.value)
-                            }
-                            placeholder={t(`searchConfig.searchKeyword`)}
-                            value={inputCountyValue}
-                        /> */}
                         <Select
-                            selectedCounty={selectedCounty}
-                            setSelectedCounty={setSelectedCounty}
+                            selectedCountyText={selectedCountyText}
+                            setSelectedCountyText={setSelectedCountyText}
+                            setSelectedCountyValue={setSelectedCountyValue}
                         />
                         <Button
                             style={{ height: '2.5rem' }}
                             onClick={() => {
                                 setSearchedInputValue(inputValue);
-                                setSearchedInputCountyValue(selectedCounty);
+                                setSearchedCountyText(selectedCountyText);
+                                setSearchedCountyValue(selectedCountyValue);
                             }}
                         >
                             {t(`searchConfig.searchButton`)}

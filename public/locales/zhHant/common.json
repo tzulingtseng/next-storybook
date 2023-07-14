@@ -101,90 +101,112 @@
         "area": [
             {
                 "id": 1,
+                "value": "Taipei",
                 "name": "臺北市"
             },
             {
                 "id": 2,
+                "value": "Keelung",
                 "name": "基隆市"
             },
             {
                 "id": 3,
+                "value": "NewTaipei",
                 "name": "新北市"
             },
             {
                 "id": 4,
+                "value": "LienchiangCounty",
                 "name": "連江縣"
             },
             {
                 "id": 5,
+                "value": "YilanCounty",
                 "name": "宜蘭縣"
             },
             {
                 "id": 6,
+                "value": "Hsinchu",
                 "name": "新竹市"
             },
             {
                 "id": 7,
+                "value": "HsinchuCounty",
                 "name": "新竹縣"
             },
             {
                 "id": 8,
+                "value": "Taoyuan",
                 "name": "桃園市"
             },
             {
                 "id": 9,
+                "value": "MiaoliCounty",
                 "name": "苗栗縣"
             },
             {
                 "id": 10,
+                "value": "Taichung",
                 "name": "臺中市"
             },
             {
                 "id": 11,
+                "value": "ChanghuaCounty",
                 "name": "彰化縣"
             },
             {
                 "id": 12,
+                "value": "NantouCounty",
                 "name": "南投縣"
             },
             {
                 "id": 13,
+                "value": "Chiayi",
                 "name": "嘉義市"
             },
             {
                 "id": 14,
+                "value": "ChiayiCounty",
                 "name": "嘉義縣"
             },
             {
                 "id": 15,
+                "value": "YunlinCounty",
                 "name": "雲林縣"
             },
             {
                 "id": 16,
+                "value": "Tainan",
                 "name": "臺南市"
             },
             {
                 "id": 17,
+                "value": "Kaohsiung",
                 "name": "高雄市"
             },
             {
                 "id": 18,
+                "value": "PenghuCounty",
                 "name": "澎湖縣"
             },
             {
                 "id": 19,
+                "value": "KinmenCounty",
                 "name": "金門縣"
             },
             {
                 "id": 20,
+                "value": "PingtungCounty",
                 "name": "屏東縣"
             },
             {
                 "id": 21,
+                "value": "TaitungCounty",
                 "name": "臺東縣"
             },
             {
                 "id": 22,
+                "value": "HualienCounty",
                 "name": "花蓮縣"
             }
         ],

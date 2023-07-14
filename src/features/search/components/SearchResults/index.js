@@ -1,10 +1,8 @@
-import React, { useRef, useEffect } from 'react';
-import styled, { css } from 'styled-components';
+import React from 'react';
+import styled from 'styled-components';
 
-import Button from '@/lib/Button';
 import Container from '@/components/Container';
 import CardContainer from '@/components/CardContainer';
-import Pagination from '@/lib/Pagination';
 import CardSkeleton from '@/components/CardSkeleton';
 import breakpoint from '@/lib/constant/breakpoint';
 import { useTranslation } from 'next-i18next';
@@ -39,11 +37,11 @@ const SearchResultsContainer = styled.div`
     flex-wrap: wrap;
 `;
 
-const PaginationContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    margin: 10px 0;
-`;
+// const PaginationContainer = styled.div`
+//     display: flex;
+//     justify-content: center;
+//     margin: 10px 0;
+// `;
 
 const StyledCardSkeletonContainer = styled.div`
     display: inline-flex;
@@ -78,27 +76,18 @@ const StyledNoResults = styled.div`
 `;
 
 const SearchResults = ({
-    status,
-    searchedInputValue,
-    searchedInputCountyValue,
-    results,
-    pageDataArray,
-    page,
-    pageSize,
-    totalPages,
-    setPage,
     type,
+    status,
+    results,
+    isLoading,
+    isEnd,
+    searchedInputValue,
+    searchedCountyText,
 }) => {
-    const scrollRef = useRef(null);
     const { t } = useTranslation('common');
-    useEffect(() => {
-        if (scrollRef.current) {
-            scrollRef.current.scrollIntoView({ behavior: 'smooth' });
-        }
-    }, [page]);
     return (
         <Container>
-            <SearchResultsTitle ref={scrollRef}>
+            <SearchResultsTitle>
                 <SearchResultsTitleText>
                     {t('searchConfig.searchResults')}
                 </SearchResultsTitleText>
@@ -112,27 +101,17 @@ const SearchResults = ({
                     <div>
                         {t('searchConfig.area')}
                         <span className="highlight">
-                            {searchedInputCountyValue !== ''
-                                ? searchedInputCountyValue
+                            {searchedCountyText !== ''
+                                ? searchedCountyText
                                 : '全部縣市'}
                         </span>
                     </div>
                 </SearchInfo>
             </SearchResultsTitle>
             <SearchResultsContainer>
-                {(status === undefined ||
-                    status === 'loading' ||
-                    status === 'cancel') &&
-                    Array(8)
-                        .fill(0)
-                        .map((item, i) => (
-                            <StyledCardSkeletonContainer key={i}>
-                                <CardSkeleton />
-                            </StyledCardSkeletonContainer>
-                        ))}
                 {status === 'success' &&
-                    pageDataArray &&
-                    pageDataArray.map((item, i) => {
+                    results &&
+                    results.map((item, i) => {
                         const {
                             Picture: { PictureUrl1 = null } = {},
                             OpenTime,
@@ -145,8 +124,6 @@ const SearchResults = ({
                             ScenicSpotName,
                             RestaurantID,
                             RestaurantName,
-                            Description,
-                            DescriptionDetail,
                         } = item;
 
                         let transferedTime = transferTime(
@@ -177,11 +154,12 @@ const SearchResults = ({
                                 itemName={itemName}
                                 PictureUrl1={convertImgUrl}
                                 description={
-                                    transferedTime === 'allDay'
-                                        ? t('carouselConfig.allDay')
-                                        : transferedTime === 'moreDetails'
-                                        ? t('carouselConfig.moreDetails')
-                                        : transferedTime
+                                    transferedTime
+                                    // transferedTime === 'allDay'
+                                    //     ? t('carouselConfig.allDay')
+                                    //     : transferedTime === 'moreDetails'
+                                    //     ? t('carouselConfig.moreDetails')
+                                    //     : transferedTime
                                 }
                                 address={Address ? Address : '詳見官網'}
                                 text={t(`carouselConfig.openTime`)}
@@ -189,23 +167,25 @@ const SearchResults = ({
                             />
                         );
                     })}
-                {status === 'success' && results.length === 0 && (
+                {isLoading &&
+                    Array(8)
+                        .fill(0)
+                        .map((item, i) => (
+                            <StyledCardSkeletonContainer key={i}>
+                                <CardSkeleton />
+                            </StyledCardSkeletonContainer>
+                        ))}
+                {status === 'success' && results.length === 0 && isEnd && (
                     <StyledNoResults>
                         <div>{t(`searchConfig.noResults`)}</div>
                     </StyledNoResults>
                 )}
+                {status === 'success' && isEnd && (
+                    <StyledEndMsg>
+                        <div>已經到底囉！</div>
+                    </StyledEndMsg>
+                )}
             </SearchResultsContainer>
-            {status === 'success' && (
-                <PaginationContainer>
-                    <Pagination
-                        page={page}
-                        pageSize={pageSize}
-                        total={totalPages}
-                        onChange={setPage}
-                        withEllipsis
-                    />
-                </PaginationContainer>
-            )}
         </Container>
     );
 };
