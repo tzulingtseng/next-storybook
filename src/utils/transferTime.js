@@ -1,23 +1,22 @@
 import moment from 'moment-timezone';
 const transferTime = (openTimeParam, startTimeParam, endTimeParam) => {
-    // console.log('startTimeParam', startTimeParam);
-    let formattedTime = '';
-    let isAllDay = openTimeParam === '全天候開放';
-    if (isAllDay) {
-        // formattedTime = t('carouselConfig.allDay');
-        formattedTime = 'allDay';
-    } else if (startTimeParam !== undefined) {
+    // let isAllDay = openTimeParam === '全天候開放';
+    if (openTimeParam) {
+        return openTimeParam;
+    } else if (startTimeParam) {
         const startTime = moment(startTimeParam, moment.ISO_8601)
             .tz('Asia/Taipei')
             .format('YYYY-MM-DD');
         const endTime = moment(endTimeParam, moment.ISO_8601)
             .tz('Asia/Taipei')
             .format('YYYY-MM-DD');
-        formattedTime = `${startTime} ~ ${endTime}`;
+        if (startTime === endTime) {
+            return startTime;
+        } else {
+            return `${startTime} ~ ${endTime}`;
+        }
     } else {
-        // formattedTime = t('carouselConfig.moreDetails');
-        formattedTime = 'moreDetails';
+        return 'moreDetails';
     }
-    return formattedTime;
 };
 export default transferTime;
