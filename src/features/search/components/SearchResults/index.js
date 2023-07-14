@@ -124,8 +124,6 @@ const SearchResults = ({
                             ScenicSpotName,
                             RestaurantID,
                             RestaurantName,
-                            Description,
-                            DescriptionDetail,
                         } = item;
 
                         let transferedTime = transferTime(
@@ -156,11 +154,12 @@ const SearchResults = ({
                                 itemName={itemName}
                                 PictureUrl1={convertImgUrl}
                                 description={
-                                    transferedTime === 'allDay'
-                                        ? t('carouselConfig.allDay')
-                                        : transferedTime === 'moreDetails'
-                                        ? t('carouselConfig.moreDetails')
-                                        : transferedTime
+                                    transferedTime
+                                    // transferedTime === 'allDay'
+                                    //     ? t('carouselConfig.allDay')
+                                    //     : transferedTime === 'moreDetails'
+                                    //     ? t('carouselConfig.moreDetails')
+                                    //     : transferedTime
                                 }
                                 address={Address ? Address : '詳見官網'}
                                 text={t(`carouselConfig.openTime`)}
@@ -181,7 +180,7 @@ const SearchResults = ({
                         <div>{t(`searchConfig.noResults`)}</div>
                     </StyledNoResults>
                 )}
-                {status === 'success' && results.length < 8 && isEnd && (
+                {status === 'success' && isEnd && (
                     <StyledEndMsg>
                         <div>已經到底囉！</div>
                     </StyledEndMsg>
