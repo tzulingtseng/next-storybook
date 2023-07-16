@@ -13,6 +13,7 @@ import 'swiper/css/navigation';
 import Card from '@/lib/Card';
 import Meta from '@/lib/Card/Meta';
 import Button from '@/lib/Button';
+import Icon from '@/lib/Icon';
 
 import { useTranslation } from 'next-i18next';
 import transferTime from '@/utils/transferTime';
@@ -51,6 +52,13 @@ const StyledTitleText = styled.div`
     color: ${(props) => props.theme.colors.primary};
     font-size: ${(props) => props.theme.fontSize.lg};
     font-weight: 600;
+    display: flex;
+    align-items: center;
+`;
+
+const StyledTitleIcon = styled(Icon)`
+    margin-left: 0.5rem;
+    font-size: 1.5rem;
 `;
 
 const StyledTitleLink = styled.div`
@@ -135,16 +143,19 @@ const TypeCarouselCards = ({ status, type, lists }) => {
     const swiperRef = useRef(null);
     const [isBeginning, setIsBeginning] = useState(true);
     const [isEnd, setisEnd] = useState(false);
-    let titleName;
+    let titleName, titleIcon;
     switch (type) {
         case 'activity':
             titleName = 'hotActivity'; // 熱門活動
+            titleIcon = 'fa-solid fa-flag-checkered';
             break;
         case 'scenicSpot':
             titleName = 'hotScenicSpot'; // 熱門景點
+            titleIcon = 'fa-solid fa-tower-observation';
             break;
         case 'restaurant':
             titleName = 'hotRestaurant'; // 熱門美食
+            titleIcon = 'fa-regular fa-utensils';
             break;
     }
 
@@ -170,10 +181,10 @@ const TypeCarouselCards = ({ status, type, lists }) => {
                     <StyledTitleContainer>
                         <StyledTitleText>
                             {t(`carouselConfig.${titleName}`)}
+                            <StyledTitleIcon icon={`${titleIcon}`} />
                         </StyledTitleText>
                         <StyledTitleLink>
                             <Link href={`/travel/search?type=${type}`}>
-                                {' '}
                                 {t(`carouselConfig.more`)}
                             </Link>
                         </StyledTitleLink>

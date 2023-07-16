@@ -6,7 +6,6 @@ const StyledWrapper = styled('div')`
     max-width: auto;
     width: 90%;
     margin: 0 auto;
-    padding-bottom: 8rem;
     ${breakpoint.mediaXS} {
         padding-bottom: 5rem;
     }

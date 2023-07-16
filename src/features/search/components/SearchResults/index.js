@@ -14,7 +14,7 @@ const SearchResultsTitle = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 1.5rem 0;
+    padding: 1.5rem 0;
 `;
 const SearchResultsTitleText = styled.div`
     color: ${(props) => props.theme.colors.primary};

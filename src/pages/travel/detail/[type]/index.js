@@ -23,17 +23,17 @@ import convertGoogleDriveURL from '@/utils/convertGoogleDriveURL';
 import breakpoint from '@/lib/constant/breakpoint';
 import NoImage from '@/components/NoImage';
 
-const InfoContainer = styled('div')`
+const InfoContainer = styled.div`
     margin-top: 3rem;
 `;
 
 const InfoTitle = styled.div`
     margin: 1.5rem 0;
-    font-size: ${(props) => props.theme.fontSize.lg};
+    font-size: ${(props) => props.theme.fontSize.xl};
     font-weight: 600;
 `;
 
-const InfoBox = styled('div')`
+const InfoBox = styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -42,7 +42,7 @@ const InfoBox = styled('div')`
     }
 `;
 
-const InfoImageContainer = styled('div')`
+const InfoImageContainer = styled.div`
     position: relative;
     overflow: hidden;
     width: 100%;
@@ -63,7 +63,7 @@ const InfoImageContainer = styled('div')`
     }
 `;
 
-const InfoDetailContainer = styled('div')`
+const InfoDetailContainer = styled.div`
     width: 100%;
     padding-left: 0rem;
     padding-top: 1.5rem;
@@ -86,7 +86,7 @@ const InfoDetailItem = styled.div`
     margin: 1rem 0;
 `;
 
-const IntroContainer = styled('div')`
+const IntroContainer = styled.div`
     margin-bottom: 3rem;
     > .leaflet-container {
         width: 100%;
@@ -94,6 +94,12 @@ const IntroContainer = styled('div')`
         border-radius: 1rem;
         box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
     }
+`;
+
+const IntroTitle = styled.div`
+    font-size: ${(props) => props.theme.fontSize.lg};
+    font-weight: 600;
+    margin: 1.5rem 0;
 `;
 
 const MapContainer = styled('div')``;
@@ -190,11 +196,13 @@ const Detail = ({ data }) => {
                             </InfoBox>
                         </InfoContainer>
                         <IntroContainer>
-                            <InfoTitle>
+                            <IntroTitle>
                                 {t('detailConfig.introTitle')}
-                            </InfoTitle>
+                            </IntroTitle>
                             <div>{Description}</div>
-                            <InfoTitle>{t('detailConfig.mapTitle')}</InfoTitle>
+                            <IntroTitle>
+                                {t('detailConfig.mapTitle')}
+                            </IntroTitle>
                             <TransportInfo position={Position} />
                         </IntroContainer>
                         {/* <MapContainer></MapContainer> */}
