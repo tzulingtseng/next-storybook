@@ -11,7 +11,7 @@ const transferTime = (openTimeParam, startTimeParam, endTimeParam) => {
             .tz('Asia/Taipei')
             .format('YYYY-MM-DD');
         if (startTime === endTime) {
-            return startTime;
+            return endTime;
         } else {
             return `${startTime} ~ ${endTime}`;
         }

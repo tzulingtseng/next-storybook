@@ -1,5 +1,6 @@
 import { i18n } from 'next-i18next';
 import axios from 'axios';
+import moment from 'moment-timezone';
 
 import { API_HOSTNAME_URL } from '@/config/config';
 import { getAuthorizationHeader } from '@/utils/getAuthorizationHeader';
@@ -16,7 +17,7 @@ const getActivityAPI = async ({
         data: undefined,
         // pagination: undefined,
     };
-
+    const currentTime = moment().tz('Asia/Taipei').format('YYYY-MM-DD');
     /**
      * api query parameter
      */
@@ -24,7 +25,10 @@ const getActivityAPI = async ({
         $format: 'JSON',
         $top: top,
         $skip: skip,
-        $filter: filter,
+        $filter: filter
+            ? `EndTime ge ${currentTime} and ${filter}`
+            : `EndTime ge ${currentTime}`,
+        // $filter: filter,
         // $spatialFilter: spatialFilter,
         // $select: select,
     };
