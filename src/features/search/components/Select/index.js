@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled, { useTheme } from 'styled-components';
 import Icon from '@/lib/Icon';
 
@@ -33,9 +33,9 @@ const SelectBoxWrapper = styled.div`
     position: relative;
     border: 1px solid
         ${(props) =>
-            props.$isOpen
-                ? props.theme.colors.grey2
-                : props.theme.colors.grey3};
+        props.$isOpen
+            ? props.theme.colors.grey2
+            : props.theme.colors.grey3};
     &:hover {
         border: 1px solid ${(props) => props.theme.colors.grey2};
     }
@@ -93,6 +93,8 @@ const Select = ({
     const { locale } = useRouter();
     const [open, setOpen] = useState(false);
     const theme = useTheme();
+    const countySelectRef = useRef(null)
+    const countyOptionsRef = useRef(null)
 
     const { t } = useTranslation('common');
 
@@ -108,6 +110,27 @@ const Select = ({
         setOpen(false);
     };
 
+    // 監聽點擊事件，以便在點擊空白處時關閉選單
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                countyOptionsRef.current &&
+                !countyOptionsRef.current.contains(event.target) &&
+                countySelectRef.current &&
+                !countySelectRef.current.contains(event.target)
+            ) {
+                setOpen(false);
+            }
+        };
+
+        document.addEventListener('click', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, []);
+
+
     return (
         <SelectWrapper>
             <SelectBoxWrapper
@@ -116,14 +139,15 @@ const Select = ({
                     setOpen(!open);
                 }}
                 $isOpen={open}
+                ref={countySelectRef}
             >
                 <SelectBox>
                     <div>
                         {selectedCountyText !== ''
                             ? selectedCountyText
                             : selectedCountyText === ''
-                            ? t('countyOptions.all')
-                            : t('countyOptions.placeholder')}
+                                ? t('countyOptions.all')
+                                : t('countyOptions.placeholder')}
                     </div>
                     <SelectIcon
                         $isOpen={open}
@@ -133,8 +157,8 @@ const Select = ({
                 </SelectBox>
             </SelectBoxWrapper>
             {/* options */}
-            <SelectItems $isOpen={open}>
-                <ul>
+            {open && <SelectItems $isOpen={open} ref={countyOptionsRef}>
+                <ul >
                     <li
                         onClick={(e) => {
                             selectCounty(e);
@@ -173,7 +197,7 @@ const Select = ({
                         );
                     })}
                 </ul>
-            </SelectItems>
+            </SelectItems>}
         </SelectWrapper>
     );
 };
