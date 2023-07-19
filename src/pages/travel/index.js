@@ -7,6 +7,7 @@ import path from 'path';
 import fs from 'fs/promises';
 
 import SEO from '@/utils/seo';
+import scrollToTop from '@/utils/scrollToTop';
 
 import Link from 'next/link';
 import ThemeProvider from '@/lib/ThemeProvider';
@@ -43,6 +44,10 @@ const Travel = ({
     const [selectedValue, setSelectedValue] = useState(locale);
     const [selectLang, setSelectLang] = useState(true);
     const { t } = useTranslation('common');
+
+    useEffect(() => {
+        scrollToTop(true)
+    }, [])
     useEffect(() => {
         push('/travel', undefined, { locale: selectedValue });
     }, [selectedValue]);

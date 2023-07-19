@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { debounce } from 'lodash';
+import { throttle } from 'lodash';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -104,6 +104,7 @@ const Search = ({ typeStatus, typeData, type, area, keyword }) => {
     };
 
     useEffect(() => {
+        scrollToTop(true)
         setResults(typeData);
         setSkip(0);
         setResults([]);
@@ -151,7 +152,7 @@ const Search = ({ typeStatus, typeData, type, area, keyword }) => {
 
     useEffect(() => {
         // isLoading 初始值為 false
-        const handleScroll = debounce(() => {
+        const handleScroll = () => {
             // scrollBottom 剩餘的滾動高度
             const scrollBottom =
                 document.documentElement.scrollHeight -
@@ -167,10 +168,11 @@ const Search = ({ typeStatus, typeData, type, area, keyword }) => {
                     fetchFilteredData('', '');
                 }
             }
-        });
+        };
 
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
+        const throttledHandleScroll = throttle(handleScroll, 1000);
+        window.addEventListener('scroll', throttledHandleScroll);
+        return () => window.removeEventListener('scroll', throttledHandleScroll);
     }, [isLoading]);
 
     useEffect(() => {

@@ -7,6 +7,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import transferTime from '@/utils/transferTime';
 import SEO from '@/utils/seo';
+import scrollToTop from '@/utils/scrollToTop';
 
 import getActivityAPI from '@/api/getActivityAPI';
 import getScenicSpotAPI from '@/api/getScenicSpotAPI';
@@ -134,6 +135,10 @@ const Detail = ({ data }) => {
 
     let convertImgUrl = convertGoogleDriveURL(Picture.PictureUrl1);
 
+    useEffect(() => {
+        scrollToTop(true)
+    }, [])
+
     // http://localhost:3000/en/travel/detail/activity?id=C2_315080000H_502349
     useEffect(() => {
         router.push(`/travel/detail/${QueryType}?id=${SpotID}`, undefined, {
@@ -189,8 +194,8 @@ const Detail = ({ data }) => {
                                         {formattedTime === 'allDay'
                                             ? t('carouselConfig.allDay')
                                             : formattedTime === 'moreDetails'
-                                            ? t('carouselConfig.moreDetails')
-                                            : formattedTime}
+                                                ? t('carouselConfig.moreDetails')
+                                                : formattedTime}
                                     </div>
                                 </InfoDetailContainer>
                             </InfoBox>
