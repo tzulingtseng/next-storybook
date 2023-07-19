@@ -75,13 +75,13 @@ const SwiperContainer = styled.div`
 `;
 
 const StyledSwiperSlide = styled(SwiperSlide)`
-    width: 60%;
+    width: 49%;
     margin-right: 1rem;
     ${breakpoint.mediaSM} {
-        width: 40%;
+        width: 32%;
     }
     ${breakpoint.mediaMD} {
-        width: 28%;
+        width: 25%;
     }
 `;
 

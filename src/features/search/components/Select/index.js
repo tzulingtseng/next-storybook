@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled, { useTheme } from 'styled-components';
+import breakpoint from '@/lib/constant/breakpoint';
 import Icon from '@/lib/Icon';
 
 import { useRouter } from 'next/router';
@@ -18,6 +19,12 @@ const SelectWrapper = styled.div`
         margin: 0;
         padding: 0;
         list-style: none;
+    }
+    ${breakpoint.mediaXS}{
+        width: 12rem;
+    }
+    ${breakpoint.mediaSM}{
+        width: 9rem;
     }
 `;
 

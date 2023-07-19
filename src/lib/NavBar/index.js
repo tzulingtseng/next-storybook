@@ -204,9 +204,9 @@ const HamburgerContainer = styled('div')`
     ${breakpoint.mediaXL} {
         left: -17.5rem;
         transform: ${(props) =>
-            props.$hamburgerContainerShow
-                ? 'translateX(17.5rem)'
-                : 'translateX(0px)'};
+        props.$hamburgerContainerShow
+            ? 'translateX(17.5rem)'
+            : 'translateX(0px)'};
         width: 17.5rem;
     }
 `;
@@ -416,6 +416,7 @@ const NavBar = ({
                     </IconSection>
                     <Menu>
                         <MenuItems
+                            locale={locale}
                             items={t('menuConfig', { returnObjects: true })}
                         ></MenuItems>
                     </Menu>

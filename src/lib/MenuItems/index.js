@@ -14,7 +14,8 @@ const StyledMenuContainer = styled.div`
     display: flex;
     cursor: pointer;
     flex-direction: row;
-    justify-content: center;
+    justify-content: ${(props) => props.$locale === 'en' ? 'start' : 'center'};
+    white-space: ${(props) => props.$locale === 'en' ? 'nowrap' : 'normal'};
     padding: 1rem 4rem;
     &:hover {
         background: ${(props) => props.theme.colors.grey0};
@@ -109,7 +110,7 @@ const MenuItem = ({
     );
 };
 
-const MenuItems = ({ items, ...props }) => {
+const MenuItems = ({ locale, items, ...props }) => {
     const renderMenuItem = (item) => {
         const hasChild = !isEmpty(item.children) && item.children.length > 0;
         const hasDivder = item.divider === true;
@@ -117,6 +118,7 @@ const MenuItems = ({ items, ...props }) => {
         return hasChild ? (
             <Fragment key={item.id}>
                 <MenuWithChild
+                    $locale={locale}
                     item={item}
                     haschild={hasChild}
                     hasdivder={hasDivder}
@@ -124,6 +126,7 @@ const MenuItems = ({ items, ...props }) => {
             </Fragment>
         ) : (
             <MenuItem
+                $locale={locale}
                 key={item.id}
                 text={item.text}
                 icon={item.icon}

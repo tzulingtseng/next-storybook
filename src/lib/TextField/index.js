@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
+import breakpoint from '@/lib/constant/breakpoint';
 
 const errorStyle = css`
     border: 1px solid ${(props) => props.theme.color.error};
@@ -29,7 +30,8 @@ const StyledTextField = styled.div`
     background-color: ${(props) => props.theme.colors.white};
     border-radius: 0.5rem;
     padding: 0rem 0.75rem;
-    width: 45%;
+    width: 100%;
+    margin-bottom:1rem;
     height: 100%;
     &:hover {
         border: 1px solid ${(props) => props.theme.colors.grey2};
@@ -37,6 +39,10 @@ const StyledTextField = styled.div`
 
     ${(props) => (props.$isError ? errorStyle : null)}
     ${(props) => (props.$isDisabled ? disabledStyle : null)}
+    ${breakpoint.mediaSM}{
+        width: 45%;
+        
+    }
 `;
 
 const Input = styled.input`
@@ -114,7 +120,7 @@ TextField.defaultProps = {
     placeholder: '',
     isError: false,
     isDisabled: false,
-    onChange: () => {},
+    onChange: () => { },
 };
 
 export default TextField;

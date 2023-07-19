@@ -54,9 +54,9 @@ const BannerContentBox = styled('div')`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 90%;
+    width: 50%;
     ${breakpoint.mediaSM} {
-        width: 70%;
+        width: 74%;
     }
     ${breakpoint.mediaMD} {
         max-width: 35rem;
@@ -83,7 +83,12 @@ const BannerSearchBox = styled.div`
     line-height: 1;
     font-size: ${(props) => props.theme.fontSize.sm};
     display: flex;
+    flex-wrap:wrap;
     justify-content: space-between;
+    ${breakpoint.mediaSM} {
+        justify-content: space-evenly;
+        flex-wrap:nowrap;
+    }
 `;
 
 const SearchButton = styled(Button)`
