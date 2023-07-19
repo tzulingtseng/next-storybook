@@ -55,8 +55,10 @@ const BannerContentBox = styled('div')`
     left: 50%;
     transform: translate(-50%, -50%);
     width: 50%;
+    height:42%;
     ${breakpoint.mediaSM} {
         width: 74%;
+        height:auto;
     }
     ${breakpoint.mediaMD} {
         max-width: 35rem;

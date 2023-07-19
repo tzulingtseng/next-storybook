@@ -57,7 +57,7 @@ const StyledDesktopAndAbovebox = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    position: sticky;
+    // position: sticky;
     top: 0px;
 `;
 
@@ -201,7 +201,7 @@ const HamburgerContainer = styled('div')`
         props.$hamburgerContainerShow ? 'translateX(100%)' : 'translateX(0%)'};
     height: 100vh;
     width: 60%;
-    ${breakpoint.mediaXL} {
+    ${breakpoint.mediaSM} {
         left: -17.5rem;
         transform: ${(props) =>
         props.$hamburgerContainerShow
@@ -210,6 +210,23 @@ const HamburgerContainer = styled('div')`
         width: 17.5rem;
     }
 `;
+const Mask = styled.div`
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    display:${(props) =>
+        props.$hamburgerContainerShow
+            ? 'block'
+            : 'none'};
+    ${breakpoint.mediaSM} {
+        display:none;
+    }
+`
 const ButtonCloseSection = styled('div')`
     position: relative;
     padding: 1.5rem 2rem 1rem;
@@ -282,7 +299,22 @@ const NavBar = ({
 
     const handleHamburgerContainerShow = () => {
         setHamburgerContainerShow(!hamburgerContainerShow);
+        document.body.style.overflow = 'hidden';
+        document.body.style.height = '100vh';
+
     };
+
+    useEffect(() => {
+        if (hamburgerContainerShow) {
+            document.body.style.overflowY = 'hidden';
+            document.body.style.height = '100vh';
+
+        } else {
+            document.body.style.overflow = 'initial';
+            document.body.style.height = 'initial';
+        }
+
+    }, [hamburgerContainerShow])
 
     // useEffect(() => {
     //     const handleScroll = () => {
@@ -403,6 +435,7 @@ const NavBar = ({
                         $isCatgoryShow={isCatgoryShow}
                     ></StyledDivider>
                 </HeaderContainer>
+                <Mask $hamburgerContainerShow={hamburgerContainerShow} />
                 <HamburgerContainer
                     $hamburgerContainerShow={hamburgerContainerShow}
                 >
