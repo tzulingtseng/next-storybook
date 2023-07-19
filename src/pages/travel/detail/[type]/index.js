@@ -7,7 +7,6 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import transferTime from '@/utils/transferTime';
 import SEO from '@/utils/seo';
-import scrollToTop from '@/utils/scrollToTop';
 
 import getActivityAPI from '@/api/getActivityAPI';
 import getScenicSpotAPI from '@/api/getScenicSpotAPI';
@@ -46,7 +45,7 @@ const InfoBox = styled.div`
 const InfoImageContainer = styled.div`
     position: relative;
     overflow: hidden;
-    width: 100%;
+    padding:25% 0;
     border-radius: 1rem;
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
     img {
@@ -61,6 +60,7 @@ const InfoImageContainer = styled.div`
     }
     ${breakpoint.mediaSM} {
         width: 50%;
+        padding:12.5% 0;
     }
 `;
 
@@ -134,10 +134,6 @@ const Detail = ({ data }) => {
     } = data.detailData;
 
     let convertImgUrl = convertGoogleDriveURL(Picture.PictureUrl1);
-
-    useEffect(() => {
-        scrollToTop(true)
-    }, [])
 
     // http://localhost:3000/en/travel/detail/activity?id=C2_315080000H_502349
     useEffect(() => {

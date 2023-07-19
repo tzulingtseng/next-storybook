@@ -16,7 +16,6 @@ import getActivityAPI from '@/api/getActivityAPI';
 import getScenicSpotAPI from '@/api/getScenicSpotAPI';
 import getRestaurantAPI from '@/api/getRestaurantAPI';
 
-import scrollToTop from '@/utils/scrollToTop';
 import SEO from '@/utils/seo';
 
 const Search = ({ typeStatus, typeData, type, area, keyword }) => {
@@ -104,7 +103,6 @@ const Search = ({ typeStatus, typeData, type, area, keyword }) => {
     };
 
     useEffect(() => {
-        scrollToTop(true)
         setResults(typeData);
         setSkip(0);
         setResults([]);
