@@ -8,6 +8,11 @@
         "outline": "Subscribe",
         "filled": "Donate"
     },
+    "bannerHome": {
+        "title_01": "Discover the Beauty of Taiwan.",
+        "title_02": "Let's Get Closer to this Land.",
+        "sub_title": "ScenicSpot、 Activity、 Food"
+    },
     "footerSource": "MOTC TDX Service Platform",
     "categoryType": [
         {

@@ -8,6 +8,11 @@
         "outline": "訂閱",
         "filled": "贊助"
     },
+    "bannerHome": {
+        "title_01": "探索臺灣之美",
+        "title_02": "讓我們更親近這片土地",
+        "sub_title": "景點、 美食、 活動"
+    },
     "footerSource": "交通部 TDX 服務平臺",
     "categoryType": [
         {

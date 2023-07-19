@@ -4,6 +4,7 @@ import Image from 'next/image';
 import BannerHomeSrcPC from '@/assets/images/banner-home-pc.jpg';
 import BannerHomeSrcMb from '@/assets/images/banner-home-mb.jpg';
 import breakpoint from '@/lib/constant/breakpoint';
+import { useTranslation } from 'next-i18next';
 
 const BannerHomeWrapper = styled.div`
     position: relative;
@@ -63,6 +64,7 @@ const BannerText = styled.div`
 `;
 
 const BannerHome = () => {
+    const { t } = useTranslation('common');
     return (
         <BannerHomeWrapper>
             <BannerImg
@@ -78,9 +80,9 @@ const BannerHome = () => {
                 priority={true}
             />
             <BannerText>
-                <div className="title">探索臺灣之美</div>
-                <div className="title"> 讓我們更親近這片土地</div>
-                <div className="sub_title">景點、 美食、 活動</div>
+                <div className="title">{t('bannerHome.title_01')}</div>
+                <div className="title"> {t('bannerHome.title_02')}</div>
+                <div className="sub_title">{t('bannerHome.sub_title')}</div>
             </BannerText>
         </BannerHomeWrapper>
     );

@@ -272,28 +272,28 @@ const TypeCarouselCards = ({ status, type, lists }) => {
                                                         )}
                                                         description={
                                                             transferedTime ===
-                                                            'allDay'
+                                                                'allDay'
                                                                 ? t(
-                                                                      'carouselConfig.allDay'
-                                                                  )
+                                                                    'carouselConfig.allDay'
+                                                                )
                                                                 : transferedTime ===
-                                                                  'moreDetails'
-                                                                ? t(
-                                                                      'carouselConfig.moreDetails'
-                                                                  )
-                                                                : transferedTime
+                                                                    'moreDetails'
+                                                                    ? t(
+                                                                        'carouselConfig.moreDetails'
+                                                                    )
+                                                                    : transferedTime
                                                         }
                                                         address={
                                                             Address
                                                                 ? t(
-                                                                      `${itemId}.address`,
-                                                                      {
-                                                                          ns: `${type}Data`,
-                                                                      }
-                                                                  )
+                                                                    `${itemId}.address`,
+                                                                    {
+                                                                        ns: `${type}Data`,
+                                                                    }
+                                                                )
                                                                 : t(
-                                                                      `carouselConfig.moreDetails`
-                                                                  )
+                                                                    `carouselConfig.moreDetails`
+                                                                )
                                                         }
                                                         text={t(
                                                             `carouselConfig.openTime`
