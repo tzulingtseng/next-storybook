@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { TypeAnimation } from 'react-type-animation';
+
 import Image from 'next/image';
 import BannerHomeSrcPC from '@/assets/images/banner-home-pc.jpg';
 import BannerHomeSrcMb from '@/assets/images/banner-home-mb.jpg';
@@ -50,8 +52,15 @@ const BannerText = styled.div`
     color: ${(props) => props.theme.colors.white};
     font-weight: 600;
     width: 100%;
+    transition: transform 0.4s, opacity 0.4s;
     .title {
+        white-space: pre-line;
         font-size: ${(props) => props.theme.fontSize.xl};
+    }
+    .title-popup{
+        opacity:${(props) => props.$isFinalText ? '1' : '0'};
+        transform: ${(props) => props.$isFinalText ? 'translateY(0)' : 'translateY(60%)'};
+        transition: transform 0.4s, opacity 0.4s;
     }
     ${breakpoint.mediaMD} {
         .title {
@@ -65,6 +74,16 @@ const BannerText = styled.div`
 
 const BannerHome = () => {
     const { t } = useTranslation('common');
+    const [isFinalText, setIsFinalText] = useState(false);
+    let times = 0
+    let repeatTimes = 3
+    const countTypingTimes = () => {
+        times++
+        if (times === repeatTimes + 1) {
+            setIsFinalText(true)
+        }
+    }
+
     return (
         <BannerHomeWrapper>
             <BannerImg
@@ -79,12 +98,27 @@ const BannerHome = () => {
                 alt="banner"
                 priority={true}
             />
-            <BannerText>
-                <div className="title">{t('bannerHome.title_01')}</div>
-                <div className="title"> {t('bannerHome.title_02')}</div>
+            <BannerText $isFinalText={isFinalText}>
+                {isFinalText && <div className="title title-popup">{t('bannerHome.title_01')}</div>}
+                {isFinalText && <div className="title title-popup"> {t('bannerHome.title_02')}</div>}
+                {!isFinalText && <TypeAnimation
+                    sequence={[
+                        `${t('bannerHome.title_01')}\n${t('bannerHome.title_02')}`,
+                        1000,
+                        '', () => {
+                            countTypingTimes()
+                        },
+
+                    ]}
+                    speed={20}
+                    repeat={repeatTimes}
+                    preRenderFirstString={true}
+                    wrapper="div"
+                    className="title"
+                />}
                 <div className="sub_title">{t('bannerHome.sub_title')}</div>
             </BannerText>
-        </BannerHomeWrapper>
+        </BannerHomeWrapper >
     );
 };
 
