@@ -89,8 +89,8 @@ const SearchResults = ({
     results,
     isLoading,
     isEnd,
-    searchedInputValue,
-    searchedCountyText,
+    keyword,
+    searchedCountyText
 }) => {
     const { t } = useTranslation('common');
     return (
@@ -103,7 +103,7 @@ const SearchResults = ({
                     <div>
                         {t('searchConfig.keyword')}
                         <span className="highlight">
-                            {searchedInputValue ? searchedInputValue : '無'}
+                            {keyword ? keyword : t('searchConfig.noData')}
                         </span>
                     </div>
                     <div>
@@ -111,13 +111,13 @@ const SearchResults = ({
                         <span className="highlight">
                             {searchedCountyText !== ''
                                 ? searchedCountyText
-                                : '全部縣市'}
+                                : t('countyOptions.all')}
                         </span>
                     </div>
                 </SearchInfo>
             </SearchResultsTitle>
             <SearchResultsContainer>
-                {status === 'success' &&
+                {
                     results &&
                     results.map((item, i) => {
                         const {
@@ -162,20 +162,19 @@ const SearchResults = ({
                                 itemName={itemName}
                                 PictureUrl1={convertImgUrl}
                                 description={
-                                    transferedTime
-                                    // transferedTime === 'allDay'
-                                    //     ? t('carouselConfig.allDay')
-                                    //     : transferedTime === 'moreDetails'
-                                    //     ? t('carouselConfig.moreDetails')
-                                    //     : transferedTime
+                                    transferedTime === 'allDay'
+                                        ? t('carouselConfig.allDay')
+                                        : transferedTime === 'moreDetails'
+                                            ? t('carouselConfig.moreDetails')
+                                            : transferedTime
                                 }
-                                address={Address ? Address : '詳見官網'}
+                                address={Address ? Address : t('carouselConfig.moreDetails')}
                                 text={t(`carouselConfig.openTime`)}
                                 iconClass="fa-solid fa-location-dot"
                             />
                         );
                     })}
-                {isLoading &&
+                {isLoading && !isEnd &&
                     Array(8)
                         .fill(0)
                         .map((item, i) => (
@@ -183,6 +182,7 @@ const SearchResults = ({
                                 <CardSkeleton />
                             </StyledCardSkeletonContainer>
                         ))}
+                {/* status ==='error' */}
                 {status === 'success' && results.length === 0 && isEnd && (
                     <StyledNoResults>
                         <div>{t(`searchConfig.noResults`)}</div>
@@ -190,7 +190,7 @@ const SearchResults = ({
                 )}
                 {status === 'success' && isEnd && (
                     <StyledEndMsg>
-                        <div>已經到底囉！</div>
+                        <div>{t(`searchConfig.scrollToEnd`)}</div>
                     </StyledEndMsg>
                 )}
             </SearchResultsContainer>

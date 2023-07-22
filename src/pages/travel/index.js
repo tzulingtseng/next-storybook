@@ -40,8 +40,8 @@ const Travel = ({
 }) => {
     const [isLoading, setIsLoading] = useState(true);
     const { locale, push } = useRouter();
+    const [skip, setSkip] = useState(undefined);
     const [selectedValue, setSelectedValue] = useState(locale);
-    const [selectLang, setSelectLang] = useState(true);
     const { t } = useTranslation('common');
 
     useEffect(() => {
@@ -61,9 +61,9 @@ const Travel = ({
                         locale={locale}
                         selectedValue={selectedValue}
                         setSelectedValue={setSelectedValue}
-                        selectLang={selectLang}
+                        setSkip={setSkip}
                     />
-                    <BannerHome />
+                    <BannerHome locale={locale} />
                     <Wrapper>
                         <TypeCarouselCards
                             lists={scenicSpotData}

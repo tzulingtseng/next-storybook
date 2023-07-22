@@ -54,14 +54,13 @@ const BannerContentBox = styled('div')`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 50%;
-    height:42%;
+    width: 80%;
     ${breakpoint.mediaSM} {
         width: 74%;
         height:auto;
     }
     ${breakpoint.mediaMD} {
-        max-width: 35rem;
+        max-width: 36rem;
         width: 100%;
     }
 `;
@@ -74,18 +73,18 @@ const BannerTitle = styled.div`
     font-size: ${(props) => props.theme.fontSize.xl};
     font-weight: 600;
     color: ${(props) => props.theme.colors.white};
-    margin-bottom: 2rem;
+    text-shadow: 1px 1px 0 #444, 2px 2px 0 #444, 3px 3px 0 #444;
+    margin-bottom: 1rem;
     ${breakpoint.mediaMD} {
         font-size: ${(props) => props.theme.fontSize.xxl};
     }
 `;
 
 const BannerSearchBox = styled.div`
-    height: 2.5rem;
+    // height: 2.5rem;
     line-height: 1;
     font-size: ${(props) => props.theme.fontSize.sm};
     display: flex;
-    flex-wrap:wrap;
     justify-content: space-between;
     ${breakpoint.mediaSM} {
         justify-content: space-evenly;
@@ -94,7 +93,7 @@ const BannerSearchBox = styled.div`
 `;
 
 const SearchButton = styled(Button)`
-    height: 2.5rem;
+    // height: 2.5rem;
     &:hover {
         background-color: rgb(38, 97, 112);
     }
@@ -105,21 +104,23 @@ const SearchButton = styled(Button)`
 
 const BannerSearch = ({
     type,
+    area,
     bannerTitle,
     selectedCountyText,
     setSelectedCountyText,
     setSelectedCountyValue,
-    setSearchedInputValue,
-    setSearchedCountyText,
-    setSearchedCountyValue,
     inputValue,
     setInputValue,
     selectedCountyValue,
+    locale,
+    fetchFilteredData,
+    handleSearch,
+    ...props
 }) => {
     const { t } = useTranslation('common');
     return (
         <BannerContainer $type={type}>
-            <BannerContentBox>
+            <BannerContentBox $locale={locale}>
                 <BannerContent>
                     <BannerTitle>{bannerTitle}</BannerTitle>
                     <BannerSearchBox>
@@ -129,16 +130,13 @@ const BannerSearch = ({
                             value={inputValue}
                         />
                         <Select
+                            selectedCountyValue={selectedCountyValue}
                             selectedCountyText={selectedCountyText}
                             setSelectedCountyText={setSelectedCountyText}
                             setSelectedCountyValue={setSelectedCountyValue}
                         />
                         <SearchButton
-                            onClick={() => {
-                                setSearchedInputValue(inputValue);
-                                setSearchedCountyText(selectedCountyText);
-                                setSearchedCountyValue(selectedCountyValue);
-                            }}
+                            onClick={handleSearch}
                         >
                             {t(`searchConfig.searchButton`)}
                         </SearchButton>

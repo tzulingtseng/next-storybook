@@ -18,34 +18,50 @@ import getRestaurantAPI from '@/api/getRestaurantAPI';
 
 import SEO from '@/utils/seo';
 
-const Search = ({ typeStatus, typeData, type, area, keyword }) => {
+const Search = ({ type, area, keyword }) => {
     const router = useRouter();
-    const { locale } = router;
+    const { locale, push } = router;
     const { t } = useTranslation('common');
 
+    let countyData = t('countyOptions.area', {
+        returnObjects: true,
+    }).filter((item) => area === item.value)[0];
+    let searchedCountyText = countyData ? countyData.name : '';
+
     const [selectedValue, setSelectedValue] = useState(locale);
-    const [inputValue, setInputValue] = useState(keyword ? keyword : '');
+    const [inputValue, setInputValue] = useState('');
     const [selectedCountyText, setSelectedCountyText] = useState('');
-    const [selectedCountyValue, setSelectedCountyValue] = useState(
-        area ? area : ''
-    );
-    const [searchedInputValue, setSearchedInputValue] = useState(
-        keyword ? keyword : ''
-    );
-    const [searchedCountyText, setSearchedCountyText] = useState('');
-    const [searchedCountyValue, setSearchedCountyValue] = useState(
-        area ? area : ''
-    );
+    const [selectedCountyValue, setSelectedCountyValue] = useState('');
     const [results, setResults] = useState([]);
+    const [status, setStatus] = useState('')
     const [isLoading, setIsLoading] = useState(false);
-    const [skip, setSkip] = useState(0);
-    const [error, setError] = useState(null);
-    const [fillteredData, setFilteredData] = useState([]);
+    const [skip, setSkip] = useState(undefined);
     const [isEnd, setIsEnd] = useState(false);
 
-    const fetchFilteredData = async (keyword, area) => {
+    const handleSearch = () => {
+        setSkip(0);
+        let url = '/travel/search?type=' + type;
+
+        if (inputValue) {
+            url += '&keyword=' + inputValue;
+            // setInputValues(keyword, keyword);
+        }
+
+        if (selectedCountyValue) {
+            url += '&area=' + selectedCountyValue;
+        }
+
+        if (!inputValue && !selectedCountyValue) {
+            url += '';
+        }
+        router.push(url, undefined, {
+            locale: selectedValue,
+        });
+    }
+
+    const fetchData = async () => {
         setIsLoading(true);
-        setError(null);
+        setStatus('')
         try {
             let response;
             switch (type) {
@@ -81,138 +97,85 @@ const Search = ({ typeStatus, typeData, type, area, keyword }) => {
                     break;
             }
             if (response.status === 'success') {
-                if (skip === 0) {
-                    setFilteredData(response.data);
-                    setResults(response.data);
-                } else {
-                    setResults((fillteredData) => [
-                        ...fillteredData,
-                        ...response.data,
-                    ]);
-                }
+                setResults(prevItems => [...prevItems, ...response.data]);
+                setSkip((prevSkip) => prevSkip + 8);
                 if (response.data.length === 0 || response.data.length < 8) {
+                    console.log('setIsEnd');
                     setIsEnd(true);
                 }
-                setSkip((prevSkip) => prevSkip + 8);
+                setStatus(response.status)
             }
         } catch (error) {
-            setError(error);
+            console.error(error)
+            setStatus(response?.status);
         } finally {
             setIsLoading(false);
         }
-    };
+    }
+
+    const handleScroll = throttle(() => {
+        const scrollBottom =
+            document.documentElement.scrollHeight -
+            (window.innerHeight + document.documentElement.scrollTop);
+        if (scrollBottom < 100 && !isLoading && !isEnd) {
+            fetchData()
+        }
+
+    }, 500);
 
     useEffect(() => {
-        setResults(typeData);
-        setSkip(0);
-        setResults([]);
-        setFilteredData([]);
-        setIsEnd(false);
-        setIsLoading(false);
+        setSkip(0)
+    }, [])
 
+    useEffect(() => {
         let url = '/travel/search?type=' + type;
-
-        const setInputValues = (inputValue, searchedValue) => {
-            setInputValue(inputValue);
-            setSearchedInputValue(searchedValue);
-        };
-
-        const setSelectedCountyValues = (countyValue, countyText) => {
-            setSelectedCountyValue(countyValue);
-            setSearchedCountyValue(countyValue);
-            setSelectedCountyText(countyText);
-            setSearchedCountyText(countyText);
-        };
-
         if (keyword) {
             url += '&keyword=' + keyword;
-            setInputValues(keyword, keyword);
+            // setInputValues(keyword, keyword);
         }
 
         if (area) {
             url += '&area=' + area;
-            let countyData = t('countyOptions.area', {
-                returnObjects: true,
-            }).filter((item) => area === item.value)[0];
-            setSelectedCountyValues(area, countyData.name);
         }
 
-        if (!area && !keyword) {
+        if (!keyword && !area) {
             url += '';
-            setInputValues('', '');
-            setSelectedCountyValues('', '');
         }
-
         router.push(url, undefined, {
             locale: selectedValue,
         });
-    }, []);
+        setSkip(0)
+        setResults([])
+        setIsEnd(false)
+        setSelectedCountyValue(area)
+        setSelectedCountyText(searchedCountyText)
+        setInputValue(keyword)
+        fetchData()
+    }, [area, keyword, type])
 
     useEffect(() => {
-        // isLoading 初始值為 false
-        const handleScroll = () => {
-            // scrollBottom 剩餘的滾動高度
-            const scrollBottom =
-                document.documentElement.scrollHeight -
-                (window.innerHeight + document.documentElement.scrollTop);
-            if (scrollBottom < 1 && !isLoading && !isEnd) {
-                if (area && keyword) {
-                    fetchFilteredData(keyword, area);
-                } else if (keyword) {
-                    fetchFilteredData(keyword, '');
-                } else if (area) {
-                    fetchFilteredData('', area);
-                } else {
-                    fetchFilteredData('', '');
-                }
-            }
-        };
-
-        const throttledHandleScroll = throttle(handleScroll, 1000);
-        window.addEventListener('scroll', throttledHandleScroll);
-        return () => window.removeEventListener('scroll', throttledHandleScroll);
-    }, [isLoading]);
-
-    useEffect(() => {
-        // 有搜尋關鍵字或搜尋地址時，push url
         let url = '/travel/search?type=' + type;
-
-        if (searchedInputValue && searchedCountyValue) {
-            url +=
-                '&keyword=' +
-                searchedInputValue +
-                '&area=' +
-                searchedCountyValue;
-        } else if (searchedInputValue) {
-            url += '&keyword=' + searchedInputValue;
-        } else if (searchedCountyValue) {
-            url += '&area=' + searchedCountyValue;
-        } else {
-            url += '';
+        if (keyword) {
+            url += '&keyword=' + keyword;
+            // setInputValues(keyword, keyword);
         }
 
+        if (area) {
+            url += '&area=' + area;
+        }
+
+        if (!keyword && !area) {
+            url += '';
+        }
         router.push(url, undefined, {
             locale: selectedValue,
         });
-        setSkip(0);
-        setResults([]);
-        setIsEnd(false);
-    }, [searchedInputValue, searchedCountyValue]);
+    }, [selectedValue])
 
     useEffect(() => {
-        setSkip(0);
-        setResults([]);
-        setIsEnd(false);
-        if (area && keyword) {
-            fetchFilteredData(keyword, area);
-        } else if (keyword) {
-            fetchFilteredData(keyword, '');
-        } else if (area) {
-            fetchFilteredData('', area);
-        } else {
-            fetchFilteredData('', '');
-        }
-    }, [area, keyword]);
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [isLoading]);
 
     return (
         <ThemeProvider theme={theme}>
@@ -222,6 +185,7 @@ const Search = ({ typeStatus, typeData, type, area, keyword }) => {
                     locale={locale}
                     selectedValue={selectedValue}
                     setSelectedValue={setSelectedValue}
+                    setSkip={setSkip}
                 />
                 <BannerSearch
                     type={type}
@@ -229,20 +193,20 @@ const Search = ({ typeStatus, typeData, type, area, keyword }) => {
                     selectedCountyText={selectedCountyText}
                     setSelectedCountyText={setSelectedCountyText}
                     setSelectedCountyValue={setSelectedCountyValue}
-                    setSearchedInputValue={setSearchedInputValue}
-                    setSearchedCountyText={setSearchedCountyText}
-                    setSearchedCountyValue={setSearchedCountyValue}
                     inputValue={inputValue}
                     setInputValue={setInputValue}
                     selectedCountyValue={selectedCountyValue}
+                    handleSearch={handleSearch}
+                    searchedCountyText={searchedCountyText}
                 />
                 <SearchResults
                     type={type}
-                    status={typeStatus}
                     results={results}
+                    status={status}
                     isLoading={isLoading}
                     isEnd={isEnd}
-                    searchedInputValue={searchedInputValue}
+                    keyword={keyword}
+                    area={area}
                     searchedCountyText={searchedCountyText}
                 />
                 <Footer />
@@ -254,40 +218,7 @@ const Search = ({ typeStatus, typeData, type, area, keyword }) => {
 export async function getServerSideProps({ query, locale }) {
     const { type, keyword, area } = query;
 
-    let responseData;
-    let typeData;
-    let typeStatus;
-    switch (type) {
-        case 'activity':
-            responseData = await getActivityAPI({
-                top: 8,
-                filter: null,
-            });
-            break;
-        case 'scenicSpot':
-            responseData = await getScenicSpotAPI({
-                top: 8,
-                filter: null,
-            });
-            break;
-        case 'restaurant':
-            responseData = await getRestaurantAPI({
-                top: 8,
-                filter: null,
-            });
-            break;
-    }
-
-    if (responseData?.status === 'success') {
-        typeData = responseData.data;
-        typeStatus = responseData.status;
-    } else {
-        return {
-            notFound: true,
-        };
-    }
-
-    const returnData = {
+    return {
         props: {
             ...(await serverSideTranslations(locale, [
                 'api_mapping',
@@ -296,14 +227,12 @@ export async function getServerSideProps({ query, locale }) {
                 'scenicSpotData',
                 'restaurantData',
             ])),
-            typeData,
-            typeStatus,
             type,
             keyword: keyword || '',
             area: area || '',
-        },
-    };
-    return returnData;
+        }
+    }
+
 }
 
 export default Search;

@@ -112,7 +112,8 @@ const Detail = ({ data }) => {
     const router = useRouter();
     const { locale, push } = useRouter();
     const [selectedValue, setSelectedValue] = useState(locale);
-    const [selectLang, setSelectLang] = useState(false);
+    const [skip, setSkip] = useState(undefined);
+
     const { t } = useTranslation('common');
     const {
         QueryType,
@@ -154,7 +155,7 @@ const Detail = ({ data }) => {
                         locale={locale}
                         selectedValue={selectedValue}
                         setSelectedValue={setSelectedValue}
-                        selectLang={selectLang}
+                        setSkip={setSkip}
                     />
                     <Wrapper>
                         <InfoContainer>

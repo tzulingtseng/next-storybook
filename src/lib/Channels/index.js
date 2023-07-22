@@ -53,12 +53,13 @@ const ButtonLine = styled('div')`
 
 const Item = styled('div')`
     font-size: ${(props) => props.theme.fontSize.sm};
+    cursor:pointer;
     &:hover {
         color: ${(props) => props.theme.colors.primary};
     }
 `;
 
-const Channels = ({ handleHamburgerContainerShow }) => {
+const Channels = ({ handleHamburgerContainerShow, handleChangeTypeRoute }) => {
     const { t } = useTranslation('common');
     return (
         <ChannelContainer>
@@ -67,9 +68,7 @@ const Channels = ({ handleHamburgerContainerShow }) => {
                     <ButtonLine></ButtonLine>
                 </ButtonContainer>
                 {t('categoryType', { returnObjects: true }).map((item, i) => (
-                    <Link key={i} href={`/travel/search?type=${item.type}`}>
-                        <Item>{item.name}</Item>
-                    </Link>
+                    <Item key={i} onClick={() => { handleChangeTypeRoute(item.type) }}>{item.name}</Item>
                 ))}
             </CategoryContainer>
         </ChannelContainer>

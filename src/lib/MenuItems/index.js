@@ -84,33 +84,36 @@ const MenuItem = ({
     children,
     text,
     icon,
-    url,
+    categoryType,
     open,
     haschild,
     hasdivder,
+    handleChangeTypeRoute,
+    handleHamburgerContainerShow,
     ...props
 }) => {
     return (
         <Fragment>
-            <Link href={url}>
-                <StyledMenuContainer {...props}>
-                    {/* <MenuIcon icon={icon} /> */}
-                    <MenuText $open={open} variant="content">
-                        {text}
-                    </MenuText>
-                    <MenuExtent
-                        $open={open}
-                        $haschild={haschild.toString()}
-                        icon="fa-angle-right"
-                    />
-                </StyledMenuContainer>
-            </Link>
+            <StyledMenuContainer {...props} onClick={() => {
+                handleHamburgerContainerShow()
+                handleChangeTypeRoute(categoryType)
+            }}>
+                {/* <MenuIcon icon={icon} /> */}
+                <MenuText $open={open} variant="content">
+                    {text}
+                </MenuText>
+                <MenuExtent
+                    $open={open}
+                    $haschild={haschild.toString()}
+                    icon="fa-angle-right"
+                />
+            </StyledMenuContainer>
             {hasdivder && <StyledDivider></StyledDivider>}
         </Fragment>
     );
 };
 
-const MenuItems = ({ locale, items, ...props }) => {
+const MenuItems = ({ locale, items, handleChangeTypeRoute, handleHamburgerContainerShow, ...props }) => {
     const renderMenuItem = (item) => {
         const hasChild = !isEmpty(item.children) && item.children.length > 0;
         const hasDivder = item.divider === true;
@@ -132,7 +135,9 @@ const MenuItems = ({ locale, items, ...props }) => {
                 icon={item.icon}
                 haschild={hasChild}
                 hasdivder={hasDivder}
-                url={item.url}
+                categoryType={item.categoryType}
+                handleChangeTypeRoute={handleChangeTypeRoute}
+                handleHamburgerContainerShow={handleHamburgerContainerShow}
             />
         );
     };

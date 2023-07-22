@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import { useRouter } from 'next/router';
 import styled, { css } from 'styled-components';
 import propTypes from 'prop-types';
 import Image from 'next/image';
@@ -288,24 +289,45 @@ const NavBar = ({
     children,
     selectedValue,
     setSelectedValue,
-    selectLang,
+    setSkip,
     ...props
 }) => {
     const { t } = useTranslation('common');
-
+    const router = useRouter()
     const [hamburgerContainerShow, setHamburgerContainerShow] = useState(false);
     const [isCatgoryShow, setIsCatgoryShow] = useState(true);
     const [isHeaderShow, setIsHeaderShow] = useState(true);
+    const [isMobile, setIsMobile] = useState(false);
 
     const handleHamburgerContainerShow = () => {
         setHamburgerContainerShow(!hamburgerContainerShow);
-        document.body.style.overflow = 'hidden';
-        document.body.style.height = '100vh';
-
     };
 
+    const handleChangeTypeRoute = (channelType) => {
+        setSkip(0)
+        router.push(`/travel/search?type=${channelType}`, undefined, {
+            locale: selectedValue,
+        });
+    }
+
     useEffect(() => {
-        if (hamburgerContainerShow) {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 480); // 設定手機版的閾值，單位 px
+        };
+
+        handleResize(); // 初始化時先執行一次
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+
+    }, [])
+
+    useEffect(() => {
+
+        if (hamburgerContainerShow && isMobile) {
+            console.log('hamburgerContainerShow && isMobile');
             document.body.style.overflowY = 'hidden';
             document.body.style.height = '100vh';
 
@@ -395,23 +417,22 @@ const NavBar = ({
                                 >
                                     {t('navButtons.filled')}
                                 </ButtonNav> */}
-                                {selectLang && (
-                                    <Select
-                                        // options={[
-                                        //     {
-                                        //         value: 'zhHant',
-                                        //         label: '中',
-                                        //     },
-                                        //     {
-                                        //         value: 'en',
-                                        //         label: '英',
-                                        //     },
-                                        // ]}
-                                        // placeholder="中"
-                                        selectedValue={selectedValue}
-                                        setSelectedValue={setSelectedValue}
-                                    />
-                                )}
+                                <Select
+                                    // options={[
+                                    //     {
+                                    //         value: 'zhHant',
+                                    //         label: '中',
+                                    //     },
+                                    //     {
+                                    //         value: 'en',
+                                    //         label: '英',
+                                    //     },
+                                    // ]}
+                                    // placeholder="中"
+                                    selectedValue={selectedValue}
+                                    setSelectedValue={setSelectedValue}
+                                />
+
                             </div>
                             {/* <IconContainer> */}
                             {/* TODO:how to use svg */}
@@ -429,6 +450,7 @@ const NavBar = ({
                             handleHamburgerContainerShow={
                                 handleHamburgerContainerShow
                             }
+                            handleChangeTypeRoute={handleChangeTypeRoute}
                         ></Channels>
                     </ChannelContainer>
                     <StyledDivider
@@ -451,9 +473,11 @@ const NavBar = ({
                         <MenuItems
                             locale={locale}
                             items={t('menuConfig', { returnObjects: true })}
+                            handleChangeTypeRoute={handleChangeTypeRoute}
+                            handleHamburgerContainerShow={handleHamburgerContainerShow}
                         ></MenuItems>
                     </Menu>
-                    <SocialIcons>
+                    {/* <SocialIcons>
                         <a href="">
                             <Image src={facebookIcon} alt="facebook" />
                         </a>
@@ -466,7 +490,7 @@ const NavBar = ({
                         <a href="">
                             <Image src={youtubeIcon} alt="youtube" />
                         </a>
-                    </SocialIcons>
+                    </SocialIcons> */}
                     {/* <HamburgerButtonNav>
                         <ButtonNav
                             className={ButtonNavOutline}

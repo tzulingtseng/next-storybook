@@ -29,9 +29,9 @@ const StyledTextField = styled.div`
     border: 1px solid ${(props) => props.theme.colors.grey3};
     background-color: ${(props) => props.theme.colors.white};
     border-radius: 0.5rem;
-    padding: 0rem 0.75rem;
+    padding: 0.75rem 0.75rem;
     width: 100%;
-    margin-bottom:1rem;
+    margin-bottom:0.5rem;
     height: 100%;
     &:hover {
         border: 1px solid ${(props) => props.theme.colors.grey2};

@@ -20,12 +20,12 @@ const SelectWrapper = styled.div`
         padding: 0;
         list-style: none;
     }
-    ${breakpoint.mediaXS}{
-        width: 12rem;
-    }
-    ${breakpoint.mediaSM}{
-        width: 9rem;
-    }
+    // ${breakpoint.mediaXS}{
+    //     width: 12rem;
+    // }
+    // ${breakpoint.mediaSM}{
+    //     width: 9rem;
+    // }
 `;
 
 const SelectBoxWrapper = styled.div`
@@ -34,7 +34,7 @@ const SelectBoxWrapper = styled.div`
     border-radius: 0.5rem;
     display: inline-flex;
     margin-bottom: 0.25rem;
-    padding: 0rem 0.75rem;
+    padding: 0.75rem 0.75rem;
     background-color: ${(props) => props.theme.colors.white};
     z-index: 1;
     position: relative;
@@ -73,16 +73,18 @@ const SelectItems = styled.div`
         rgba(0, 0, 0, 0.08) 0px 6px 16px 0px,
         rgba(0, 0, 0, 0.05) 0px 9px 28px 8px;
     border-radius: 0.5rem;
-    li {
-        width: 100%;
-        padding: 0.5rem 0.75rem;
-        // border-bottom: 1px solid ${(props) => props.theme.colors.grey3};
-    }
-    li:last-child {
-        border-bottom: none;
-    }
-    li:hover {
-        background-color: ${(props) => props.theme.colors.grey0};
+    ul{
+        li {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            // border-bottom: 1px solid ${(props) => props.theme.colors.grey3};
+        }
+        li:last-child {
+            border-bottom: none;
+        }
+        li:hover {
+            background-color: ${(props) => props.theme.colors.grey0};
+        }
     }
 `;
 
@@ -119,6 +121,7 @@ const Select = ({
 
     // 監聽點擊事件，以便在點擊空白處時關閉選單
     useEffect(() => {
+
         const handleClickOutside = (event) => {
             if (
                 countyOptionsRef.current &&
@@ -136,7 +139,6 @@ const Select = ({
             document.removeEventListener('click', handleClickOutside);
         };
     }, []);
-
 
     return (
         <SelectWrapper>
