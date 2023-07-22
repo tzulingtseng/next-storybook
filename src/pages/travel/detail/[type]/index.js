@@ -214,6 +214,7 @@ const Detail = ({ data }) => {
                                 <NearbySpot
                                     queryType={QueryType}
                                     position={Position}
+                                    spotId={SpotID}
                                 />
                             </NearByContainer>
                         </IntroContainer>

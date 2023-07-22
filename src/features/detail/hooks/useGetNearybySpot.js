@@ -21,7 +21,7 @@ import getRestaurantAPI from '@/api/getRestaurantAPI';
  * @return {undefined|string}    error        error message
  */
 
-const useGetNearybySpot = ({ queryType, position }) => {
+const useGetNearybySpot = ({ queryType, position, spotId }) => {
     const [status, setStatus] = useState(undefined);
     const [data, setData] = useState(undefined);
     const [pagination, setPagination] = useState(undefined);
@@ -59,7 +59,7 @@ const useGetNearybySpot = ({ queryType, position }) => {
                         top: 10,
                         spatialFilter: `nearby(${position.PositionLat},${position.PositionLon},20000)`,
                         select: 'ScenicSpotID,ScenicSpotName,Picture,Address,City,OpenTime',
-                        filter: 'Picture/PictureUrl1 ne null',
+                        filter: `Picture/PictureUrl1 ne null and ScenicSpotID ne '${spotId}'`,
                     });
                     break;
 
@@ -71,7 +71,7 @@ const useGetNearybySpot = ({ queryType, position }) => {
                         top: 10,
                         spatialFilter: `nearby(${position.PositionLat},${position.PositionLon},20000)`,
                         select: 'RestaurantID,RestaurantName,Picture,Address,OpenTime',
-                        filter: 'Picture/PictureUrl1 ne null',
+                        filter: `Picture/PictureUrl1 ne null and RestaurantID ne '${spotId}'`,
                     });
                     break;
                 // --------------------------------------------------------
@@ -84,14 +84,13 @@ const useGetNearybySpot = ({ queryType, position }) => {
                         spatialFilter: `nearby(${position.PositionLat},${position.PositionLon},20000)`,
                         select:
                             'ActivityID,ActivityName,Picture,Address,City,StartTime,EndTime',
-                        filter: `Picture/PictureUrl1 ne null and EndTime ge ${time}`,
+                        filter: `Picture/PictureUrl1 ne null and ActivityID ne '${spotId}'`,
                     });
                     break;
 
                 default:
                     break;
             }
-            console.log('responseData', responseData);
 
             // 確保在此頁執行
             // if (isMountedRef.current) {

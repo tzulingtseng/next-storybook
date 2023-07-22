@@ -9,8 +9,7 @@ const IntroTitle = styled.div`
     margin: 1.5rem 0;
 `;
 
-const NearbySpot = ({ queryType, position }) => {
-    console.log('position', position);
+const NearbySpot = ({ queryType, position, spotId }) => {
     /** ---------------------------------------------------------------------------------------------
      * Head title type
      */
@@ -32,6 +31,7 @@ const NearbySpot = ({ queryType, position }) => {
     const { status, data, error } = useGetNearybySpot({
         queryType: queryType,
         position: position,
+        spotId: spotId,
     })
 
     return (
