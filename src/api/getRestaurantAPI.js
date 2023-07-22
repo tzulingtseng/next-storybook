@@ -9,6 +9,7 @@ const getRestaurantAPI = async ({
     skip = undefined,
     filter = undefined,
     area = undefined,
+    spatialFilter = undefined
 }) => {
     let returnData = {
         status: undefined,
@@ -25,14 +26,13 @@ const getRestaurantAPI = async ({
         $top: top,
         $skip: skip,
         $filter: filter,
-        // $spatialFilter: spatialFilter,
+        $spatialFilter: spatialFilter,
         // $select: select,
     };
 
     await axios
         .get(
-            `https://${API_HOSTNAME_URL}/v2/Tourism/Restaurant${
-                area ? '/' + area : ''
+            `https://${API_HOSTNAME_URL}/v2/Tourism/Restaurant${area ? '/' + area : ''
             }`,
             {
                 // TODO: 研究 useEffect 怎麼控制

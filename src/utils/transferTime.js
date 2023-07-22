@@ -28,7 +28,6 @@ const formatTimeRange = (startTime, endTime) => {
 
 const transferTime = (openTimeParam, startTimeParam, endTimeParam) => {
     if (openTimeParam) {
-        console.log('openTimeParam', openTimeParam);
         const mappedTime = mapOpenTime[openTimeParam];
         return mappedTime || openTimeParam;
     } else if (startTimeParam && endTimeParam) {

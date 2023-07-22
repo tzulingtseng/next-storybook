@@ -69,16 +69,28 @@ const Search = ({ type, area, keyword }) => {
                 case 'activity':
                     response = await getActivityAPI({
                         top: 8,
+                        filter: keyword
+                            ? `contains(ActivityName, '${keyword}')`
+                            : null,
+                        area: area ? area : null,
                     });
                     break;
                 case 'scenicSpot':
                     response = await getScenicSpotAPI({
                         top: 8,
+                        filter: keyword
+                            ? `contains(ScenicSpotName, '${keyword}')`
+                            : null,
+                        area: area ? area : null,
                     });
                     break;
                 case 'restaurant':
                     response = await getRestaurantAPI({
                         top: 8,
+                        filter: keyword
+                            ? `contains(RestaurantName, '${keyword}')`
+                            : null,
+                        area: area ? area : null,
                     });
                     break;
             }
@@ -159,7 +171,7 @@ const Search = ({ type, area, keyword }) => {
         }
     }, 500);
 
-    useEffect(() => { fetchData() }, [type])
+    useEffect(() => { fetchData() }, [area, keyword, type])
 
     useEffect(() => {
         let url = '/travel/search?type=' + type;

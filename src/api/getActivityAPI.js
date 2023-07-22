@@ -10,6 +10,7 @@ const getActivityAPI = async ({
     skip = undefined,
     filter = undefined,
     area = undefined,
+    spatialFilter = undefined
 }) => {
     let returnData = {
         status: undefined,
@@ -28,15 +29,13 @@ const getActivityAPI = async ({
         $filter: filter
             ? `EndTime ge ${currentTime} and ${filter}`
             : `EndTime ge ${currentTime}`,
-        // $filter: filter,
-        // $spatialFilter: spatialFilter,
+        $spatialFilter: spatialFilter,
         // $select: select,
     };
 
     await axios
         .get(
-            `https://${API_HOSTNAME_URL}/v2/Tourism/Activity${
-                area ? '/' + area : ''
+            `https://${API_HOSTNAME_URL}/v2/Tourism/Activity${area ? '/' + area : ''
             }`,
             {
                 // TODO: 研究 useEffect 怎麼控制

@@ -22,6 +22,7 @@ import TransportInfo from '@/features/detail/components/TransportInfo';
 import convertGoogleDriveURL from '@/utils/convertGoogleDriveURL';
 import breakpoint from '@/lib/constant/breakpoint';
 import NoImage from '@/components/NoImage';
+import NearbySpot from '@/features/detail/components/NearbySpot';
 
 const InfoContainer = styled.div`
     margin-top: 3rem;
@@ -108,11 +109,12 @@ const IntroTitle = styled.div`
 
 const MapContainer = styled('div')``;
 
+const NearByContainer = styled('div')``;
+
 const Detail = ({ data }) => {
     const router = useRouter();
-    const { locale, push } = useRouter();
+    const { locale } = useRouter();
     const [selectedValue, setSelectedValue] = useState(locale);
-    const [skip, setSkip] = useState(undefined);
 
     const { t } = useTranslation('common');
     const {
@@ -155,7 +157,6 @@ const Detail = ({ data }) => {
                         locale={locale}
                         selectedValue={selectedValue}
                         setSelectedValue={setSelectedValue}
-                        setSkip={setSkip}
                     />
                     <Wrapper>
                         <InfoContainer>
@@ -209,6 +210,12 @@ const Detail = ({ data }) => {
                                 {t('detailConfig.mapTitle')}
                             </IntroTitle>
                             <TransportInfo position={Position} />
+                            <NearByContainer>
+                                <NearbySpot
+                                    queryType={QueryType}
+                                    position={Position}
+                                />
+                            </NearByContainer>
                         </IntroContainer>
                         {/* <MapContainer></MapContainer> */}
                     </Wrapper>
@@ -241,13 +248,12 @@ export async function getServerSideProps({ params, query, locale }) {
                     data?.StartTime,
                     data?.EndTime
                 );
-
                 detailData = {
                     QueryType: type,
                     Address: data?.Address ?? null,
                     // City: data?.City ?? null,
                     // Location: data?.Location ?? null,
-                    Description: data?.Description ?? DescriptionDetail,
+                    Description: data?.Description ?? data.DescriptionDetail,
                     formattedTime: transferedTime,
                     Phone: data?.Phone ?? null,
                     Picture: data?.Picture ?? null,
@@ -279,13 +285,12 @@ export async function getServerSideProps({ params, query, locale }) {
                     data?.StartTime,
                     data?.EndTime
                 );
-
                 detailData = {
                     QueryType: type,
                     Address: data?.Address ?? null,
                     // City: data?.City ?? null,
                     // Location: data?.Location ?? null,
-                    Description: data?.Description ?? null,
+                    Description: data?.Description ?? data.DescriptionDetail,
                     formattedTime: transferedTime,
                     Phone: data?.Phone ?? null,
                     Picture: data?.Picture ?? null,
@@ -317,12 +322,11 @@ export async function getServerSideProps({ params, query, locale }) {
                     data?.StartTime,
                     data?.EndTime
                 );
-
                 detailData = {
                     QueryType: type,
                     Address: data?.Address ?? null,
                     // City: data?.City ?? null,
-                    // Location: data?.Location ?? null,
+                    Location: data?.Location ?? data.DescriptionDetail,
                     Description: data?.Description ?? null,
                     formattedTime: transferedTime,
                     Phone: data?.Phone ?? null,
