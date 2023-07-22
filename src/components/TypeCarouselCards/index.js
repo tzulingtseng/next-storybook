@@ -41,34 +41,6 @@ const CarouselBox = styled(Swiper)`
     }
 `;
 
-const StyledTitleContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: end;
-    margin: 1.5rem 0;
-`;
-
-const StyledTitleText = styled.div`
-    color: ${(props) => props.theme.colors.primary};
-    font-size: ${(props) => props.theme.fontSize.lg};
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-`;
-
-const StyledTitleIcon = styled(Icon)`
-    margin-left: 0.5rem;
-    font-size: 1.5rem;
-`;
-
-const StyledTitleLink = styled.div`
-    color: ${(props) => props.theme.colors.danger};
-    font-size: ${(props) => props.theme.fontSize.sm};
-    &:after {
-        content: ' >';
-    }
-`;
-
 const SwiperContainer = styled.div`
     position: relative;
     width: 100%;
@@ -143,21 +115,6 @@ const TypeCarouselCards = ({ status, type, lists }) => {
     const swiperRef = useRef(null);
     const [isBeginning, setIsBeginning] = useState(true);
     const [isEnd, setisEnd] = useState(false);
-    let titleName, titleIcon;
-    switch (type) {
-        case 'activity':
-            titleName = 'hotActivity'; // 熱門活動
-            titleIcon = 'fa-solid fa-flag-checkered';
-            break;
-        case 'scenicSpot':
-            titleName = 'hotScenicSpot'; // 熱門景點
-            titleIcon = 'fa-solid fa-tower-observation';
-            break;
-        case 'restaurant':
-            titleName = 'hotRestaurant'; // 熱門美食
-            titleIcon = 'fa-regular fa-utensils';
-            break;
-    }
 
     const swiperParams = {
         slidesPerView: 'auto', // 根據容器寬度自動調整每頁顯示的 slide 數量
@@ -178,17 +135,6 @@ const TypeCarouselCards = ({ status, type, lists }) => {
         <>
             <SwiperContainer id={`swiper_control_${type}`}>
                 <CarouselContainer>
-                    <StyledTitleContainer>
-                        <StyledTitleText>
-                            {t(`carouselConfig.${titleName}`)}
-                            <StyledTitleIcon icon={`${titleIcon}`} />
-                        </StyledTitleText>
-                        <StyledTitleLink>
-                            <Link href={`/travel/search?type=${type}`}>
-                                {t(`carouselConfig.more`)}
-                            </Link>
-                        </StyledTitleLink>
-                    </StyledTitleContainer>
                     {/* TODO:優化寫法 */}
                     <CarouselBox
                         ref={swiperRef}
@@ -232,15 +178,18 @@ const TypeCarouselCards = ({ status, type, lists }) => {
                                 let convertImgUrl =
                                     convertGoogleDriveURL(PictureUrl1);
 
-                                let itemId, type;
+                                let itemId, type, itemName;
                                 if (item?.ActivityID) {
                                     itemId = item.ActivityID;
+                                    itemName = item.ActivityName;
                                     type = 'activity';
                                 } else if (item?.ScenicSpotID) {
                                     itemId = item.ScenicSpotID;
+                                    itemName = item.ScenicSpotName;
                                     type = 'scenicSpot';
                                 } else if (item?.RestaurantID) {
                                     itemId = item.RestaurantID;
+                                    itemName = item.RestaurantName;
                                     type = 'restaurant';
                                 }
 
@@ -264,12 +213,13 @@ const TypeCarouselCards = ({ status, type, lists }) => {
                                                 children={
                                                     <Meta
                                                         // avatarUrl={item.Picture.PictureUrl1}
-                                                        title={t(
-                                                            `${itemId}.titleName`,
-                                                            {
-                                                                ns: `${type}Data`,
-                                                            }
-                                                        )}
+                                                        // title={t(
+                                                        //     `${itemId}.titleName`,
+                                                        //     {
+                                                        //         ns: `${type}Data`,
+                                                        //     }
+                                                        // )}
+                                                        title={itemName}
                                                         description={
                                                             transferedTime ===
                                                                 'allDay'
@@ -285,12 +235,14 @@ const TypeCarouselCards = ({ status, type, lists }) => {
                                                         }
                                                         address={
                                                             Address
-                                                                ? t(
-                                                                    `${itemId}.address`,
-                                                                    {
-                                                                        ns: `${type}Data`,
-                                                                    }
-                                                                )
+                                                                ?
+                                                                // t(
+                                                                //     `${itemId}.address`,
+                                                                //     {
+                                                                //         ns: `${type}Data`,
+                                                                //     }
+                                                                // )
+                                                                Address
                                                                 : t(
                                                                     `carouselConfig.moreDetails`
                                                                 )
