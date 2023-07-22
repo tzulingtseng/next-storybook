@@ -89,6 +89,9 @@
         "moreDetails": "詳見官網",
         "introTitle": "介紹",
         "mapTitle": "地圖",
+        "activityNearByTitle": "附近活動",
+        "scenicSpotNearByTitle": "附近景點",
+        "restaurantNearByTitle": "附近餐廳",
         "openTime": "開放時間：",
         "allDay": "全天候開放"
     },

@@ -89,6 +89,9 @@
         "moreDetails": "See Official",
         "introTitle": "Introduce",
         "mapTitle": "Map",
+        "activityNearByTitle": "Nearby Activities",
+        "scenicSpotNearByTitle": "Nearby ScenicSpots",
+        "restaurantNearByTitle": "Nearby Restaurants",
         "openTime": "Opening:",
         "allDay": "Open 24/7"
     },

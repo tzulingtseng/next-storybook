@@ -9,25 +9,7 @@ const IntroTitle = styled.div`
     margin: 1.5rem 0;
 `;
 
-const NearbySpot = ({ queryType, position, spotId }) => {
-    /** ---------------------------------------------------------------------------------------------
-     * Head title type
-     */
-    const handleHeadType = () => {
-        switch (queryType) {
-            case 'scenicSpot':
-                // return t('scenic_spot.more_spot');
-                return '景點'
-            case 'restaurant':
-                // return t('restaurant.more_spot');
-                return '餐廳'
-            case 'activity':
-                // return t('activity.more_spot');
-                return '活動'
-            default:
-                console.log('No match title');
-        }
-    };
+const NearbySpot = ({ queryType, position, spotId, title }) => {
     const { status, data, error } = useGetNearybySpot({
         queryType: queryType,
         position: position,
@@ -37,7 +19,7 @@ const NearbySpot = ({ queryType, position, spotId }) => {
     return (
         <>
             <IntroTitle>
-                附近{handleHeadType()}
+                {title}
             </IntroTitle>
             <TypeCarouselCards status={status} lists={data} />
         </>

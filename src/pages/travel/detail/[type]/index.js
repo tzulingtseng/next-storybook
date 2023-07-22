@@ -215,6 +215,7 @@ const Detail = ({ data }) => {
                                     queryType={QueryType}
                                     position={Position}
                                     spotId={SpotID}
+                                    title={t(`detailConfig.${QueryType}NearByTitle`)}
                                 />
                             </NearByContainer>
                         </IntroContainer>
