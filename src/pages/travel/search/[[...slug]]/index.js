@@ -35,8 +35,9 @@ const Search = ({ type, area, keyword }) => {
     const [results, setResults] = useState([]);
     const [status, setStatus] = useState('')
     const [isLoading, setIsLoading] = useState(false);
-    const [skip, setSkip] = useState(undefined);
+    const [skip, setSkip] = useState(0);
     const [isEnd, setIsEnd] = useState(false);
+    const [TypeChange, setTypeChange] = useState(false)
 
     const handleSearch = () => {
         setSkip(0);
@@ -60,6 +61,43 @@ const Search = ({ type, area, keyword }) => {
     }
 
     const fetchData = async () => {
+        setIsLoading(true);
+        setStatus('')
+        try {
+            let response;
+            switch (type) {
+                case 'activity':
+                    response = await getActivityAPI({
+                        top: 8,
+                    });
+                    break;
+                case 'scenicSpot':
+                    response = await getScenicSpotAPI({
+                        top: 8,
+                    });
+                    break;
+                case 'restaurant':
+                    response = await getRestaurantAPI({
+                        top: 8,
+                    });
+                    break;
+            }
+            if (response.status === 'success') {
+                setResults(prevItems => [...prevItems, ...response.data]);
+                if (response.data.length === 0 || response.data.length < 8) {
+                    setIsEnd(true);
+                }
+                setStatus(response.status)
+            }
+        } catch (error) {
+            console.error(error)
+            setStatus(response?.status);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    const fetchMoreData = async () => {
         setIsLoading(true);
         setStatus('')
         try {
@@ -98,7 +136,6 @@ const Search = ({ type, area, keyword }) => {
             }
             if (response.status === 'success') {
                 setResults(prevItems => [...prevItems, ...response.data]);
-                setSkip((prevSkip) => prevSkip + 8);
                 if (response.data.length === 0 || response.data.length < 8) {
                     console.log('setIsEnd');
                     setIsEnd(true);
@@ -118,14 +155,11 @@ const Search = ({ type, area, keyword }) => {
             document.documentElement.scrollHeight -
             (window.innerHeight + document.documentElement.scrollTop);
         if (scrollBottom < 100 && !isLoading && !isEnd) {
-            fetchData()
+            setSkip((prevSkip) => prevSkip + 8);
         }
-
     }, 500);
 
-    useEffect(() => {
-        setSkip(0)
-    }, [])
+    useEffect(() => { fetchData() }, [type])
 
     useEffect(() => {
         let url = '/travel/search?type=' + type;
@@ -145,13 +179,19 @@ const Search = ({ type, area, keyword }) => {
             locale: selectedValue,
         });
         setSkip(0)
+        setTypeChange(!TypeChange)
         setResults([])
         setIsEnd(false)
         setSelectedCountyValue(area)
         setSelectedCountyText(searchedCountyText)
         setInputValue(keyword)
-        fetchData()
     }, [area, keyword, type])
+
+    useEffect(() => {
+        if (skip > 0) {
+            fetchMoreData()
+        }
+    }, [skip])
 
     useEffect(() => {
         let url = '/travel/search?type=' + type;

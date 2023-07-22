@@ -88,32 +88,32 @@ const MenuItem = ({
     open,
     haschild,
     hasdivder,
-    handleChangeTypeRoute,
     handleHamburgerContainerShow,
     ...props
 }) => {
     return (
         <Fragment>
-            <StyledMenuContainer {...props} onClick={() => {
-                handleHamburgerContainerShow()
-                handleChangeTypeRoute(categoryType)
-            }}>
-                {/* <MenuIcon icon={icon} /> */}
-                <MenuText $open={open} variant="content">
-                    {text}
-                </MenuText>
-                <MenuExtent
-                    $open={open}
-                    $haschild={haschild.toString()}
-                    icon="fa-angle-right"
-                />
-            </StyledMenuContainer>
-            {hasdivder && <StyledDivider></StyledDivider>}
+            <Link href={`/travel/search?type=${categoryType}`}>
+                <StyledMenuContainer {...props} onClick={() => {
+                    handleHamburgerContainerShow()
+                }}>
+                    {/* <MenuIcon icon={icon} /> */}
+                    <MenuText $open={open} variant="content">
+                        {text}
+                    </MenuText>
+                    <MenuExtent
+                        $open={open}
+                        $haschild={haschild.toString()}
+                        icon="fa-angle-right"
+                    />
+                </StyledMenuContainer>
+                {hasdivder && <StyledDivider></StyledDivider>}
+            </Link >
         </Fragment>
     );
 };
 
-const MenuItems = ({ locale, items, handleChangeTypeRoute, handleHamburgerContainerShow, ...props }) => {
+const MenuItems = ({ locale, items, handleHamburgerContainerShow, ...props }) => {
     const renderMenuItem = (item) => {
         const hasChild = !isEmpty(item.children) && item.children.length > 0;
         const hasDivder = item.divider === true;
@@ -136,7 +136,6 @@ const MenuItems = ({ locale, items, handleChangeTypeRoute, handleHamburgerContai
                 haschild={hasChild}
                 hasdivder={hasDivder}
                 categoryType={item.categoryType}
-                handleChangeTypeRoute={handleChangeTypeRoute}
                 handleHamburgerContainerShow={handleHamburgerContainerShow}
             />
         );

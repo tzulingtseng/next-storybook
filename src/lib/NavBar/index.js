@@ -289,7 +289,6 @@ const NavBar = ({
     children,
     selectedValue,
     setSelectedValue,
-    setSkip,
     ...props
 }) => {
     const { t } = useTranslation('common');
@@ -302,13 +301,6 @@ const NavBar = ({
     const handleHamburgerContainerShow = () => {
         setHamburgerContainerShow(!hamburgerContainerShow);
     };
-
-    const handleChangeTypeRoute = (channelType) => {
-        setSkip(0)
-        router.push(`/travel/search?type=${channelType}`, undefined, {
-            locale: selectedValue,
-        });
-    }
 
     useEffect(() => {
         const handleResize = () => {
@@ -450,7 +442,6 @@ const NavBar = ({
                             handleHamburgerContainerShow={
                                 handleHamburgerContainerShow
                             }
-                            handleChangeTypeRoute={handleChangeTypeRoute}
                         ></Channels>
                     </ChannelContainer>
                     <StyledDivider
@@ -473,7 +464,6 @@ const NavBar = ({
                         <MenuItems
                             locale={locale}
                             items={t('menuConfig', { returnObjects: true })}
-                            handleChangeTypeRoute={handleChangeTypeRoute}
                             handleHamburgerContainerShow={handleHamburgerContainerShow}
                         ></MenuItems>
                     </Menu>
