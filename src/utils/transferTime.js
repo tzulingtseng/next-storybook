@@ -1,26 +1,41 @@
 import moment from 'moment-timezone';
+
+const mapOpenTime = {
+    '全天候開放': 'allDay',
+    '全天': 'allDay',
+    '全天候': 'allDay',
+    '全年無休': 'allDay',
+    '全日開放': 'allDay',
+    '全年開放': 'allDay',
+    '24h': 'allDay',
+    '24H': 'allDay',
+    '24小時': 'allDay',
+};
+
+const formatTime = (time) => {
+    return moment(time, moment.ISO_8601)
+        .tz('Asia/Taipei')
+        .format('YYYY-MM-DD');
+}
+
+const formatTimeRange = (startTime, endTime) => {
+    const formattedStartTime = formatTime(startTime);
+    const formattedEndTime = formatTime(endTime);
+    return formattedStartTime === formattedEndTime
+        ? formattedEndTime
+        : `${formattedStartTime} ~ ${formattedEndTime}`;
+};
+
 const transferTime = (openTimeParam, startTimeParam, endTimeParam) => {
-    // let isAllDay = openTimeParam === '全天候開放';
     if (openTimeParam) {
-        if (openTimeParam === '全天候開放') {
-            return 'allDay'
-        } else {
-            return openTimeParam;
-        }
-    } else if (startTimeParam) {
-        const startTime = moment(startTimeParam, moment.ISO_8601)
-            .tz('Asia/Taipei')
-            .format('YYYY-MM-DD');
-        const endTime = moment(endTimeParam, moment.ISO_8601)
-            .tz('Asia/Taipei')
-            .format('YYYY-MM-DD');
-        if (startTime === endTime) {
-            return endTime;
-        } else {
-            return `${startTime} ~ ${endTime}`;
-        }
+        console.log('openTimeParam', openTimeParam);
+        const mappedTime = mapOpenTime[openTimeParam];
+        return mappedTime || openTimeParam;
+    } else if (startTimeParam && endTimeParam) {
+        return formatTimeRange(startTimeParam, endTimeParam);
     } else {
         return 'moreDetails';
     }
 };
+
 export default transferTime;
