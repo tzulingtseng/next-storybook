@@ -4,14 +4,21 @@ import { useTranslation } from 'next-i18next';
 import breakpoint from '@/lib/constant/breakpoint';
 
 const FooterContainer = styled.div`
+    position: absolute;
+    bottom: 0;
     width: 100%;
+    height: 8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: ${(props) => props.theme.colors.grey1};
+    ${breakpoint.mediaXS} {
+        height: 5rem;
+    }
 `;
 const FooterContentBox = styled.div`
     max-width: 1200px;
     width: 100%;
-    margin: 0px auto;
-    padding: 2.5rem 0;
 `;
 
 const FooterContent = styled.div`

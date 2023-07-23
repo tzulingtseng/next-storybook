@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Container from '@/components/Container';
+import Wrapper from '@/components/Wrapper';
 import CardContainer from '@/components/CardContainer';
 import CardSkeleton from '@/components/CardSkeleton';
 import breakpoint from '@/lib/constant/breakpoint';
@@ -14,7 +14,7 @@ const SearchResultsTitle = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 1.5rem 0;
+    padding: 1.5rem 0;
 `;
 const SearchResultsTitleText = styled.div`
     color: ${(props) => props.theme.colors.primary};
@@ -66,13 +66,21 @@ const StyledEndMsg = styled.div`
     justify-content: center;
     width: 100%;
     color: ${(props) => props.theme.colors.grey2};
+    font-size: ${(props) => props.theme.fontSize.sm};
     margin: 1.5rem 0;
 `;
 
 const StyledNoResults = styled.div`
-    width: 100%;
+    width: calc(100% - 2rem);
+    margin: 0 1rem;
+    padding: 4rem 0;
+    background-color: #f5fdff;
+    color: #60797c;
     display: flex;
     justify-content: center;
+    align-items: center;
+    border-radius: 0.5rem;
+    font-size: ${(props) => props.theme.fontSize.sm};
 `;
 
 const SearchResults = ({
@@ -81,12 +89,12 @@ const SearchResults = ({
     results,
     isLoading,
     isEnd,
-    searchedInputValue,
-    searchedCountyText,
+    keyword,
+    searchedCountyText
 }) => {
     const { t } = useTranslation('common');
     return (
-        <Container>
+        <Wrapper>
             <SearchResultsTitle>
                 <SearchResultsTitleText>
                     {t('searchConfig.searchResults')}
@@ -95,7 +103,7 @@ const SearchResults = ({
                     <div>
                         {t('searchConfig.keyword')}
                         <span className="highlight">
-                            {searchedInputValue ? searchedInputValue : '無'}
+                            {keyword ? keyword : t('searchConfig.noData')}
                         </span>
                     </div>
                     <div>
@@ -103,13 +111,13 @@ const SearchResults = ({
                         <span className="highlight">
                             {searchedCountyText !== ''
                                 ? searchedCountyText
-                                : '全部縣市'}
+                                : t('countyOptions.all')}
                         </span>
                     </div>
                 </SearchInfo>
             </SearchResultsTitle>
             <SearchResultsContainer>
-                {status === 'success' &&
+                {
                     results &&
                     results.map((item, i) => {
                         const {
@@ -154,20 +162,19 @@ const SearchResults = ({
                                 itemName={itemName}
                                 PictureUrl1={convertImgUrl}
                                 description={
-                                    transferedTime
-                                    // transferedTime === 'allDay'
-                                    //     ? t('carouselConfig.allDay')
-                                    //     : transferedTime === 'moreDetails'
-                                    //     ? t('carouselConfig.moreDetails')
-                                    //     : transferedTime
+                                    transferedTime === 'allDay'
+                                        ? t('carouselConfig.allDay')
+                                        : transferedTime === 'moreDetails'
+                                            ? t('carouselConfig.moreDetails')
+                                            : transferedTime
                                 }
-                                address={Address ? Address : '詳見官網'}
+                                address={Address ? Address : t('carouselConfig.moreDetails')}
                                 text={t(`carouselConfig.openTime`)}
                                 iconClass="fa-solid fa-location-dot"
                             />
                         );
                     })}
-                {isLoading &&
+                {isLoading && !isEnd &&
                     Array(8)
                         .fill(0)
                         .map((item, i) => (
@@ -175,6 +182,7 @@ const SearchResults = ({
                                 <CardSkeleton />
                             </StyledCardSkeletonContainer>
                         ))}
+                {/* status ==='error' */}
                 {status === 'success' && results.length === 0 && isEnd && (
                     <StyledNoResults>
                         <div>{t(`searchConfig.noResults`)}</div>
@@ -182,11 +190,11 @@ const SearchResults = ({
                 )}
                 {status === 'success' && isEnd && (
                     <StyledEndMsg>
-                        <div>已經到底囉！</div>
+                        <div>{t(`searchConfig.scrollToEnd`)}</div>
                     </StyledEndMsg>
                 )}
             </SearchResultsContainer>
-        </Container>
+        </Wrapper>
     );
 };
 

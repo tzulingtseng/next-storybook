@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import { useRouter } from 'next/router';
 import styled, { css } from 'styled-components';
 import propTypes from 'prop-types';
 import Image from 'next/image';
@@ -16,7 +17,6 @@ import Channels from '../Channels';
 import Menu from '../Menu';
 import MenuItems from '../MenuItems';
 import ButtonClose from '../ButtonClose';
-// import Container from '@/components/Container';
 import breakpoint from '@/lib/constant/breakpoint';
 import Select from '@/components/Select';
 
@@ -58,7 +58,7 @@ const StyledDesktopAndAbovebox = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    position: sticky;
+    // position: sticky;
     top: 0px;
 `;
 
@@ -202,15 +202,32 @@ const HamburgerContainer = styled('div')`
         props.$hamburgerContainerShow ? 'translateX(100%)' : 'translateX(0%)'};
     height: 100vh;
     width: 60%;
-    ${breakpoint.mediaXL} {
+    ${breakpoint.mediaSM} {
         left: -17.5rem;
         transform: ${(props) =>
-            props.$hamburgerContainerShow
-                ? 'translateX(17.5rem)'
-                : 'translateX(0px)'};
+        props.$hamburgerContainerShow
+            ? 'translateX(17.5rem)'
+            : 'translateX(0px)'};
         width: 17.5rem;
     }
 `;
+const Mask = styled.div`
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    display:${(props) =>
+        props.$hamburgerContainerShow
+            ? 'block'
+            : 'none'};
+    ${breakpoint.mediaSM} {
+        display:none;
+    }
+`
 const ButtonCloseSection = styled('div')`
     position: relative;
     padding: 1.5rem 2rem 1rem;
@@ -272,18 +289,46 @@ const NavBar = ({
     children,
     selectedValue,
     setSelectedValue,
-    selectLang,
     ...props
 }) => {
     const { t } = useTranslation('common');
-
+    const router = useRouter()
     const [hamburgerContainerShow, setHamburgerContainerShow] = useState(false);
     const [isCatgoryShow, setIsCatgoryShow] = useState(true);
     const [isHeaderShow, setIsHeaderShow] = useState(true);
+    const [isMobile, setIsMobile] = useState(false);
 
     const handleHamburgerContainerShow = () => {
         setHamburgerContainerShow(!hamburgerContainerShow);
     };
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 480); // 設定手機版的閾值，單位 px
+        };
+
+        handleResize(); // 初始化時先執行一次
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+
+    }, [])
+
+    useEffect(() => {
+
+        if (hamburgerContainerShow && isMobile) {
+            console.log('hamburgerContainerShow && isMobile');
+            document.body.style.overflowY = 'hidden';
+            document.body.style.height = '100vh';
+
+        } else {
+            document.body.style.overflow = 'initial';
+            document.body.style.height = 'initial';
+        }
+
+    }, [hamburgerContainerShow])
 
     // useEffect(() => {
     //     const handleScroll = () => {
@@ -364,23 +409,22 @@ const NavBar = ({
                                 >
                                     {t('navButtons.filled')}
                                 </ButtonNav> */}
-                                {selectLang && (
-                                    <Select
-                                        // options={[
-                                        //     {
-                                        //         value: 'zhHant',
-                                        //         label: '中',
-                                        //     },
-                                        //     {
-                                        //         value: 'en',
-                                        //         label: '英',
-                                        //     },
-                                        // ]}
-                                        // placeholder="中"
-                                        selectedValue={selectedValue}
-                                        setSelectedValue={setSelectedValue}
-                                    />
-                                )}
+                                <Select
+                                    // options={[
+                                    //     {
+                                    //         value: 'zhHant',
+                                    //         label: '中',
+                                    //     },
+                                    //     {
+                                    //         value: 'en',
+                                    //         label: '英',
+                                    //     },
+                                    // ]}
+                                    // placeholder="中"
+                                    selectedValue={selectedValue}
+                                    setSelectedValue={setSelectedValue}
+                                />
+
                             </div>
                             {/* <IconContainer> */}
                             {/* TODO:how to use svg */}
@@ -404,6 +448,7 @@ const NavBar = ({
                         $isCatgoryShow={isCatgoryShow}
                     ></StyledDivider>
                 </HeaderContainer>
+                <Mask $hamburgerContainerShow={hamburgerContainerShow} />
                 <HamburgerContainer
                     $hamburgerContainerShow={hamburgerContainerShow}
                 >
@@ -417,10 +462,12 @@ const NavBar = ({
                     </IconSection>
                     <Menu>
                         <MenuItems
+                            locale={locale}
                             items={t('menuConfig', { returnObjects: true })}
+                            handleHamburgerContainerShow={handleHamburgerContainerShow}
                         ></MenuItems>
                     </Menu>
-                    <SocialIcons>
+                    {/* <SocialIcons>
                         <a href="">
                             <Image src={facebookIcon} alt="facebook" />
                         </a>
@@ -433,7 +480,7 @@ const NavBar = ({
                         <a href="">
                             <Image src={youtubeIcon} alt="youtube" />
                         </a>
-                    </SocialIcons>
+                    </SocialIcons> */}
                     {/* <HamburgerButtonNav>
                         <ButtonNav
                             className={ButtonNavOutline}

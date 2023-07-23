@@ -1,5 +1,6 @@
 import { i18n } from 'next-i18next';
 import axios from 'axios';
+import moment from 'moment-timezone';
 
 import { API_HOSTNAME_URL } from '@/config/config';
 import { getAuthorizationHeader } from '@/utils/getAuthorizationHeader';
@@ -9,6 +10,7 @@ const getActivityAPI = async ({
     skip = undefined,
     filter = undefined,
     area = undefined,
+    spatialFilter = undefined
 }) => {
     let returnData = {
         status: undefined,
@@ -16,7 +18,7 @@ const getActivityAPI = async ({
         data: undefined,
         // pagination: undefined,
     };
-
+    const currentTime = moment().tz('Asia/Taipei').format('YYYY-MM-DD');
     /**
      * api query parameter
      */
@@ -24,15 +26,16 @@ const getActivityAPI = async ({
         $format: 'JSON',
         $top: top,
         $skip: skip,
-        $filter: filter,
-        // $spatialFilter: spatialFilter,
+        $filter: filter
+            ? `EndTime ge ${currentTime} and ${filter}`
+            : `EndTime ge ${currentTime}`,
+        $spatialFilter: spatialFilter,
         // $select: select,
     };
 
     await axios
         .get(
-            `https://${API_HOSTNAME_URL}/v2/Tourism/Activity${
-                area ? '/' + area : ''
+            `https://${API_HOSTNAME_URL}/v2/Tourism/Activity${area ? '/' + area : ''
             }`,
             {
                 // TODO: 研究 useEffect 怎麼控制

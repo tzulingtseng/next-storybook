@@ -13,6 +13,7 @@ import 'swiper/css/navigation';
 import Card from '@/lib/Card';
 import Meta from '@/lib/Card/Meta';
 import Button from '@/lib/Button';
+import Icon from '@/lib/Icon';
 
 import { useTranslation } from 'next-i18next';
 import transferTime from '@/utils/transferTime';
@@ -40,40 +41,19 @@ const CarouselBox = styled(Swiper)`
     }
 `;
 
-const StyledTitleContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: end;
-    margin: 1.5rem 0;
-`;
-
-const StyledTitleText = styled.div`
-    color: ${(props) => props.theme.colors.primary};
-    font-size: ${(props) => props.theme.fontSize.lg};
-    font-weight: 600;
-`;
-
-const StyledTitleLink = styled.div`
-    color: ${(props) => props.theme.colors.danger};
-    font-size: ${(props) => props.theme.fontSize.sm};
-    &:after {
-        content: ' >';
-    }
-`;
-
 const SwiperContainer = styled.div`
     position: relative;
     width: 100%;
 `;
 
 const StyledSwiperSlide = styled(SwiperSlide)`
-    width: 60%;
+    width: 49%;
     margin-right: 1rem;
     ${breakpoint.mediaSM} {
-        width: 40%;
+        width: 32%;
     }
     ${breakpoint.mediaMD} {
-        width: 28%;
+        width: 25%;
     }
 `;
 
@@ -135,18 +115,6 @@ const TypeCarouselCards = ({ status, type, lists }) => {
     const swiperRef = useRef(null);
     const [isBeginning, setIsBeginning] = useState(true);
     const [isEnd, setisEnd] = useState(false);
-    let titleName;
-    switch (type) {
-        case 'activity':
-            titleName = 'hotActivity'; // 熱門活動
-            break;
-        case 'scenicSpot':
-            titleName = 'hotScenicSpot'; // 熱門景點
-            break;
-        case 'restaurant':
-            titleName = 'hotRestaurant'; // 熱門美食
-            break;
-    }
 
     const swiperParams = {
         slidesPerView: 'auto', // 根據容器寬度自動調整每頁顯示的 slide 數量
@@ -167,17 +135,6 @@ const TypeCarouselCards = ({ status, type, lists }) => {
         <>
             <SwiperContainer id={`swiper_control_${type}`}>
                 <CarouselContainer>
-                    <StyledTitleContainer>
-                        <StyledTitleText>
-                            {t(`carouselConfig.${titleName}`)}
-                        </StyledTitleText>
-                        <StyledTitleLink>
-                            <Link href={`/travel/search?type=${type}`}>
-                                {' '}
-                                {t(`carouselConfig.more`)}
-                            </Link>
-                        </StyledTitleLink>
-                    </StyledTitleContainer>
                     {/* TODO:優化寫法 */}
                     <CarouselBox
                         ref={swiperRef}
@@ -221,15 +178,18 @@ const TypeCarouselCards = ({ status, type, lists }) => {
                                 let convertImgUrl =
                                     convertGoogleDriveURL(PictureUrl1);
 
-                                let itemId, type;
+                                let itemId, type, itemName;
                                 if (item?.ActivityID) {
                                     itemId = item.ActivityID;
+                                    itemName = item.ActivityName;
                                     type = 'activity';
                                 } else if (item?.ScenicSpotID) {
                                     itemId = item.ScenicSpotID;
+                                    itemName = item.ScenicSpotName;
                                     type = 'scenicSpot';
                                 } else if (item?.RestaurantID) {
                                     itemId = item.RestaurantID;
+                                    itemName = item.RestaurantName;
                                     type = 'restaurant';
                                 }
 
@@ -253,36 +213,39 @@ const TypeCarouselCards = ({ status, type, lists }) => {
                                                 children={
                                                     <Meta
                                                         // avatarUrl={item.Picture.PictureUrl1}
-                                                        title={t(
-                                                            `${itemId}.titleName`,
-                                                            {
-                                                                ns: `${type}Data`,
-                                                            }
-                                                        )}
+                                                        // title={t(
+                                                        //     `${itemId}.titleName`,
+                                                        //     {
+                                                        //         ns: `${type}Data`,
+                                                        //     }
+                                                        // )}
+                                                        title={itemName}
                                                         description={
                                                             transferedTime ===
-                                                            'allDay'
+                                                                'allDay'
                                                                 ? t(
-                                                                      'carouselConfig.allDay'
-                                                                  )
+                                                                    'carouselConfig.allDay'
+                                                                )
                                                                 : transferedTime ===
-                                                                  'moreDetails'
-                                                                ? t(
-                                                                      'carouselConfig.moreDetails'
-                                                                  )
-                                                                : transferedTime
+                                                                    'moreDetails'
+                                                                    ? t(
+                                                                        'carouselConfig.moreDetails'
+                                                                    )
+                                                                    : transferedTime
                                                         }
                                                         address={
                                                             Address
-                                                                ? t(
-                                                                      `${itemId}.address`,
-                                                                      {
-                                                                          ns: `${type}Data`,
-                                                                      }
-                                                                  )
+                                                                ?
+                                                                // t(
+                                                                //     `${itemId}.address`,
+                                                                //     {
+                                                                //         ns: `${type}Data`,
+                                                                //     }
+                                                                // )
+                                                                Address
                                                                 : t(
-                                                                      `carouselConfig.moreDetails`
-                                                                  )
+                                                                    `carouselConfig.moreDetails`
+                                                                )
                                                         }
                                                         text={t(
                                                             `carouselConfig.openTime`

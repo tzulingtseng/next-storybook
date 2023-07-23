@@ -8,6 +8,11 @@
         "outline": "Subscribe",
         "filled": "Donate"
     },
+    "bannerHome": {
+        "title_01": "Discover the Beauty of Taiwan.",
+        "title_02": "Let's Get Closer to this Land.",
+        "sub_title": "ScenicSpot、 Activity、 Food"
+    },
     "footerSource": "MOTC TDX Service Platform",
     "categoryType": [
         {
@@ -28,7 +33,7 @@
             {
                 "id": "menuTitle_01",
                 "text": "Explore ScenicSpot",
-                "url": "/travel/search?type=scenicSpot",
+                "categoryType": "scenicSpot",
                 "divider": true
             }
         ],
@@ -36,7 +41,7 @@
             {
                 "id": "menuTitle_02",
                 "text": "Explore Activity",
-                "url": "/travel/search?type=activity",
+                "categoryType": "activity",
                 "divider": true
             }
         ],
@@ -44,7 +49,7 @@
             {
                 "id": "menuTitle_03",
                 "text": "Explore Food",
-                "url": "/travel/search?type=restaurant",
+                "categoryType": "restaurant",
                 "divider": true
             }
         ]
@@ -69,20 +74,24 @@
         "total": ", A total of",
         "records": "records.",
         "noResults": "No matching results.",
-        "noData": "none",
+        "noData": "None",
         "searchKeyword": "Enter keyword",
-        "searchButton": "search",
+        "searchButton": "Search",
         "activityBannerTitle": "LET'S GO ACTIVITY",
         "scenicSpotBannerTitle": "LET'S GO SCENICSPOT",
-        "restaurantSpotBannerTitle": "LET'S GO RESTAURANT"
+        "restaurantBannerTitle": "LET'S GO RESTAURANT",
+        "scrollToEnd": "This is end!"
     },
     "detailConfig": {
         "information": "Information",
         "tel": "Tel:",
         "address": "Address:",
-        "moreDetails": "See Official Website",
+        "moreDetails": "See Official",
         "introTitle": "Introduce",
         "mapTitle": "Map",
+        "activityNearByTitle": "Nearby Activities",
+        "scenicSpotNearByTitle": "Nearby ScenicSpots",
+        "restaurantNearByTitle": "Nearby Restaurants",
         "openTime": "Opening:",
         "allDay": "Open 24/7"
     },
@@ -210,7 +219,6 @@
                 "name": "Hualien County"
             }
         ],
-        "placeholder": "Select county",
-        "all": "All"
+        "all": "All cities"
     }
 }

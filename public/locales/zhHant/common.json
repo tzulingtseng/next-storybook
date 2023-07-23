@@ -8,6 +8,11 @@
         "outline": "訂閱",
         "filled": "贊助"
     },
+    "bannerHome": {
+        "title_01": "探索臺灣之美",
+        "title_02": "讓我們更親近這片土地",
+        "sub_title": "景點、 美食、 活動"
+    },
     "footerSource": "交通部 TDX 服務平臺",
     "categoryType": [
         {
@@ -28,7 +33,7 @@
             {
                 "id": "menuTitle_01",
                 "text": "探索景點",
-                "url": "/travel/search?type=scenicSpot",
+                "categoryType": "scenicSpot",
                 "divider": true
             }
         ],
@@ -36,7 +41,7 @@
             {
                 "id": "menuTitle_02",
                 "text": "探索活動",
-                "url": "/travel/search?type=activity",
+                "categoryType": "activity",
                 "divider": true
             }
         ],
@@ -44,7 +49,7 @@
             {
                 "id": "menuTitle_03",
                 "text": "探索美食",
-                "url": "/travel/search?type=restaurant",
+                "categoryType": "restaurant",
                 "divider": true
             }
         ]
@@ -70,11 +75,12 @@
         "records": "筆資料",
         "noResults": "目前沒有符合的搜尋結果",
         "noData": "無",
-        "searchKeyword": "搜尋關鍵字",
+        "searchKeyword": "搜尋名稱",
         "searchButton": "搜尋",
         "activityBannerTitle": "尋找活動",
         "scenicSpotBannerTitle": "尋找景點",
-        "restaurantBannerTitle": "尋找餐廳"
+        "restaurantBannerTitle": "尋找餐廳",
+        "scrollToEnd": "已經到底囉！"
     },
     "detailConfig": {
         "information": "資訊",
@@ -83,6 +89,9 @@
         "moreDetails": "詳見官網",
         "introTitle": "介紹",
         "mapTitle": "地圖",
+        "activityNearByTitle": "附近活動",
+        "scenicSpotNearByTitle": "附近景點",
+        "restaurantNearByTitle": "附近餐廳",
         "openTime": "開放時間：",
         "allDay": "全天候開放"
     },
@@ -210,7 +219,6 @@
                 "name": "花蓮縣"
             }
         ],
-        "placeholder": "請選擇縣市",
         "all": "全部縣市"
     }
 }

@@ -90,7 +90,7 @@ const Card = ({
         <StyledCardContainer $variant={variant}>
             <Cover>
                 {cover}
-                {badgeNumber ? <Badge>TOP{badgeNumber}</Badge> : ''}
+                {/* {badgeNumber ? <Badge>TOP{badgeNumber}</Badge> : ''} */}
             </Cover>
             {/* <CardContent>{content}</CardContent> */}
             {/* <CardContent>

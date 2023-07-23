@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled, { useTheme } from 'styled-components';
+import breakpoint from '@/lib/constant/breakpoint';
 import Icon from '@/lib/Icon';
 
 import { useRouter } from 'next/router';
@@ -19,6 +20,12 @@ const SelectWrapper = styled.div`
         padding: 0;
         list-style: none;
     }
+    // ${breakpoint.mediaXS}{
+    //     width: 12rem;
+    // }
+    // ${breakpoint.mediaSM}{
+    //     width: 9rem;
+    // }
 `;
 
 const SelectBoxWrapper = styled.div`
@@ -27,15 +34,15 @@ const SelectBoxWrapper = styled.div`
     border-radius: 0.5rem;
     display: inline-flex;
     margin-bottom: 0.25rem;
-    padding: 0rem 0.75rem;
+    padding: 0.75rem 0.75rem;
     background-color: ${(props) => props.theme.colors.white};
     z-index: 1;
     position: relative;
     border: 1px solid
         ${(props) =>
-            props.$isOpen
-                ? props.theme.colors.grey2
-                : props.theme.colors.grey3};
+        props.$isOpen
+            ? props.theme.colors.grey2
+            : props.theme.colors.grey3};
     &:hover {
         border: 1px solid ${(props) => props.theme.colors.grey2};
     }
@@ -66,16 +73,18 @@ const SelectItems = styled.div`
         rgba(0, 0, 0, 0.08) 0px 6px 16px 0px,
         rgba(0, 0, 0, 0.05) 0px 9px 28px 8px;
     border-radius: 0.5rem;
-    li {
-        width: 100%;
-        padding: 0.5rem 0.75rem;
-        // border-bottom: 1px solid ${(props) => props.theme.colors.grey3};
-    }
-    li:last-child {
-        border-bottom: none;
-    }
-    li:hover {
-        background-color: ${(props) => props.theme.colors.grey0};
+    ul{
+        li {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            // border-bottom: 1px solid ${(props) => props.theme.colors.grey3};
+        }
+        li:last-child {
+            border-bottom: none;
+        }
+        li:hover {
+            background-color: ${(props) => props.theme.colors.grey0};
+        }
     }
 `;
 
@@ -93,6 +102,8 @@ const Select = ({
     const { locale } = useRouter();
     const [open, setOpen] = useState(false);
     const theme = useTheme();
+    const countySelectRef = useRef(null)
+    const countyOptionsRef = useRef(null)
 
     const { t } = useTranslation('common');
 
@@ -108,6 +119,27 @@ const Select = ({
         setOpen(false);
     };
 
+    // 監聽點擊事件，以便在點擊空白處時關閉選單
+    useEffect(() => {
+
+        const handleClickOutside = (event) => {
+            if (
+                countyOptionsRef.current &&
+                !countyOptionsRef.current.contains(event.target) &&
+                countySelectRef.current &&
+                !countySelectRef.current.contains(event.target)
+            ) {
+                setOpen(false);
+            }
+        };
+
+        document.addEventListener('click', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, []);
+
     return (
         <SelectWrapper>
             <SelectBoxWrapper
@@ -116,14 +148,15 @@ const Select = ({
                     setOpen(!open);
                 }}
                 $isOpen={open}
+                ref={countySelectRef}
             >
                 <SelectBox>
                     <div>
                         {selectedCountyText !== ''
                             ? selectedCountyText
                             : selectedCountyText === ''
-                            ? t('countyOptions.all')
-                            : t('countyOptions.placeholder')}
+                                ? t('countyOptions.all')
+                                : t('countyOptions.placeholder')}
                     </div>
                     <SelectIcon
                         $isOpen={open}
@@ -133,8 +166,8 @@ const Select = ({
                 </SelectBox>
             </SelectBoxWrapper>
             {/* options */}
-            <SelectItems $isOpen={open}>
-                <ul>
+            {open && <SelectItems $isOpen={open} ref={countyOptionsRef}>
+                <ul >
                     <li
                         onClick={(e) => {
                             selectCounty(e);
@@ -173,7 +206,7 @@ const Select = ({
                         );
                     })}
                 </ul>
-            </SelectItems>
+            </SelectItems>}
         </SelectWrapper>
     );
 };

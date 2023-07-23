@@ -9,6 +9,7 @@ const getScenicSpotAPI = async ({
     skip = undefined,
     filter = undefined,
     area = undefined,
+    spatialFilter = undefined
 }) => {
     let returnData = {
         status: undefined,
@@ -25,14 +26,13 @@ const getScenicSpotAPI = async ({
         $top: top,
         $skip: skip,
         $filter: filter,
-        // $spatialFilter: spatialFilter,
+        $spatialFilter: spatialFilter,
         // $select: select,
     };
 
     await axios
         .get(
-            `https://${API_HOSTNAME_URL}/v2/Tourism/ScenicSpot${
-                area ? '/' + area : ''
+            `https://${API_HOSTNAME_URL}/v2/Tourism/ScenicSpot${area ? '/' + area : ''
             }`,
             {
                 // TODO: 研究 useEffect 怎麼控制

@@ -14,7 +14,8 @@ const StyledMenuContainer = styled.div`
     display: flex;
     cursor: pointer;
     flex-direction: row;
-    justify-content: center;
+    justify-content: ${(props) => props.$locale === 'en' ? 'start' : 'center'};
+    white-space: ${(props) => props.$locale === 'en' ? 'nowrap' : 'normal'};
     padding: 1rem 4rem;
     &:hover {
         background: ${(props) => props.theme.colors.grey0};
@@ -83,16 +84,19 @@ const MenuItem = ({
     children,
     text,
     icon,
-    url,
+    categoryType,
     open,
     haschild,
     hasdivder,
+    handleHamburgerContainerShow,
     ...props
 }) => {
     return (
         <Fragment>
-            <Link href={url}>
-                <StyledMenuContainer {...props}>
+            <Link href={`/travel/search?type=${categoryType}`}>
+                <StyledMenuContainer {...props} onClick={() => {
+                    handleHamburgerContainerShow()
+                }}>
                     {/* <MenuIcon icon={icon} /> */}
                     <MenuText $open={open} variant="content">
                         {text}
@@ -103,13 +107,13 @@ const MenuItem = ({
                         icon="fa-angle-right"
                     />
                 </StyledMenuContainer>
-            </Link>
-            {hasdivder && <StyledDivider></StyledDivider>}
+                {hasdivder && <StyledDivider></StyledDivider>}
+            </Link >
         </Fragment>
     );
 };
 
-const MenuItems = ({ items, ...props }) => {
+const MenuItems = ({ locale, items, handleHamburgerContainerShow, ...props }) => {
     const renderMenuItem = (item) => {
         const hasChild = !isEmpty(item.children) && item.children.length > 0;
         const hasDivder = item.divider === true;
@@ -117,6 +121,7 @@ const MenuItems = ({ items, ...props }) => {
         return hasChild ? (
             <Fragment key={item.id}>
                 <MenuWithChild
+                    $locale={locale}
                     item={item}
                     haschild={hasChild}
                     hasdivder={hasDivder}
@@ -124,12 +129,14 @@ const MenuItems = ({ items, ...props }) => {
             </Fragment>
         ) : (
             <MenuItem
+                $locale={locale}
                 key={item.id}
                 text={item.text}
                 icon={item.icon}
                 haschild={hasChild}
                 hasdivder={hasDivder}
-                url={item.url}
+                categoryType={item.categoryType}
+                handleHamburgerContainerShow={handleHamburgerContainerShow}
             />
         );
     };
