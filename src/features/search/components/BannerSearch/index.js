@@ -16,12 +16,12 @@ const BannerContainer = styled.div`
     background-position: center;
     background-size: cover;
     ${breakpoint.mediaMD} {
-        padding-bottom: 40.3%;
+        padding-bottom: 28.5%;
         background-image: url(/images/banner-${(props) => props.$type}-pc.jpg);
     }
     &::after {
         content: '';
-        background-color: ${(props) => props.theme.colors.white};
+        background-color: ${(props) => props.theme.colors.black};
         opacity: 0.1;
         position: absolute;
         top: 0;
