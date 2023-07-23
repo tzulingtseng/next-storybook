@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { TypeAnimation } from 'react-type-animation';
+import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 import Image from 'next/image';
 import BannerHomeSrcPC from '@/assets/images/banner-home-pc.jpg';
 import BannerHomeSrcMb from '@/assets/images/banner-home-mb.jpg';
+import BannerScenicSpotSrcPC from '@/assets/images/banner-scenicSpot-pc.jpg';
+import BannerScenicSpotSrcMb from '@/assets/images/banner-scenicSpot-mb.jpg';
+import BannerRestaurantSrcPC from '@/assets/images/banner-restaurant-pc.jpg';
+import BannerRestaurantSrcMb from '@/assets/images/banner-restaurant-mb.jpg';
+import BannerActivitySrcPC from '@/assets/images/banner-activity-pc.jpg';
+import BannerActivitySrcMb from '@/assets/images/banner-activity-mb.jpg';
 import breakpoint from '@/lib/constant/breakpoint';
 import { useTranslation } from 'next-i18next';
 
@@ -12,16 +21,6 @@ const BannerHomeWrapper = styled.div`
     position: relative;
     background-position: center;
     background-size: cover;
-    &::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        background-color: ${(props) => props.theme.colors.black};
-        opacity: 0.1;
-    }
 `;
 
 const BannerImg = styled(Image)`
@@ -43,7 +42,7 @@ const BannerImg = styled(Image)`
     }
 `;
 
-const BannerText = styled.div`
+const BannerTextContainer = styled.div`
     z-index: 1;
     position: absolute;
     top: 50%;
@@ -52,16 +51,18 @@ const BannerText = styled.div`
     text-align: center;
     color: ${(props) => props.theme.colors.white};
     font-weight: 600;
-    width: 100%;
-    transition: transform 0.4s, opacity 0.4s;
+    max-width: 50rem;
+    width: 70%;
+    height: 66%;
+    background-color: rgba(255,255,255,0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // transition: transform 0.4s, opacity 0.4s;
     .title {
         white-space: pre-line;
         font-size: ${(props) => props.theme.fontSize.xl};
-    }
-    .title-popup{
-        opacity:${(props) => props.$isFinalText ? '1' : '0'};
-        transform: ${(props) => props.$isFinalText ? 'translateY(0)' : 'translateY(60%)'};
-        transition: transform 0.4s, opacity 0.4s;
+        text-shadow: 1px 1px 0 #444, 2px 2px 0 #444, 3px 3px 0 #444;
     }
     ${breakpoint.mediaMD} {
         .title {
@@ -70,55 +71,139 @@ const BannerText = styled.div`
     }
     .sub_title {
         font-size: ${(props) => props.theme.fontSize.lg};
+        text-shadow: 1px 1px 0 #444, 2px 2px 0 #444, 3px 3px 0 #444;
     }
 `;
 
+const SwiperContainer = styled.div`
+    position: relative;
+    width: 100%;
+`;
+
+const CarouselBox = styled(Swiper)`
+    .swiper-pagination-bullet {
+        width: 1rem;
+        height: 1rem;
+        background-color: ${(props) => props.theme.colors.black};
+        opacity: 1;
+    }
+    .swiper-pagination-bullet-active {
+        background-color: ${(props) => props.theme.colors.primary};
+    }
+`
+
+const StyledSwiperSlide = styled(SwiperSlide)`
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: ${(props) => props.theme.colors.black};
+        opacity: 0.1;
+    }
+`
+
 const BannerHome = () => {
     const { t } = useTranslation('common');
-    const [isFinalText, setIsFinalText] = useState(false);
-    let times = 0
-    let repeatTimes = 3
-    const countTypingTimes = () => {
-        times++
-        if (times === repeatTimes + 1) {
-            setIsFinalText(true)
-        }
-    }
+
+    const swiperParams = {
+        slidesPerView: 'auto', // 根據容器寬度自動調整每頁顯示的 slide 數量
+        modules: [Navigation, Pagination],
+        pagination: { clickable: true, dynamicBullets: true },
+        navigation: false,
+    };
 
     return (
         <BannerHomeWrapper>
-            <BannerImg
-                className="show-pc"
-                src={BannerHomeSrcPC}
-                alt="banner"
-                priority={true}
-            />
-            <BannerImg
-                className="show-mb"
-                src={BannerHomeSrcMb}
-                alt="banner"
-                priority={true}
-            />
-            <BannerText $isFinalText={isFinalText}>
-                {isFinalText && <div className="title title-popup">{t('bannerHome.title_01')}</div>}
-                {isFinalText && <div className="title title-popup"> {t('bannerHome.title_02')}</div>}
-                {!isFinalText && <TypeAnimation
-                    sequence={[
-                        `${t('bannerHome.title_01')}\n${t('bannerHome.title_02')}`,
-                        1000,
-                        '', () => {
-                            countTypingTimes()
-                        },
-
-                    ]}
-                    speed={20}
-                    repeat={repeatTimes}
-                    preRenderFirstString={true}
-                    wrapper="div"
-                    className="title"
-                />}
-                <div className="sub_title">{t('bannerHome.sub_title')}</div>
-            </BannerText>
+            <SwiperContainer>
+                <CarouselBox {...swiperParams}>
+                    <StyledSwiperSlide>
+                        <BannerImg
+                            className="show-pc"
+                            src={BannerHomeSrcPC}
+                            alt="banner"
+                            priority={true}
+                        />
+                        <BannerImg
+                            className="show-mb"
+                            src={BannerHomeSrcMb}
+                            alt="banner"
+                            priority={true}
+                        />
+                        <BannerTextContainer >
+                            <div>
+                                <div className="title">{t('bannerHome.title_01')}<br />{t('bannerHome.title_02')}</div>
+                                <div className="sub_title">{t('bannerHome.sub_title')}</div>
+                            </div>
+                        </BannerTextContainer >
+                    </StyledSwiperSlide>
+                    <StyledSwiperSlide>
+                        <BannerImg
+                            className="show-pc"
+                            src={BannerScenicSpotSrcPC}
+                            alt="banner"
+                            priority={true}
+                        />
+                        <BannerImg
+                            className="show-mb"
+                            src={BannerScenicSpotSrcMb}
+                            alt="banner"
+                            priority={true}
+                        />
+                        <BannerTextContainer >
+                            <div>
+                                <div className="title">
+                                    {t(`searchConfig.scenicSpotBannerTitle`)}
+                                </div>
+                            </div>
+                        </BannerTextContainer >
+                    </StyledSwiperSlide>
+                    <StyledSwiperSlide>
+                        <BannerImg
+                            className="show-pc"
+                            src={BannerActivitySrcPC}
+                            alt="banner"
+                            priority={true}
+                        />
+                        <BannerImg
+                            className="show-mb"
+                            src={BannerActivitySrcMb}
+                            alt="banner"
+                            priority={true}
+                        />
+                        <BannerTextContainer >
+                            <div>
+                                <div className="title">
+                                    {t(`searchConfig.activityBannerTitle`)}
+                                </div>
+                            </div>
+                        </BannerTextContainer >
+                    </StyledSwiperSlide>
+                    <StyledSwiperSlide>
+                        <BannerImg
+                            className="show-pc"
+                            src={BannerRestaurantSrcPC}
+                            alt="banner"
+                            priority={true}
+                        />
+                        <BannerImg
+                            className="show-mb"
+                            src={BannerRestaurantSrcMb}
+                            alt="banner"
+                            priority={true}
+                        />
+                        <BannerTextContainer >
+                            <div>
+                                <div className="title">
+                                    {t(`searchConfig.restaurantBannerTitle`)}
+                                </div>
+                            </div>
+                        </BannerTextContainer >
+                    </StyledSwiperSlide>
+                </CarouselBox>
+            </SwiperContainer>
         </BannerHomeWrapper >
     );
 };

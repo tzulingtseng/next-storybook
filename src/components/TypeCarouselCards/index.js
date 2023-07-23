@@ -31,10 +31,10 @@ const CarouselContainer = styled.div`
 `;
 
 const CarouselBox = styled(Swiper)`
-    padding-bottom: 2.5rem;
+    padding-bottom: 3rem;
     .swiper-pagination-bullet {
-        width: 0.75rem;
-        height: 0.75rem;
+        width: 1rem;
+        height: 1rem;
     }
     .swiper-pagination-bullet-active {
         background-color: ${(props) => props.theme.colors.primary};
