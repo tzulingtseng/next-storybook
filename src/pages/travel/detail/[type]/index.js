@@ -23,6 +23,7 @@ import convertGoogleDriveURL from '@/utils/convertGoogleDriveURL';
 import breakpoint from '@/lib/constant/breakpoint';
 import NoImage from '@/components/NoImage';
 import NearbySpot from '@/features/detail/components/NearbySpot';
+import GoToTop from '@/components/GoToTop';
 
 const InfoContainer = styled.div`
     margin-top: 3rem;
@@ -153,6 +154,7 @@ const Detail = ({ data }) => {
             <ThemeProvider theme={theme}>
                 <SEO title={SpotName} />
                 <Container>
+                    <GoToTop />
                     <NavBar
                         locale={locale}
                         selectedValue={selectedValue}

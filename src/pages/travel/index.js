@@ -21,6 +21,7 @@ import Wrapper from '@/components/Wrapper';
 import Footer from '@/components/Footer';
 import TypeCarouselCards from '@/components/TypeCarouselCards';
 import BannerHome from '@/features/home/components/BannerHome';
+import GoToTop from '@/components/GoToTop';
 
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
@@ -107,6 +108,7 @@ const Travel = ({
                     description={t('description')}
                 />
                 <Container>
+                    <GoToTop />
                     <NavBar
                         locale={locale}
                         selectedValue={selectedValue}

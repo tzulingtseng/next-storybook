@@ -11,6 +11,7 @@ import Container from '@/components/Container';
 import Footer from '@/components/Footer';
 import BannerSearch from '@/features/search/components/BannerSearch';
 import SearchResults from '@/features/search/components/SearchResults';
+import GoToTop from '@/components/GoToTop';
 
 import getActivityAPI from '@/api/getActivityAPI';
 import getScenicSpotAPI from '@/api/getScenicSpotAPI';
@@ -233,6 +234,7 @@ const Search = ({ type, area, keyword }) => {
         <ThemeProvider theme={theme}>
             <SEO title={t(`searchConfig.${type}BannerTitle`)} />
             <Container>
+                <GoToTop />
                 <NavBar
                     locale={locale}
                     selectedValue={selectedValue}
