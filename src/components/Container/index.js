@@ -4,7 +4,7 @@ import breakpoint from '@/lib/constant/breakpoint';
 
 const StyledContainer = styled.div`
     position: relative;
-    min-height: 100vh;
+    min-height: 100dvh;
     padding-bottom: 8rem;
     ${breakpoint.mediaXS} {
         padding-bottom: 5rem;

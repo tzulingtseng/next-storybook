@@ -33,19 +33,19 @@ const Content = styled.div`
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-        font-size: ${(props) => props.theme.fontSize.xs};
+        font-size: ${(props) => props.theme.fontSize.sm};
     }
     .meta__title {
         overflow: hidden;
         color: ${(props) => props.theme.colors.black};
         font-weight: 500;
-        font-size: ${(props) => props.theme.fontSize.sm};
+        font-size: ${(props) => props.theme.fontSize.md};
         white-space: nowrap;
         text-overflow: ellipsis;
         margin: 0.5rem 0;
     }
     .meta__description {
-        font-size: ${(props) => props.theme.fontSize.xs};
+        font-size: ${(props) => props.theme.fontSize.sm};
         color: ${(props) => props.theme.colors.grey2};
         white-space: nowrap;
         text-overflow: ellipsis;

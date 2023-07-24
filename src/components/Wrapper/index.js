@@ -6,7 +6,7 @@ const StyledWrapper = styled('div')`
     max-width: auto;
     width: 90%;
     margin: 0 auto;
-    ${breakpoint.mediaMD} {
+    ${breakpoint.media1XL} {
         max-width: 64rem;
         width: 100%;
     }

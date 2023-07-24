@@ -31,7 +31,7 @@ const FooterContent = styled.div`
     > br {
         display: block;
     }
-    ${breakpoint.mediaXS} {
+    ${breakpoint.mediaSM} {
         > br {
             display: none;
         }

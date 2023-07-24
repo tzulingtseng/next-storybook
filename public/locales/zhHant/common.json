@@ -70,17 +70,61 @@
     "searchConfig": {
         "searchResults": "搜尋結果",
         "keyword": "關鍵字：",
-        "area": "，地區：",
-        "total": "，共",
-        "records": "筆資料",
+        "area": "地區：",
+        "classTheme": "精選主題：",
         "noResults": "目前沒有符合的搜尋結果",
         "noData": "無",
         "searchKeyword": "搜尋名稱",
         "searchButton": "搜尋",
-        "activityBannerTitle": "尋找活動",
-        "scenicSpotBannerTitle": "尋找景點",
-        "restaurantBannerTitle": "尋找餐廳",
-        "scrollToEnd": "已經到底囉！"
+        "activityBannerTitle_01": "尋找",
+        "activityBannerTitle_02": "活動",
+        "scenicSpotBannerTitle_01": "尋找",
+        "scenicSpotBannerTitle_02": "景點",
+        "restaurantBannerTitle_01": "尋找",
+        "restaurantBannerTitle_02": "餐廳",
+        "scrollToEnd": "已經到底囉！",
+        "scenicSpotTheme": [
+            {
+                "value": "文化類",
+                "name": "文化類"
+            },
+            {
+                "value": "生態類",
+                "name": "生態類"
+            },
+            {
+                "value": "遊憩類",
+                "name": "遊憩類"
+            }
+        ],
+        "activityTheme": [
+            {
+                "value": "遊憩活動",
+                "name": "遊憩活動"
+            },
+            {
+                "value": "年度活動",
+                "name": "年度活動"
+            },
+            {
+                "value": "藝文活動",
+                "name": "藝文活動"
+            }
+        ],
+        "restaurantTheme": [
+            {
+                "value": "地方特產",
+                "name": "地方特產"
+            },
+            {
+                "value": "異國料理",
+                "name": "異國料理"
+            },
+            {
+                "value": "中式美食",
+                "name": "中式美食"
+            }
+        ]
     },
     "detailConfig": {
         "information": "資訊",

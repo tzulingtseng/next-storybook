@@ -11,55 +11,44 @@ import convertGoogleDriveURL from '@/utils/convertGoogleDriveURL';
 
 const SearchResultsTitle = styled.div`
     width: 100%;
-    display: flex;
+    display: block;
+    
     justify-content: space-between;
-    align-items: center;
+    align-items: baseline;
     padding: 1.5rem 0;
+    ${breakpoint.mediaMD}{
+        display: flex;  
+    }
 `;
 const SearchResultsTitleText = styled.div`
     color: ${(props) => props.theme.colors.primary};
     font-size: ${(props) => props.theme.fontSize.lg};
     font-weight: 600;
+      margin-bottom:1rem;
+        ${breakpoint.mediaMD}{
+        margin-bottom:0;
+    }
 `;
 
 const SearchInfo = styled.div`
     display: flex;
+    flex-wrap: wrap;
     .highlight {
         color: ${(props) => props.theme.colors.primary};
         margin: 0 0.5rem;
     }
+    ${breakpoint.mediaMD}{
+        flex-wrap: initial;
+    }
 `;
 
 const SearchResultsContainer = styled.div`
-    width: calc(100% + 1rem * 2);
-    margin: 0 -1rem;
+    width: calc(100% + 0.5rem * 2);
+    margin: 0 -0.5rem;
     display: flex;
     flex-wrap: wrap;
 `;
 
-// const PaginationContainer = styled.div`
-//     display: flex;
-//     justify-content: center;
-//     margin: 10px 0;
-// `;
-
-const StyledCardSkeletonContainer = styled.div`
-    display: inline-flex;
-    width: calc(100% / 2 - 2rem);
-    margin: 0 1rem;
-    margin-bottom: 1rem;
-    > a {
-        > div {
-            max-width: initial;
-        }
-    }
-    ${breakpoint.mediaSM} {
-        width: calc(100% / 3 - 2rem);
-    }
-    ${breakpoint.mediaMD} {
-        width: calc(100% / 4 - 2rem);
-    }
-`;
 
 const StyledEndMsg = styled.div`
     display: flex;
@@ -83,6 +72,27 @@ const StyledNoResults = styled.div`
     font-size: ${(props) => props.theme.fontSize.sm};
 `;
 
+const StyledCardSkeletonContainer = styled.div`
+    display: inline-flex;
+    width: calc(100% - 0.5rem * 2);
+    margin: 0 0.5rem;
+    margin-bottom: 1rem;
+    > a {
+        > div {
+            max-width: initial;
+        }
+    }
+    ${breakpoint.mediaSM} {
+        width: calc(100% / 2 - 0.5rem * 2);
+    }
+    ${breakpoint.mediaMD} {
+        width: calc(100% / 3 - 0.5rem * 2);
+    }
+    ${breakpoint.mediaLG} {
+        width: calc(100% / 4 - 0.5rem * 2);
+    }
+`;
+
 const SearchResults = ({
     type,
     status,
@@ -90,7 +100,9 @@ const SearchResults = ({
     isLoading,
     isEnd,
     keyword,
-    searchedCountyText
+    searchedCountyText,
+    classVal,
+    fetchDataNumber
 }) => {
     const { t } = useTranslation('common');
     return (
@@ -105,13 +117,21 @@ const SearchResults = ({
                         <span className="highlight">
                             {keyword ? keyword : t('searchConfig.noData')}
                         </span>
-                    </div>
+                    </div>|&nbsp;
                     <div>
                         {t('searchConfig.area')}
                         <span className="highlight">
                             {searchedCountyText !== ''
                                 ? searchedCountyText
                                 : t('countyOptions.all')}
+                        </span>
+                    </div>|&nbsp;
+                    <div>
+                        {t('searchConfig.classTheme')}
+                        <span className="highlight">
+                            {classVal
+                                ? classVal
+                                : t('searchConfig.noData')}
                         </span>
                     </div>
                 </SearchInfo>
@@ -132,6 +152,7 @@ const SearchResults = ({
                             ScenicSpotName,
                             RestaurantID,
                             RestaurantName,
+                            Class, Class1, Class2, Class3,
                         } = item;
 
                         let transferedTime = transferTime(
@@ -142,21 +163,35 @@ const SearchResults = ({
 
                         let convertImgUrl = convertGoogleDriveURL(PictureUrl1);
 
-                        let itemId, itemName;
-                        if (ActivityID) {
-                            itemId = ActivityID;
-                            itemName = ActivityName;
-                        } else if (ScenicSpotID) {
-                            itemId = ScenicSpotID;
-                            itemName = ScenicSpotName;
-                        } else if (RestaurantID) {
-                            itemId = RestaurantID;
-                            itemName = RestaurantName;
+                        let classData, itemId, itemName;
+                        switch (type) {
+                            case 'scenicSpot':
+                                classData = ["文化類", "生態類", "遊憩類"]
+                                itemId = ScenicSpotID;
+                                itemName = ScenicSpotName;
+                                break;
+                            case 'activity':
+                                classData = ["遊憩活動", "年度活動", "藝文活動"]
+                                itemId = ActivityID;
+                                itemName = ActivityName;
+                                break;
+                            case 'restaurant':
+                                classData = ["地方特產", "異國料理", "中式美食"]
+                                itemId = RestaurantID;
+                                itemName = RestaurantName;
+                                break;
                         }
+
+                        let classArr = []
+
+                        if (Class || Class1 || Class2 || Class3) {
+                            classArr.push(Class, Class1, Class2, Class3);
+                        }
+                        const filterClass = classData.filter(item => classArr.includes(item))[0];
 
                         return (
                             <CardContainer
-                                key={itemId}
+                                key={i}
                                 type={type}
                                 itemId={itemId}
                                 itemName={itemName}
@@ -171,12 +206,12 @@ const SearchResults = ({
                                 address={Address ? Address : t('carouselConfig.moreDetails')}
                                 text={t(`carouselConfig.openTime`)}
                                 iconClass="fa-solid fa-location-dot"
+                                bageText={classVal || filterClass}
                             />
                         );
                     })}
                 {isLoading && !isEnd &&
-                    Array(8)
-                        .fill(0)
+                    Array(fetchDataNumber).fill(0)
                         .map((item, i) => (
                             <StyledCardSkeletonContainer key={i}>
                                 <CardSkeleton />

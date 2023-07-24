@@ -9,8 +9,8 @@
         "filled": "Donate"
     },
     "bannerHome": {
-        "title_01": "Discover the Beauty of Taiwan.",
-        "title_02": "Let's Get Closer to this Land.",
+        "title_01": "To Discover ",
+        "title_02": "the Beauty of Taiwan.",
         "sub_title": "ScenicSpot、 Activity、 Food"
     },
     "footerSource": "MOTC TDX Service Platform",
@@ -70,17 +70,61 @@
     "searchConfig": {
         "searchResults": "Search Results",
         "keyword": "Keyword:",
-        "area": ", Area:",
-        "total": ", A total of",
-        "records": "records.",
+        "area": "Area:",
+        "classTheme": "Featured Themes:",
         "noResults": "No matching results.",
         "noData": "None",
         "searchKeyword": "Enter keyword",
         "searchButton": "Search",
-        "activityBannerTitle": "LET'S GO ACTIVITY",
-        "scenicSpotBannerTitle": "LET'S GO SCENICSPOT",
-        "restaurantBannerTitle": "LET'S GO RESTAURANT",
-        "scrollToEnd": "This is end!"
+        "activityBannerTitle_01": "LET'S GO",
+        "activityBannerTitle_02": "ACTIVITY",
+        "scenicSpotBannerTitle_01": "LET'S GO",
+        "scenicSpotBannerTitle_02": "SCENICSPOT",
+        "restaurantBannerTitle_01": "LET'S GO",
+        "restaurantBannerTitle_02": "RESTAURANT",
+        "scrollToEnd": "This is end!",
+        "scenicSpotTheme": [
+            {
+                "value": "文化類",
+                "name": "文化類"
+            },
+            {
+                "value": "生態類",
+                "name": "生態類"
+            },
+            {
+                "value": "遊憩類",
+                "name": "遊憩類"
+            }
+        ],
+        "activityTheme": [
+            {
+                "value": "遊憩活動",
+                "name": "遊憩活動"
+            },
+            {
+                "value": "年度活動",
+                "name": "年度活動"
+            },
+            {
+                "value": "藝文活動",
+                "name": "藝文活動"
+            }
+        ],
+        "restaurantTheme": [
+            {
+                "value": "地方特產",
+                "name": "地方特產"
+            },
+            {
+                "value": "異國料理",
+                "name": "異國料理"
+            },
+            {
+                "value": "中式美食",
+                "name": "中式美食"
+            }
+        ]
     },
     "detailConfig": {
         "information": "Information",
@@ -206,6 +250,7 @@
             },
             {
                 "id": 20,
+                "value": "PingtungCounty",
                 "name": "Pingtung County"
             },
             {
