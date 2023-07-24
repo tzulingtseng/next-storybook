@@ -7,9 +7,9 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 
 const SelectWrapper = styled.div`
-    width: 9rem; // TODO:確認寬度
+    width: ${(props) => props.$locale === 'en' ? '11rem' : '9rem'};
     height: 100%;
-    display: inline-block; // TODO:完成後，改成
+    display: inline-block;
     position: relative;
     cursor: pointer;
     font-size: ${(props) => props.theme.fontSize.sm};
@@ -20,12 +20,6 @@ const SelectWrapper = styled.div`
         padding: 0;
         list-style: none;
     }
-    // ${breakpoint.mediaXS}{
-    //     width: 12rem;
-    // }
-    // ${breakpoint.mediaSM}{
-    //     width: 9rem;
-    // }
 `;
 
 const SelectBoxWrapper = styled.div`
@@ -98,10 +92,10 @@ const SelectIcon = styled(Icon)`
 `;
 
 const Select = ({
-    selectedCountyText,
     setSelectedCountyText,
     setSelectedCountyValue,
-    selectedCountyValue
+    selectedCountyValue,
+    locale
 }) => {
     const [open, setOpen] = useState(false);
     const countySelectRef = useRef(null)
@@ -148,7 +142,7 @@ const Select = ({
     let searchedCountyText = countyData ? countyData.name : '';
 
     return (
-        <SelectWrapper>
+        <SelectWrapper $locale={locale}>
             <SelectBoxWrapper
                 role="button"
                 onClick={() => {

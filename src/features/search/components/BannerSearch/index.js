@@ -165,6 +165,7 @@ const BannerSearch = ({
                                 selectedCountyText={selectedCountyText}
                                 setSelectedCountyText={setSelectedCountyText}
                                 setSelectedCountyValue={setSelectedCountyValue}
+                                locale={locale}
                             />
                         </div>
                         <ClassThemeContainer>
