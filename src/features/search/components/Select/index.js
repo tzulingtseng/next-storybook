@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 
 const SelectWrapper = styled.div`
-    width: ${(props) => props.$locale === 'en' ? '11rem' : '9rem'};
+    width: ${(props) => props.$locale === 'en' ? '12rem' : '9rem'};
     height: 100%;
     display: inline-block;
     position: relative;

@@ -91,7 +91,7 @@ const BannerSearchBox = styled.div`
 `;
 
 const SearchButton = styled(Button)`
-    height: 2rem;
+    height: 2.5rem;
     &:hover {
         background-color: rgb(38, 97, 112);
     }
