@@ -57,7 +57,7 @@
     "langOptions": {
         "options": [
             {
-                "value": "zhHant",
+                "value": "zh-Hant",
                 "label": "中"
             },
             {
@@ -76,12 +76,12 @@
         "noData": "無",
         "searchKeyword": "搜尋名稱",
         "searchButton": "搜尋",
-        "activityBannerTitle_01": "尋找",
-        "activityBannerTitle_02": "活動",
-        "scenicSpotBannerTitle_01": "尋找",
-        "scenicSpotBannerTitle_02": "景點",
-        "restaurantBannerTitle_01": "尋找",
-        "restaurantBannerTitle_02": "餐廳",
+        "activityBannerTitle": "尋找活動",
+        "activityBannerSubTitle": "遊憩、年度、藝文",
+        "scenicSpotBannerTitle": "尋找景點",
+        "scenicSpotBannerSubTitle": "文化類、生態類、遊憩類",
+        "restaurantBannerTitle": "尋找餐廳",
+        "restaurantBannerSubTitle": "地方、異國、中式",
         "scrollToEnd": "已經到底囉！",
         "scenicSpotTheme": [
             {

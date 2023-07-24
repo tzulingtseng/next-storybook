@@ -63,13 +63,11 @@ const BannerContent = styled.div`
 `;
 
 const BannerTitle = styled.div`
-    width: ${(props) => props.$locale === 'en' ? '62%' : '100%'};
-    margin: ${(props) => props.$locale === 'en' ? '0 auto' : 'auto'};
     font-size: ${(props) => props.theme.fontSize.xl};
     font-weight: 600;
     color: ${(props) => props.theme.colors.white};
     text-shadow: 1px 1px 0 #444, 2px 2px 0 #444, 3px 3px 0 #444;
-    margin-bottom: 0.4rem;
+    margin-bottom: 1.5rem;
 `;
 
 const BannerSearchBox = styled.div`
@@ -152,7 +150,7 @@ const BannerSearch = ({
         <BannerContainer $type={type}>
             <BannerContentBox>
                 <BannerContent>
-                    <BannerTitle $locale={locale}>{t(`searchConfig.${type}BannerTitle_01`)}<br style={{ display: locale === 'en' ? 'block' : "none" }} />{t(`searchConfig.${type}BannerTitle_02`)}</BannerTitle>
+                    <BannerTitle>{t(`searchConfig.${type}BannerTitle`)}</BannerTitle>
                     <BannerSearchBox>
                         <div>
                             <TextField

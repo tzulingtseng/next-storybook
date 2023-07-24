@@ -132,7 +132,7 @@ const BannerHome = ({ locale }) => {
                         />
                         <BannerTextContainer $locale={locale}>
                             <div>
-                                <div className="title">{t('bannerHome.title_01')}<br />{t('bannerHome.title_02')}</div>
+                                <div className="title">{t('bannerHome.title')}</div>
                                 <div className="sub_title">{t('bannerHome.sub_title')}</div>
                             </div>
                         </BannerTextContainer >
@@ -153,19 +153,9 @@ const BannerHome = ({ locale }) => {
                         <BannerTextContainer $locale={locale}>
                             <div>
                                 <div className="title">
-                                    {t(`searchConfig.scenicSpotBannerTitle_01`)}<br style={{ display: locale === 'en' ? 'block' : "none" }} />{t(`searchConfig.scenicSpotBannerTitle_02`)}
+                                    {t(`searchConfig.scenicSpotBannerTitle`)}
                                 </div>
-                                {t('searchConfig.scenicSpotTheme', {
-                                    returnObjects: true,
-                                }).map((item, i) => {
-                                    let subTitle
-                                    if (i < 2) {
-                                        subTitle = item.name + "、"
-                                    } else {
-                                        subTitle = item.name
-                                    }
-                                    return <span key={i} className="sub_title">{subTitle}</span>
-                                })}
+                                <div className="sub_title">{t(`searchConfig.scenicSpotBannerSubTitle`)}</div>
                             </div>
                         </BannerTextContainer >
                     </StyledSwiperSlide>
@@ -185,19 +175,9 @@ const BannerHome = ({ locale }) => {
                         <BannerTextContainer $locale={locale}>
                             <div>
                                 <div className="title">
-                                    {t(`searchConfig.activityBannerTitle_01`)}<br style={{ display: locale === 'en' ? 'block' : "none" }} />{t(`searchConfig.activityBannerTitle_02`)}
+                                    {t(`searchConfig.activityBannerTitle`)}
                                 </div>
-                                {t('searchConfig.activityTheme', {
-                                    returnObjects: true,
-                                }).map((item, i) => {
-                                    let subTitle
-                                    if (i < 2) {
-                                        subTitle = item.name + "、"
-                                    } else {
-                                        subTitle = item.name
-                                    }
-                                    return <span key={i} className="sub_title">{subTitle}</span>
-                                })}
+                                <div className="sub_title">{t(`searchConfig.activityBannerSubTitle`)}</div>
                             </div>
                         </BannerTextContainer >
                     </StyledSwiperSlide>
@@ -217,19 +197,9 @@ const BannerHome = ({ locale }) => {
                         <BannerTextContainer $locale={locale}>
                             <div>
                                 <div className="title">
-                                    {t(`searchConfig.restaurantBannerTitle_01`)}<br style={{ display: locale === 'en' ? 'block' : "none" }} />{t(`searchConfig.restaurantBannerTitle_02`)}
+                                    {t(`searchConfig.restaurantBannerTitle`)}
                                 </div>
-                                {t('searchConfig.restaurantTheme', {
-                                    returnObjects: true,
-                                }).map((item, i) => {
-                                    let subTitle
-                                    if (i < 2) {
-                                        subTitle = item.name + "、"
-                                    } else {
-                                        subTitle = item.name
-                                    }
-                                    return <span key={i} className="sub_title">{subTitle}</span>
-                                })}
+                                <div className="sub_title">{t(`searchConfig.restaurantBannerSubTitle`)}</div>
                             </div>
                         </BannerTextContainer >
                     </StyledSwiperSlide>
