@@ -36,13 +36,8 @@ const StyledTextField = styled.div`
     &:hover {
         border: 1px solid ${(props) => props.theme.colors.grey2};
     }
-
     ${(props) => (props.$isError ? errorStyle : null)}
     ${(props) => (props.$isDisabled ? disabledStyle : null)}
-    ${breakpoint.mediaSM}{
-        width: 45%;
-        
-    }
 `;
 
 const Input = styled.input`

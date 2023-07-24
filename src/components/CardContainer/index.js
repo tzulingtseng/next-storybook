@@ -9,8 +9,8 @@ import breakpoint from '@/lib/constant/breakpoint';
 import { useTranslation } from 'next-i18next';
 
 const StyledCardContainer = styled.div`
-    width: calc(50% - 2rem);
-    margin: 0 1rem;
+    width: calc(100% - 0.5rem * 2);
+    margin: 0 0.5rem;
     margin-bottom: 1rem;
     > a {
         > div {
@@ -18,10 +18,13 @@ const StyledCardContainer = styled.div`
         }
     }
     ${breakpoint.mediaSM} {
-        width: calc(100% / 3 - 2rem);
+        width: calc(100% / 2 - 0.5rem * 2);
     }
     ${breakpoint.mediaMD} {
-        width: calc(100% / 4 - 2rem);
+        width: calc(100% / 3 - 0.5rem * 2);
+    }
+    ${breakpoint.mediaLG} {
+        width: calc(100% / 4 - 0.5rem * 2);
     }
 `;
 
@@ -51,6 +54,7 @@ const CardContainer = ({
     address,
     text,
     iconClass,
+    bageText
 }) => {
     const { t } = useTranslation('common');
     return (
@@ -64,6 +68,7 @@ const CardContainer = ({
                             <NoImage />
                         )
                     }
+                    bageText={bageText}
                     children={
                         <Meta
                             title={itemName}

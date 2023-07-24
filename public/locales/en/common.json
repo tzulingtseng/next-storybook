@@ -70,9 +70,8 @@
     "searchConfig": {
         "searchResults": "Search Results",
         "keyword": "Keyword:",
-        "area": ", Area:",
-        "total": ", A total of",
-        "records": "records.",
+        "area": "Area:",
+        "classTheme": "Featured Themes:",
         "noResults": "No matching results.",
         "noData": "None",
         "searchKeyword": "Enter keyword",
@@ -80,7 +79,49 @@
         "activityBannerTitle": "LET'S GO ACTIVITY",
         "scenicSpotBannerTitle": "LET'S GO SCENICSPOT",
         "restaurantBannerTitle": "LET'S GO RESTAURANT",
-        "scrollToEnd": "This is end!"
+        "scrollToEnd": "This is end!",
+        "scenicSpotTheme": [
+            {
+                "value": "文化類",
+                "name": "文化類"
+            },
+            {
+                "value": "生態類",
+                "name": "生態類"
+            },
+            {
+                "value": "遊憩類",
+                "name": "遊憩類"
+            }
+        ],
+        "activityTheme": [
+            {
+                "value": "遊憩活動",
+                "name": "遊憩活動"
+            },
+            {
+                "value": "年度活動",
+                "name": "年度活動"
+            },
+            {
+                "value": "藝文活動",
+                "name": "藝文活動"
+            }
+        ],
+        "restaurantTheme": [
+            {
+                "value": "地方特產",
+                "name": "地方特產"
+            },
+            {
+                "value": "異國料理",
+                "name": "異國料理"
+            },
+            {
+                "value": "中式美食",
+                "name": "中式美食"
+            }
+        ]
     },
     "detailConfig": {
         "information": "Information",

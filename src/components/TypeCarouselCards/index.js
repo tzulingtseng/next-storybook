@@ -47,12 +47,15 @@ const SwiperContainer = styled.div`
 `;
 
 const StyledSwiperSlide = styled(SwiperSlide)`
-    width: 49%;
+    width: 88%;
     margin-right: 1rem;
     ${breakpoint.mediaSM} {
-        width: 32%;
+        width: 46%;
     }
     ${breakpoint.mediaMD} {
+        width: 33%;
+    }
+    ${breakpoint.mediaLG} {
         width: 25%;
     }
 `;
@@ -75,7 +78,7 @@ const StyledButton = styled(Button)`
 `;
 
 const SwiperArrowButton = styled.div`
-    ${breakpoint.mediaMD} {
+    ${breakpoint.mediaLG} {
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
@@ -96,14 +99,14 @@ const SwiperArrowButton = styled.div`
         }
         &.button-prev {
             display: ${(props) => (props.$isBeginning ? 'none' : 'flex')};
-            left: -3.5rem;
+            left: -3rem;
             &::after {
                 content: 'prev';
             }
         }
         &.button-next {
             display: ${(props) => (props.$isEnd ? 'none' : 'flex')};
-            right: -3.5rem;
+            right: -3rem;
             &::after {
                 content: 'next';
             }
@@ -111,11 +114,10 @@ const SwiperArrowButton = styled.div`
     }
 `;
 
-const TypeCarouselCards = ({ status, type, lists }) => {
+const TypeCarouselCards = ({ status, type, lists, detailBageText, hasPagination }) => {
     const swiperRef = useRef(null);
     const [isBeginning, setIsBeginning] = useState(true);
-    const [isEnd, setisEnd] = useState(false);
-
+    const [isEnd, setIsEnd] = useState(false);
     const swiperParams = {
         slidesPerView: 'auto', // 根據容器寬度自動調整每頁顯示的 slide 數量
         modules: [Navigation, Pagination],
@@ -129,6 +131,17 @@ const TypeCarouselCards = ({ status, type, lists }) => {
         observeParents: true,
     };
 
+    useEffect(() => {
+        if (lists && lists.length < 4) {
+            setIsBeginning(true)
+            setIsEnd(true)
+            hasPagination = false
+        } else {
+            setIsBeginning(true)
+            setIsEnd(false)
+        }
+    }, [])
+
     const { t } = useTranslation('common');
 
     return (
@@ -139,11 +152,13 @@ const TypeCarouselCards = ({ status, type, lists }) => {
                     <CarouselBox
                         ref={swiperRef}
                         {...swiperParams}
-                        onRealIndexChange={() => {
-                            setIsBeginning(
-                                swiperRef.current.swiper.isBeginning
-                            );
-                            setisEnd(swiperRef.current.swiper.isEnd);
+                        onReachBeginning={() => {
+                            setIsBeginning(true);
+                            setIsEnd(false);
+                        }}
+                        onReachEnd={() => {
+                            setIsEnd(true);
+                            setIsBeginning(false)
                         }}
                     >
                         {(status === undefined ||
@@ -168,6 +183,7 @@ const TypeCarouselCards = ({ status, type, lists }) => {
                                     ScenicSpotID,
                                     RestaurantID,
                                     Address,
+                                    Class, Class1, Class2, Class3,
                                 } = item;
 
                                 let transferedTime = transferTime(
@@ -177,21 +193,30 @@ const TypeCarouselCards = ({ status, type, lists }) => {
                                 );
                                 let convertImgUrl =
                                     convertGoogleDriveURL(PictureUrl1);
-
-                                let itemId, type, itemName;
-                                if (item?.ActivityID) {
-                                    itemId = item.ActivityID;
-                                    itemName = item.ActivityName;
-                                    type = 'activity';
-                                } else if (item?.ScenicSpotID) {
-                                    itemId = item.ScenicSpotID;
-                                    itemName = item.ScenicSpotName;
-                                    type = 'scenicSpot';
-                                } else if (item?.RestaurantID) {
-                                    itemId = item.RestaurantID;
-                                    itemName = item.RestaurantName;
-                                    type = 'restaurant';
+                                let classData, itemId, itemName;
+                                switch (type) {
+                                    case 'scenicSpot':
+                                        classData = ["文化類", "生態類", "遊憩類"]
+                                        itemId = item.ScenicSpotID;
+                                        itemName = item.ScenicSpotName;
+                                        break;
+                                    case 'activity':
+                                        classData = ["遊憩活動", "年度活動", "藝文活動"]
+                                        itemId = item.ActivityID;
+                                        itemName = item.ActivityName;
+                                        break;
+                                    case 'restaurant':
+                                        classData = ["地方特產", "異國料理", "中式美食"]
+                                        itemId = item.RestaurantID;
+                                        itemName = item.RestaurantName;
+                                        break;
                                 }
+                                let classArr = []
+
+                                if (Class || Class1 || Class2 || Class3) {
+                                    classArr.push(Class, Class1, Class2, Class3);
+                                }
+                                const filterClass = classData && classData.filter(item => classArr.includes(item))[0];
 
                                 return (
                                     <StyledSwiperSlide key={itemId}>
@@ -209,7 +234,7 @@ const TypeCarouselCards = ({ status, type, lists }) => {
                                                         <NoImage />
                                                     )
                                                 }
-                                                badgeNumber={i + 1}
+                                                bageText={detailBageText || filterClass}
                                                 children={
                                                     <Meta
                                                         // avatarUrl={item.Picture.PictureUrl1}
@@ -274,9 +299,7 @@ const TypeCarouselCards = ({ status, type, lists }) => {
                         $isEnd={isEnd}
                         onClick={() => {
                             swiperRef.current.swiper.slideNext();
-                            // swiperRef.current.swiper.update();
-                            // setIsBeginning(false);
-                            // setisEnd(swiperRef.current.swiper.isEnd);
+                            setIsBeginning(false)
                         }}
                     ></SwiperArrowButton>
                     {/* 上一個箭頭 */}
@@ -285,11 +308,7 @@ const TypeCarouselCards = ({ status, type, lists }) => {
                         $isBeginning={isBeginning}
                         onClick={() => {
                             swiperRef.current.swiper.slidePrev();
-                            // swiperRef.current.swiper.update();
-                            // setisEnd(false);
-                            // setIsBeginning(
-                            //     swiperRef.current.swiper.isBeginning
-                            // );
+                            setIsEnd(false)
                         }}
                     ></SwiperArrowButton>
                 </CarouselContainer>

@@ -52,8 +52,8 @@ const BannerTextContainer = styled.div`
     color: ${(props) => props.theme.colors.white};
     font-weight: 600;
     max-width: 50rem;
-    width: 70%;
-    height: 66%;
+    width: 90%;
+    height: 70%;
     background-color: rgba(255,255,255,0.3);
     display: flex;
     justify-content: center;
@@ -64,14 +64,12 @@ const BannerTextContainer = styled.div`
         font-size: ${(props) => props.theme.fontSize.xl};
         text-shadow: 1px 1px 0 #444, 2px 2px 0 #444, 3px 3px 0 #444;
     }
-    ${breakpoint.mediaMD} {
-        .title {
-            font-size: ${(props) => props.theme.fontSize.xxl};
-        }
-    }
     .sub_title {
         font-size: ${(props) => props.theme.fontSize.lg};
         text-shadow: 1px 1px 0 #444, 2px 2px 0 #444, 3px 3px 0 #444;
+    }
+    ${breakpoint.mediaMD} {
+        width: 60%;
     }
 `;
 
@@ -84,8 +82,8 @@ const CarouselBox = styled(Swiper)`
     .swiper-pagination-bullet {
         width: 1rem;
         height: 1rem;
-        background-color: ${(props) => props.theme.colors.black};
-        opacity: 1;
+        background-color: ${(props) => props.theme.colors.white};
+        opacity: 0.8;
     }
     .swiper-pagination-bullet-active {
         background-color: ${(props) => props.theme.colors.primary};
@@ -157,6 +155,17 @@ const BannerHome = () => {
                                 <div className="title">
                                     {t(`searchConfig.scenicSpotBannerTitle`)}
                                 </div>
+                                {t('searchConfig.scenicSpotTheme', {
+                                    returnObjects: true,
+                                }).map((item, i) => {
+                                    let subTitle
+                                    if (i < 2) {
+                                        subTitle = item.name + "、"
+                                    } else {
+                                        subTitle = item.name
+                                    }
+                                    return <span key={i} className="sub_title">{subTitle}</span>
+                                })}
                             </div>
                         </BannerTextContainer >
                     </StyledSwiperSlide>
@@ -178,6 +187,17 @@ const BannerHome = () => {
                                 <div className="title">
                                     {t(`searchConfig.activityBannerTitle`)}
                                 </div>
+                                {t('searchConfig.activityTheme', {
+                                    returnObjects: true,
+                                }).map((item, i) => {
+                                    let subTitle
+                                    if (i < 2) {
+                                        subTitle = item.name + "、"
+                                    } else {
+                                        subTitle = item.name
+                                    }
+                                    return <span key={i} className="sub_title">{subTitle}</span>
+                                })}
                             </div>
                         </BannerTextContainer >
                     </StyledSwiperSlide>
@@ -199,6 +219,17 @@ const BannerHome = () => {
                                 <div className="title">
                                     {t(`searchConfig.restaurantBannerTitle`)}
                                 </div>
+                                {t('searchConfig.restaurantTheme', {
+                                    returnObjects: true,
+                                }).map((item, i) => {
+                                    let subTitle
+                                    if (i < 2) {
+                                        subTitle = item.name + "、"
+                                    } else {
+                                        subTitle = item.name
+                                    }
+                                    return <span key={i} className="sub_title">{subTitle}</span>
+                                })}
                             </div>
                         </BannerTextContainer >
                     </StyledSwiperSlide>

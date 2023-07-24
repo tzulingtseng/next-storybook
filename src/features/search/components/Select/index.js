@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 import breakpoint from '@/lib/constant/breakpoint';
 import Icon from '@/lib/Icon';
 
@@ -66,7 +66,7 @@ const SelectItems = styled.div`
     opacity: ${(props) => (props.$isOpen ? 1 : 0)};
     width: 100%;
     height: 400%;
-
+    z-index:1;
     border: 1px solid ${(props) => props.theme.colors.grey3};
     background-color: ${(props) => props.theme.colors.white};
     box-shadow: rgba(0, 0, 0, 0.12) 0px 3px 6px -4px,
@@ -74,19 +74,22 @@ const SelectItems = styled.div`
         rgba(0, 0, 0, 0.05) 0px 9px 28px 8px;
     border-radius: 0.5rem;
     ul{
-        li {
+        li{
             width: 100%;
             padding: 0.5rem 0.75rem;
-            // border-bottom: 1px solid ${(props) => props.theme.colors.grey3};
-        }
-        li:last-child {
-            border-bottom: none;
-        }
-        li:hover {
-            background-color: ${(props) => props.theme.colors.grey0};
+            &:last-child {
+                border-bottom: none;
+            }
+            &:hover {
+                background-color: ${(props) => props.theme.colors.grey0};
+            }
         }
     }
 `;
+
+const SelectItemsLi = styled.li`
+    color:${(props) => props.$isSelected ? props.theme.colors.primary : props.theme.colors.black};
+`
 
 const SelectIcon = styled(Icon)`
     transition: all 0.2s ease;
@@ -98,10 +101,9 @@ const Select = ({
     selectedCountyText,
     setSelectedCountyText,
     setSelectedCountyValue,
+    selectedCountyValue
 }) => {
-    const { locale } = useRouter();
     const [open, setOpen] = useState(false);
-    const theme = useTheme();
     const countySelectRef = useRef(null)
     const countyOptionsRef = useRef(null)
 
@@ -140,6 +142,11 @@ const Select = ({
         };
     }, []);
 
+    let countyData = t('countyOptions.area', {
+        returnObjects: true,
+    }).filter((item) => selectedCountyValue === item.value)[0];
+    let searchedCountyText = countyData ? countyData.name : '';
+
     return (
         <SelectWrapper>
             <SelectBoxWrapper
@@ -152,11 +159,9 @@ const Select = ({
             >
                 <SelectBox>
                     <div>
-                        {selectedCountyText !== ''
-                            ? selectedCountyText
-                            : selectedCountyText === ''
-                                ? t('countyOptions.all')
-                                : t('countyOptions.placeholder')}
+                        {selectedCountyValue
+                            ? searchedCountyText :
+                            t('countyOptions.all')}
                     </div>
                     <SelectIcon
                         $isOpen={open}
@@ -168,41 +173,29 @@ const Select = ({
             {/* options */}
             {open && <SelectItems $isOpen={open} ref={countyOptionsRef}>
                 <ul >
-                    <li
+                    <SelectItemsLi
                         onClick={(e) => {
                             selectCounty(e);
                         }}
-                        style={{
-                            color:
-                                selectedCountyText === ''
-                                    ? theme.colors.primary
-                                    : theme.colors.black,
-                        }}
+                        $isSelected={selectedCountyValue === '' || selectedCountyValue === undefined}
                     >
                         {t('countyOptions.all')}
-                    </li>
+                    </SelectItemsLi>
                     {t('countyOptions.area', {
                         returnObjects: true,
                     }).map((item) => {
                         return (
-                            <li
+                            <SelectItemsLi
                                 role="option"
                                 key={item.id}
                                 value={item.value}
                                 onClick={(e) => {
                                     selectCounty(e);
                                 }}
-                                // TODO:優化寫法，placeholder 的選項需亮色
-                                // 當選到縣市或全部縣市時，選單中對應的選項需亮色
-                                style={{
-                                    color:
-                                        selectedCountyText === item.name
-                                            ? theme.colors.primary
-                                            : theme.colors.black,
-                                }}
+                                $isSelected={selectedCountyValue === item.value}
                             >
                                 {item.name}
-                            </li>
+                            </SelectItemsLi>
                         );
                     })}
                 </ul>

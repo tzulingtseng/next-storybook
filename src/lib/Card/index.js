@@ -53,14 +53,15 @@ const Cover = styled.div`
 `;
 const Badge = styled.span`
     position: absolute;
-    left: 0;
-    bottom: 0;
+    left: 0.5rem;
+    bottom: 0.5rem;
+    margin-right:0.2rem;
     font-size: 1rem;
     font-weight: 700;
     color: ${(props) => props.theme.colors.white};
     text-shadow: 0 1px 2px #e18d0e;
-    padding: 0 7px;
-    border-top-right-radius: 0.375rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 1rem;
     background: linear-gradient(45deg, #ffaf1e, #ffd56e);
 `;
 
@@ -84,13 +85,14 @@ const Card = ({
     footer,
     badgeNumber,
     children,
+    bageText,
     ...props
 }) => {
     return (
         <StyledCardContainer $variant={variant}>
             <Cover>
                 {cover}
-                {/* {badgeNumber ? <Badge>TOP{badgeNumber}</Badge> : ''} */}
+                {bageText && <Badge >{bageText}</Badge>}
             </Cover>
             {/* <CardContent>{content}</CardContent> */}
             {/* <CardContent>

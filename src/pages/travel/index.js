@@ -35,7 +35,7 @@ const StyledTitleContainer = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: end;
-    margin: 1.5rem 0;
+    padding: 1.5rem 0;
 `;
 
 const StyledTitleText = styled.div`
@@ -131,6 +131,7 @@ const Travel = ({
                             lists={scenicSpotData}
                             type="scenicSpot"
                             status={scenicSpotStatus}
+                            hasPagination={true}
                         />
                         <StyledTitleContainer>
                             <StyledTitleText>
@@ -147,6 +148,7 @@ const Travel = ({
                             lists={activityData}
                             type="activity"
                             status={activityStatus}
+                            hasPagination={true}
                         />
                         <StyledTitleContainer>
                             <StyledTitleText>
@@ -163,6 +165,7 @@ const Travel = ({
                             lists={restaurantData}
                             type="restaurant"
                             status={restaurantStatus}
+                            hasPagination={true}
                         />
                     </Wrapper>
                     <Footer />

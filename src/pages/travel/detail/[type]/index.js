@@ -29,25 +29,63 @@ const InfoContainer = styled.div`
     margin-top: 3rem;
 `;
 
+const InfoTitleBox = styled.div`
+    display: block;
+    align-items: baseline;
+    ${breakpoint.mediaMD}{
+        display: flex;  
+    }
+`
+
 const InfoTitle = styled.div`
     margin: 1.5rem 0;
     font-size: ${(props) => props.theme.fontSize.xl};
     font-weight: 600;
 `;
 
+const InfoBage = styled.div`
+    margin-bottom:1.5rem;
+    ${breakpoint.mediaMD}{
+        margin-bottom:0rem;
+    }
+`
+
+const Badge = styled.span`
+    // position: absolute;
+    // left: 0.5rem;
+    // bottom: 0.5rem;
+    margin-left:0.5rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: ${(props) => props.theme.colors.white};
+    text-shadow: 0 1px 2px #e18d0e;
+    padding: 0.1rem 0.5rem;
+    border-radius: 1rem;
+    background: linear-gradient(45deg, #ffaf1e, #ffd56e);
+    &:first-of-type{
+        margin-left:0rem;
+    }
+    ${breakpoint.mediaMD}{
+        &:first-of-type{
+            margin-left:0.5rem;
+        }
+    }
+`;
+
 const InfoBox = styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
-    ${breakpoint.mediaSM} {
+    ${breakpoint.mediaMD} {
         flex-direction: initial;
     }
 `;
 
 const InfoImageContainer = styled.div`
+    width: 100%;
     position: relative;
+    padding-bottom:68%;
     overflow: hidden;
-    padding:25% 0;
     border-radius: 1rem;
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
     img {
@@ -63,9 +101,9 @@ const InfoImageContainer = styled.div`
             transition: transform 0.5s;
         }
     }
-    ${breakpoint.mediaSM} {
+    ${breakpoint.mediaMD} {
         width: 50%;
-        padding:12.5% 0;
+        padding-bottom:34%;
     }
 `;
 
@@ -73,7 +111,7 @@ const InfoDetailContainer = styled.div`
     width: 100%;
     padding-left: 0rem;
     padding-top: 1.5rem;
-    ${breakpoint.mediaSM} {
+    ${breakpoint.mediaMD} {
         width: 50%;
         padding-left: 1.5rem;
         padding-top: 0rem;
@@ -138,6 +176,8 @@ const Detail = ({ data }) => {
         // TravelInfo,
         UpdateTime,
         // ZipCode,
+        ClassArr,
+        filterClass
     } = data.detailData;
 
     let convertImgUrl = convertGoogleDriveURL(Picture.PictureUrl1);
@@ -162,7 +202,15 @@ const Detail = ({ data }) => {
                     />
                     <Wrapper>
                         <InfoContainer>
-                            <InfoTitle>{SpotName}</InfoTitle>
+                            <InfoTitleBox>
+                                <InfoTitle>{SpotName}</InfoTitle>
+                                <InfoBage>
+                                    {ClassArr && ClassArr.map((item, i) =>
+                                        item && <Badge key={i}>
+                                            {item}
+                                        </Badge>)}
+                                </InfoBage>
+                            </InfoTitleBox>
                             <InfoBox>
                                 <InfoImageContainer>
                                     {convertImgUrl ? (
@@ -218,6 +266,7 @@ const Detail = ({ data }) => {
                                     position={Position}
                                     spotId={SpotID}
                                     title={t(`detailConfig.${QueryType}NearByTitle`)}
+                                    bageText={filterClass}
                                 />
                             </NearByContainer>
                         </IntroContainer>
@@ -236,6 +285,7 @@ export async function getServerSideProps({ params, query, locale }) {
     // console.log('type', type);
     let detailData;
     let responseData;
+    let classData, Class, Class1, Class2, Class3, classArr, filterClass
 
     switch (type) {
         // activitiy: call API 取得特定觀光活動資料
@@ -252,6 +302,19 @@ export async function getServerSideProps({ params, query, locale }) {
                     data?.StartTime,
                     data?.EndTime
                 );
+
+                classData = ["遊憩活動", "年度活動", "藝文活動"]
+                classArr = []
+                Class = data?.Class ?? null
+                Class1 = data?.Class1 ?? null
+                Class2 = data?.Class2 ?? null
+                Class3 = data?.Class3 ?? null
+
+                if (Class || Class1 || Class2 || Class3) {
+                    classArr.push(Class, Class1, Class2, Class3);
+                }
+                filterClass = classData && classData.filter(item => classArr.includes(item))[0];
+
                 detailData = {
                     QueryType: type,
                     Address: data?.Address ?? null,
@@ -266,6 +329,8 @@ export async function getServerSideProps({ params, query, locale }) {
                     SpotName: data?.ActivityName ?? null,
                     SrcUpdateTime: data?.SrcUpdateTime ?? null,
                     UpdateTime: data?.UpdateTime ?? null,
+                    ClassArr: classArr ?? null,
+                    filterClass: filterClass ?? null,
                 };
             } else {
                 // handle error (後端錯誤) -> not found page(404 page)
@@ -289,6 +354,19 @@ export async function getServerSideProps({ params, query, locale }) {
                     data?.StartTime,
                     data?.EndTime
                 );
+
+                classData = ["文化類", "生態類", "遊憩類"]
+                classArr = []
+                Class = data?.Class ?? null
+                Class1 = data?.Class1 ?? null
+                Class2 = data?.Class2 ?? null
+                Class3 = data?.Class3 ?? null
+
+                if (Class || Class1 || Class2 || Class3) {
+                    classArr.push(Class, Class1, Class2, Class3);
+                }
+                filterClass = classData && classData.filter(item => classArr.includes(item))[0];
+
                 detailData = {
                     QueryType: type,
                     Address: data?.Address ?? null,
@@ -303,6 +381,8 @@ export async function getServerSideProps({ params, query, locale }) {
                     SpotName: data?.ScenicSpotName ?? null,
                     SrcUpdateTime: data?.SrcUpdateTime ?? null,
                     UpdateTime: data?.UpdateTime ?? null,
+                    ClassArr: classArr ?? null,
+                    filterClass: filterClass ?? null,
                 };
             } else {
                 // handle error (後端錯誤) -> not found page(404 page)
@@ -326,12 +406,25 @@ export async function getServerSideProps({ params, query, locale }) {
                     data?.StartTime,
                     data?.EndTime
                 );
+
+                classData = ["地方特產", "異國料理", "中式美食"]
+                classArr = []
+                Class = data?.Class ?? null
+                Class1 = data?.Class1 ?? null
+                Class2 = data?.Class2 ?? null
+                Class3 = data?.Class3 ?? null
+
+                if (Class || Class1 || Class2 || Class3) {
+                    classArr.push(Class, Class1, Class2, Class3);
+                }
+                filterClass = classData && classData.filter(item => classArr.includes(item))[0];
+
                 detailData = {
                     QueryType: type,
                     Address: data?.Address ?? null,
                     // City: data?.City ?? null,
-                    Location: data?.Location ?? data.DescriptionDetail,
-                    Description: data?.Description ?? null,
+                    Location: data?.Location ?? null,
+                    Description: data?.Description ?? data.DescriptionDetail,
                     formattedTime: transferedTime,
                     Phone: data?.Phone ?? null,
                     Picture: data?.Picture ?? null,
@@ -340,6 +433,8 @@ export async function getServerSideProps({ params, query, locale }) {
                     SpotName: data?.RestaurantName ?? null,
                     SrcUpdateTime: data?.SrcUpdateTime ?? null,
                     UpdateTime: data?.UpdateTime ?? null,
+                    ClassArr: classArr ?? null,
+                    filterClass: filterClass ?? null,
                 };
             } else {
                 // handle error (後端錯誤) -> not found page(404 page)

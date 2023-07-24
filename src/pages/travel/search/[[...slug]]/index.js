@@ -19,7 +19,7 @@ import getRestaurantAPI from '@/api/getRestaurantAPI';
 
 import SEO from '@/utils/seo';
 
-const Search = ({ type, area, keyword }) => {
+const Search = ({ type, area, keyword, classVal }) => {
     const router = useRouter();
     const { locale, push } = router;
     const { t } = useTranslation('common');
@@ -29,10 +29,13 @@ const Search = ({ type, area, keyword }) => {
     }).filter((item) => area === item.value)[0];
     let searchedCountyText = countyData ? countyData.name : '';
 
+    let fetchDataNumber = 12
+
     const [selectedValue, setSelectedValue] = useState(locale);
     const [inputValue, setInputValue] = useState('');
     const [selectedCountyText, setSelectedCountyText] = useState('');
     const [selectedCountyValue, setSelectedCountyValue] = useState('');
+    const [classValue, setClassValue] = useState('')
     const [results, setResults] = useState([]);
     const [status, setStatus] = useState('')
     const [isLoading, setIsLoading] = useState(false);
@@ -53,7 +56,11 @@ const Search = ({ type, area, keyword }) => {
             url += '&area=' + selectedCountyValue;
         }
 
-        if (!inputValue && !selectedCountyValue) {
+        if (classValue) {
+            url += '&classVal=' + classValue;
+        }
+
+        if (!inputValue && !selectedCountyValue && !classValue) {
             url += '';
         }
         router.push(url, undefined, {
@@ -69,35 +76,35 @@ const Search = ({ type, area, keyword }) => {
             switch (type) {
                 case 'activity':
                     response = await getActivityAPI({
-                        top: 8,
+                        top: fetchDataNumber,
                         filter: keyword
                             ? `contains(ActivityName, '${keyword}')`
-                            : null,
+                            : classVal ? `contains(Class1, '${classVal}') or contains(Class2, '${classVal}')` : null,
                         area: area ? area : null,
                     });
                     break;
                 case 'scenicSpot':
                     response = await getScenicSpotAPI({
-                        top: 8,
+                        top: fetchDataNumber,
                         filter: keyword
                             ? `contains(ScenicSpotName, '${keyword}')`
-                            : null,
+                            : classVal ? `contains(Class1, '${classVal}') or contains(Class2, '${classVal}') or contains(Class3, '${classVal}')` : null,
                         area: area ? area : null,
                     });
                     break;
                 case 'restaurant':
                     response = await getRestaurantAPI({
-                        top: 8,
+                        top: fetchDataNumber,
                         filter: keyword
                             ? `contains(RestaurantName, '${keyword}')`
-                            : null,
+                            : classVal ? `contains(Class, '${classVal}')` : null,
                         area: area ? area : null,
                     });
                     break;
             }
             if (response.status === 'success') {
                 setResults(prevItems => [...prevItems, ...response.data]);
-                if (response.data.length === 0 || response.data.length < 8) {
+                if (response.data.length === 0 || response.data.length < fetchDataNumber) {
                     setIsEnd(true);
                 }
                 setStatus(response.status)
@@ -118,38 +125,38 @@ const Search = ({ type, area, keyword }) => {
             switch (type) {
                 case 'activity':
                     response = await getActivityAPI({
-                        top: 8,
+                        top: fetchDataNumber,
                         skip: skip,
                         filter: keyword
                             ? `contains(ActivityName, '${keyword}')`
-                            : null,
+                            : classVal ? `contains(Class1, '${classVal}') or contains(Class2, '${classVal}')` : null,
                         area: area ? area : null,
                     });
                     break;
                 case 'scenicSpot':
                     response = await getScenicSpotAPI({
-                        top: 8,
+                        top: fetchDataNumber,
                         skip: skip,
                         filter: keyword
                             ? `contains(ScenicSpotName, '${keyword}')`
-                            : null,
+                            : classVal ? `contains(Class1, '${classVal}') or contains(Class2, '${classVal}') or contains(Class3, '${classVal}')` : null,
                         area: area ? area : null,
                     });
                     break;
                 case 'restaurant':
                     response = await getRestaurantAPI({
-                        top: 8,
+                        top: fetchDataNumber,
                         skip: skip,
                         filter: keyword
                             ? `contains(RestaurantName, '${keyword}')`
-                            : null,
+                            : classVal ? `contains(Class, '${classVal}')` : null,
                         area: area ? area : null,
                     });
                     break;
             }
             if (response.status === 'success') {
                 setResults(prevItems => [...prevItems, ...response.data]);
-                if (response.data.length === 0 || response.data.length < 8) {
+                if (response.data.length === 0 || response.data.length < fetchDataNumber) {
                     console.log('setIsEnd');
                     setIsEnd(true);
                 }
@@ -168,24 +175,27 @@ const Search = ({ type, area, keyword }) => {
             document.documentElement.scrollHeight -
             (window.innerHeight + document.documentElement.scrollTop);
         if (scrollBottom < 100 && !isLoading && !isEnd) {
-            setSkip((prevSkip) => prevSkip + 8);
+            setSkip((prevSkip) => prevSkip + fetchDataNumber);
         }
     }, 500);
 
-    useEffect(() => { fetchData() }, [area, keyword, type])
+    useEffect(() => { fetchData() }, [area, keyword, classVal, type])
 
     useEffect(() => {
         let url = '/travel/search?type=' + type;
         if (keyword) {
             url += '&keyword=' + keyword;
-            // setInputValues(keyword, keyword);
         }
 
         if (area) {
             url += '&area=' + area;
         }
 
-        if (!keyword && !area) {
+        if (classVal) {
+            url += '&classVal=' + classVal;
+        }
+
+        if (!keyword && !area && !classVal) {
             url += '';
         }
         router.push(url, undefined, {
@@ -198,7 +208,8 @@ const Search = ({ type, area, keyword }) => {
         setSelectedCountyValue(area)
         setSelectedCountyText(searchedCountyText)
         setInputValue(keyword)
-    }, [area, keyword, type])
+        setClassValue(classVal)
+    }, [area, keyword, classVal, type])
 
     useEffect(() => {
         if (skip > 0) {
@@ -217,7 +228,11 @@ const Search = ({ type, area, keyword }) => {
             url += '&area=' + area;
         }
 
-        if (!keyword && !area) {
+        if (classVal) {
+            url += '&classVal=' + classVal;
+        }
+
+        if (!keyword && !area && !classVal) {
             url += '';
         }
         router.push(url, undefined, {
@@ -244,7 +259,6 @@ const Search = ({ type, area, keyword }) => {
                 <BannerSearch
                     type={type}
                     bannerTitle={t(`searchConfig.${type}BannerTitle`)}
-                    selectedCountyText={selectedCountyText}
                     setSelectedCountyText={setSelectedCountyText}
                     setSelectedCountyValue={setSelectedCountyValue}
                     inputValue={inputValue}
@@ -252,16 +266,20 @@ const Search = ({ type, area, keyword }) => {
                     selectedCountyValue={selectedCountyValue}
                     handleSearch={handleSearch}
                     searchedCountyText={searchedCountyText}
+                    setClassValue={setClassValue}
+                    classValue={classValue}
                 />
                 <SearchResults
+                    fetchDataNumber={fetchDataNumber}
                     type={type}
                     results={results}
                     status={status}
-                    isLoading={isLoading}
+                    isLoading={true}
                     isEnd={isEnd}
                     keyword={keyword}
                     area={area}
                     searchedCountyText={searchedCountyText}
+                    classVal={classVal}
                 />
                 <Footer />
             </Container>
@@ -270,7 +288,7 @@ const Search = ({ type, area, keyword }) => {
 };
 
 export async function getServerSideProps({ query, locale }) {
-    const { type, keyword, area } = query;
+    const { type, keyword, area, classVal } = query;
 
     return {
         props: {
@@ -284,6 +302,7 @@ export async function getServerSideProps({ query, locale }) {
             type,
             keyword: keyword || '',
             area: area || '',
+            classVal: classVal || '',
         }
     }
 

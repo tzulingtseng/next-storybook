@@ -5,7 +5,7 @@ import ButtonClose from '../ButtonClose';
 const MenuContainer = styled.div`
     width: 100%;
     // height: 100%;
-    max-height: 100vh;
+    max-height: 100dvh;
     overflow-y: scroll;
     overscroll-behavior: contain;
     background-color: ${(props) => props.theme.colors.white};
