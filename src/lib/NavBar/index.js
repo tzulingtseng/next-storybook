@@ -200,7 +200,7 @@ const HamburgerContainer = styled('div')`
     transition: transform 300ms ease-in-out 0s;
     transform: ${(props) =>
         props.$hamburgerContainerShow ? 'translateX(100%)' : 'translateX(0%)'};
-    height: 100vh;
+    height: 100dvh;
     width: 60%;
     ${breakpoint.mediaSM} {
         left: -17.5rem;
@@ -321,7 +321,7 @@ const NavBar = ({
         if (hamburgerContainerShow && isMobile) {
             console.log('hamburgerContainerShow && isMobile');
             document.body.style.overflowY = 'hidden';
-            document.body.style.height = '100vh';
+            document.body.style.height = '100dvh';
 
         } else {
             document.body.style.overflow = 'initial';
