@@ -103,7 +103,7 @@ const StyledSwiperSlide = styled(SwiperSlide)`
     }
 `
 
-const BannerHome = () => {
+const BannerHome = ({ locale }) => {
     const { t } = useTranslation('common');
 
     const swiperParams = {
@@ -130,7 +130,7 @@ const BannerHome = () => {
                             alt="banner"
                             priority={true}
                         />
-                        <BannerTextContainer >
+                        <BannerTextContainer $locale={locale}>
                             <div>
                                 <div className="title">{t('bannerHome.title_01')}<br />{t('bannerHome.title_02')}</div>
                                 <div className="sub_title">{t('bannerHome.sub_title')}</div>
@@ -150,10 +150,10 @@ const BannerHome = () => {
                             alt="banner"
                             priority={true}
                         />
-                        <BannerTextContainer >
+                        <BannerTextContainer $locale={locale}>
                             <div>
                                 <div className="title">
-                                    {t(`searchConfig.scenicSpotBannerTitle`)}
+                                    {t(`searchConfig.scenicSpotBannerTitle_01`)}<br style={{ display: locale === 'en' ? 'block' : "none" }} />{t(`searchConfig.scenicSpotBannerTitle_02`)}
                                 </div>
                                 {t('searchConfig.scenicSpotTheme', {
                                     returnObjects: true,
@@ -182,10 +182,10 @@ const BannerHome = () => {
                             alt="banner"
                             priority={true}
                         />
-                        <BannerTextContainer >
+                        <BannerTextContainer $locale={locale}>
                             <div>
                                 <div className="title">
-                                    {t(`searchConfig.activityBannerTitle`)}
+                                    {t(`searchConfig.activityBannerTitle_01`)}<br style={{ display: locale === 'en' ? 'block' : "none" }} />{t(`searchConfig.activityBannerTitle_02`)}
                                 </div>
                                 {t('searchConfig.activityTheme', {
                                     returnObjects: true,
@@ -214,10 +214,10 @@ const BannerHome = () => {
                             alt="banner"
                             priority={true}
                         />
-                        <BannerTextContainer >
+                        <BannerTextContainer $locale={locale}>
                             <div>
                                 <div className="title">
-                                    {t(`searchConfig.restaurantBannerTitle`)}
+                                    {t(`searchConfig.restaurantBannerTitle_01`)}<br style={{ display: locale === 'en' ? 'block' : "none" }} />{t(`searchConfig.restaurantBannerTitle_02`)}
                                 </div>
                                 {t('searchConfig.restaurantTheme', {
                                     returnObjects: true,

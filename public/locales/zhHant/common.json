@@ -76,9 +76,12 @@
         "noData": "無",
         "searchKeyword": "搜尋名稱",
         "searchButton": "搜尋",
-        "activityBannerTitle": "尋找活動",
-        "scenicSpotBannerTitle": "尋找景點",
-        "restaurantBannerTitle": "尋找餐廳",
+        "activityBannerTitle_01": "尋找",
+        "activityBannerTitle_02": "活動",
+        "scenicSpotBannerTitle_01": "尋找",
+        "scenicSpotBannerTitle_02": "景點",
+        "restaurantBannerTitle_01": "尋找",
+        "restaurantBannerTitle_02": "餐廳",
         "scrollToEnd": "已經到底囉！",
         "scenicSpotTheme": [
             {

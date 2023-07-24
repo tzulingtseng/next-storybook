@@ -247,7 +247,7 @@ const Search = ({ type, area, keyword, classVal }) => {
 
     return (
         <ThemeProvider theme={theme}>
-            <SEO title={t(`searchConfig.${type}BannerTitle`)} />
+            <SEO title={t(`searchConfig.${type}BannerTitle_01`) + " " + t(`searchConfig.${type}BannerTitle_02`)} />
             <Container>
                 <GoToTop />
                 <NavBar
@@ -258,7 +258,6 @@ const Search = ({ type, area, keyword, classVal }) => {
                 />
                 <BannerSearch
                     type={type}
-                    bannerTitle={t(`searchConfig.${type}BannerTitle`)}
                     setSelectedCountyText={setSelectedCountyText}
                     setSelectedCountyValue={setSelectedCountyValue}
                     inputValue={inputValue}
@@ -268,6 +267,7 @@ const Search = ({ type, area, keyword, classVal }) => {
                     searchedCountyText={searchedCountyText}
                     setClassValue={setClassValue}
                     classValue={classValue}
+                    locale={locale}
                 />
                 <SearchResults
                     fetchDataNumber={fetchDataNumber}

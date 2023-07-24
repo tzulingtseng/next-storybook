@@ -374,14 +374,14 @@ const NavBar = ({
                                         // width={221}
                                         // height={48}
                                         src={logoIcon}
-                                        alt="logo"
+                                        alt="logo TaiFun"
                                         className="logoIcon"
                                     />
                                     <Image
                                         // width={221}
                                         // height={20}
                                         src={logoImg}
-                                        alt="logo text"
+                                        alt="logo TaiFun"
                                         className="logoImg"
                                     />
                                     {/* <img

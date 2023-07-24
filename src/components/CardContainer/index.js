@@ -63,7 +63,7 @@ const CardContainer = ({
                 <Card
                     cover={
                         PictureUrl1 ? (
-                            <img src={PictureUrl1} alt="首頁熱門項目" />
+                            <img src={PictureUrl1} alt={itemName} />
                         ) : (
                             <NoImage />
                         )

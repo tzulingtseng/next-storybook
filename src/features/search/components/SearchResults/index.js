@@ -16,7 +16,7 @@ const SearchResultsTitle = styled.div`
     justify-content: space-between;
     align-items: baseline;
     padding: 1.5rem 0;
-    ${breakpoint.mediaSM}{
+    ${breakpoint.mediaMD}{
         display: flex;  
     }
 `;
@@ -25,16 +25,20 @@ const SearchResultsTitleText = styled.div`
     font-size: ${(props) => props.theme.fontSize.lg};
     font-weight: 600;
       margin-bottom:1rem;
-        ${breakpoint.mediaSM}{
+        ${breakpoint.mediaMD}{
         margin-bottom:0;
     }
 `;
 
 const SearchInfo = styled.div`
     display: flex;
+    flex-wrap: wrap;
     .highlight {
         color: ${(props) => props.theme.colors.primary};
         margin: 0 0.5rem;
+    }
+    ${breakpoint.mediaMD}{
+        flex-wrap: initial;
     }
 `;
 
@@ -45,11 +49,6 @@ const SearchResultsContainer = styled.div`
     flex-wrap: wrap;
 `;
 
-// const PaginationContainer = styled.div`
-//     display: flex;
-//     justify-content: center;
-//     margin: 10px 0;
-// `;
 
 const StyledEndMsg = styled.div`
     display: flex;

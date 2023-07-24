@@ -16,7 +16,7 @@ const BannerContainer = styled.div`
     background-position: center;
     background-size: cover;
     ${breakpoint.mediaMD} {
-        padding-bottom: 28.5%;
+        padding-bottom: 30%;
         background-image: url(/images/banner-${(props) => props.$type}-pc.jpg);
     }
     &::after {
@@ -41,7 +41,7 @@ const BannerContentBox = styled('div')`
     left: 50%;
     transform: translate(-50%, -50%);
     max-width: 50rem;
-    width: 90%;
+    width: 100%;
     height: 70%;
     // background-color: rgba(255,255,255,0.3);
     display: flex;
@@ -58,16 +58,18 @@ const BannerContent = styled.div`
     width:100%;
     ${breakpoint.mediaMD} {
         max-width: auto;
-        width: 75%;
+        width: 88%;
     }
 `;
 
 const BannerTitle = styled.div`
+    width: ${(props) => props.$locale === 'en' ? '62%' : '100%'};
+    margin: ${(props) => props.$locale === 'en' ? '0 auto' : 'auto'};
     font-size: ${(props) => props.theme.fontSize.xl};
     font-weight: 600;
     color: ${(props) => props.theme.colors.white};
     text-shadow: 1px 1px 0 #444, 2px 2px 0 #444, 3px 3px 0 #444;
-    margin-bottom: 1rem;
+    margin-bottom: 0.4rem;
 `;
 
 const BannerSearchBox = styled.div`
@@ -77,19 +79,13 @@ const BannerSearchBox = styled.div`
         justify-content: center;
         align-items: flex-start;
         >div:first-of-type{
-            width:50%;
-            height:2rem;
+            width:40%;
+            height:2.5rem;
             margin-right:1rem;
             margin-bottom:0;
-            >div{
-                padding: 0.5rem 0.5rem;
-            }
         }
         >div:last-of-type{
-            height:2rem;
-            >div{
-                padding: 0.5rem 0.5rem;
-            }
+            height:2.5rem;
         }
     }
 `;
@@ -113,6 +109,7 @@ const ClassThemeTitle = styled.span`
     color: ${(props) => props.theme.colors.white};
     text-shadow: 1px 1px 0 #444, 2px 2px 0 #444, 3px 3px 0 #444;
     font-weight:600;
+    margin-right:0.5rem;
 `
 
 const ClassThemeTab = styled.span`
@@ -129,7 +126,6 @@ const ClassThemeTab = styled.span`
 const BannerSearch = ({
     type,
     area,
-    bannerTitle,
     selectedCountyText,
     setSelectedCountyText,
     setSelectedCountyValue,
@@ -154,9 +150,9 @@ const BannerSearch = ({
 
     return (
         <BannerContainer $type={type}>
-            <BannerContentBox $locale={locale}>
+            <BannerContentBox>
                 <BannerContent>
-                    <BannerTitle>{bannerTitle}</BannerTitle>
+                    <BannerTitle $locale={locale}>{t(`searchConfig.${type}BannerTitle_01`)}<br style={{ display: locale === 'en' ? 'block' : "none" }} />{t(`searchConfig.${type}BannerTitle_02`)}</BannerTitle>
                     <BannerSearchBox>
                         <div>
                             <TextField
