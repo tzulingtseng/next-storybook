@@ -59,7 +59,7 @@ const CardContainer = ({
     const { t } = useTranslation('common');
     return (
         <StyledCardContainer>
-            <Link href={`/travel/detail/${type}?id=${itemId}`}>
+            <Link href={`/detail/${type}?id=${itemId}`}>
                 <Card
                     cover={
                         PictureUrl1 ? (

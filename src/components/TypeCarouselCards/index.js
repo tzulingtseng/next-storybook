@@ -221,7 +221,7 @@ const TypeCarouselCards = ({ status, type, lists, detailBageText, hasPagination 
                                 return (
                                     <StyledSwiperSlide key={itemId}>
                                         <Link
-                                            href={`/travel/detail/${type}?id=${itemId}`}
+                                            href={`/detail/${type}?id=${itemId}`}
                                         >
                                             <Card
                                                 cover={

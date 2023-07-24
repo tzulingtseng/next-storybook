@@ -45,7 +45,7 @@ const Search = ({ type, area, keyword, classVal }) => {
 
     const handleSearch = () => {
         setSkip(0);
-        let url = '/travel/search?type=' + type;
+        let url = '/search?type=' + type;
 
         if (inputValue) {
             url += '&keyword=' + inputValue;
@@ -182,7 +182,7 @@ const Search = ({ type, area, keyword, classVal }) => {
     useEffect(() => { fetchData() }, [area, keyword, classVal, type])
 
     useEffect(() => {
-        let url = '/travel/search?type=' + type;
+        let url = '/search?type=' + type;
         if (keyword) {
             url += '&keyword=' + keyword;
         }
@@ -218,7 +218,7 @@ const Search = ({ type, area, keyword, classVal }) => {
     }, [skip])
 
     useEffect(() => {
-        let url = '/travel/search?type=' + type;
+        let url = '/search?type=' + type;
         if (keyword) {
             url += '&keyword=' + keyword;
             // setInputValues(keyword, keyword);
