@@ -1,8 +1,8 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-import { WEB_HOSTNAME_URL } from 'src/config/config';
-import siteMetaData from 'src/config/siteMetaData';
+import { WEB_HOSTNAME_URL } from '@/config/config';
+import siteMetaData from '@/config/siteMetaData';
 
 /**
  * -------------------------------------------------------------------------------------------

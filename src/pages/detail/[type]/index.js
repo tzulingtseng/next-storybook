@@ -182,9 +182,9 @@ const Detail = ({ data }) => {
 
     let convertImgUrl = convertGoogleDriveURL(Picture.PictureUrl1);
 
-    // http://localhost:3000/en/travel/detail/activity?id=C2_315080000H_502349
+    // http://localhost:3000/en/detail/activity?id=C2_315080000H_502349
     useEffect(() => {
-        router.push(`/travel/detail/${QueryType}?id=${SpotID}`, undefined, {
+        router.push(`/detail/${QueryType}?id=${SpotID}`, undefined, {
             locale: selectedValue,
         });
     }, [selectedValue]);

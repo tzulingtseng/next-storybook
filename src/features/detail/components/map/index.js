@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Icon } from 'leaflet';
+import RecenterAutomatically from '../RecenterAutomatically';
 
 const Map = ({ position }) => {
     const customIcon = new Icon({
@@ -17,6 +18,7 @@ const Map = ({ position }) => {
                 url="https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png"
             />
             <Marker position={position} icon={customIcon}></Marker>
+            <RecenterAutomatically position={position} />
         </MapContainer>
     );
 };

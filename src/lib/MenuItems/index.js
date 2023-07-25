@@ -93,7 +93,7 @@ const MenuItem = ({
 }) => {
     return (
         <Fragment>
-            <Link href={`/travel/search?type=${categoryType}`}>
+            <Link href={`/search?type=${categoryType}`}>
                 <StyledMenuContainer {...props} onClick={() => {
                     handleHamburgerContainerShow()
                 }}>

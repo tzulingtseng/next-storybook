@@ -9,8 +9,8 @@
         "filled": "Donate"
     },
     "bannerHome": {
-        "title_01": "To Discover ",
-        "title_02": "the Beauty of Taiwan.",
+        "title_01": "Let's Go Travel!",
+        "title_02": "",
         "sub_title": "ScenicSpot、 Activity、 Food"
     },
     "footerSource": "MOTC TDX Service Platform",
@@ -57,7 +57,7 @@
     "langOptions": {
         "options": [
             {
-                "value": "zhHant",
+                "value": "zh-Hant",
                 "label": "中"
             },
             {
@@ -76,12 +76,12 @@
         "noData": "None",
         "searchKeyword": "Enter keyword",
         "searchButton": "Search",
-        "activityBannerTitle_01": "LET'S GO",
-        "activityBannerTitle_02": "ACTIVITY",
-        "scenicSpotBannerTitle_01": "LET'S GO",
-        "scenicSpotBannerTitle_02": "SCENICSPOT",
-        "restaurantBannerTitle_01": "LET'S GO",
-        "restaurantBannerTitle_02": "RESTAURANT",
+        "activityBannerTitle": "Let's Go Activity!",
+        "activityBannerSubTitle": "Recreational, Annual, Cultural",
+        "scenicSpotBannerTitle": "Let's Go Scenic Spot!",
+        "scenicSpotBannerSubTitle": "Cultural, Ecological, Recreational",
+        "restaurantBannerTitle": "Let's Go Restaurant!",
+        "restaurantBannerSubTitle": "Local, International, Chinese",
         "scrollToEnd": "This is end!",
         "scenicSpotTheme": [
             {

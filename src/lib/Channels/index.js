@@ -67,7 +67,7 @@ const Channels = ({ handleHamburgerContainerShow }) => {
                     <ButtonLine></ButtonLine>
                 </ButtonContainer>
                 {t('categoryType', { returnObjects: true }).map((item, i) => (
-                    <Link key={i} href={`/travel/search?type=${item.type}`}>
+                    <Link key={i} href={`/search?type=${item.type}`}>
                         <Item>{item.name}</Item>
                     </Link>
                 ))}
