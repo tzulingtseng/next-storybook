@@ -59,7 +59,7 @@ const SelectItems = styled.div`
     display: ${(props) => (props.$isOpen ? 'block' : 'none')};
     opacity: ${(props) => (props.$isOpen ? 1 : 0)};
     width: 100%;
-    height: 400%;
+    max-height: 10rem;
     z-index:1;
     border: 1px solid ${(props) => props.theme.colors.grey3};
     background-color: ${(props) => props.theme.colors.white};
@@ -98,18 +98,21 @@ const Select = ({
     locale
 }) => {
     const [open, setOpen] = useState(false);
+    const [selectedCountyIndex, setSelectedCountyIndex] = useState(0);
+
     const countySelectRef = useRef(null)
     const countyOptionsRef = useRef(null)
 
     const { t } = useTranslation('common');
 
-    const selectCounty = (e) => {
+    const selectCounty = (e, index) => {
         if (e.target.innerHTML === t('countyOptions.all')) {
             setSelectedCountyText('');
             setSelectedCountyValue('');
         } else {
             setSelectedCountyText(e.target.innerHTML);
             setSelectedCountyValue(e.target.attributes.value.value);
+            setSelectedCountyIndex(index);
         }
 
         setOpen(false);
@@ -131,10 +134,26 @@ const Select = ({
 
         document.addEventListener('click', handleClickOutside);
 
+        // 將列表滾動到選擇的縣市位置
+        if (open && selectedCountyIndex !== undefined) {
+            const liElement = countyOptionsRef.current.querySelector(
+                `ul > li:nth-child(${selectedCountyIndex + 1})`
+            );
+            if (liElement) {
+                liElement.scrollIntoView({
+                    behavior: 'auto',
+                    block: 'center',
+                });
+                // 進行微調，再多滾動 10px
+                const scrollContainer = countyOptionsRef.current;
+                scrollContainer.scrollTop += 30;
+            }
+        }
+
         return () => {
             document.removeEventListener('click', handleClickOutside);
         };
-    }, []);
+    }, [open, selectedCountyIndex]);
 
     let countyData = t('countyOptions.area', {
         returnObjects: true,
@@ -177,14 +196,14 @@ const Select = ({
                     </SelectItemsLi>
                     {t('countyOptions.area', {
                         returnObjects: true,
-                    }).map((item) => {
+                    }).map((item, index) => {
                         return (
                             <SelectItemsLi
                                 role="option"
                                 key={item.id}
                                 value={item.value}
                                 onClick={(e) => {
-                                    selectCounty(e);
+                                    selectCounty(e, index);
                                 }}
                                 $isSelected={selectedCountyValue === item.value}
                             >

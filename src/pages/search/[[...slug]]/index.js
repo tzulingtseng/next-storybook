@@ -247,7 +247,7 @@ const Search = ({ type, area, keyword, classVal }) => {
 
     return (
         <ThemeProvider theme={theme}>
-            <SEO title={t(`searchConfig.${type}BannerTitle_01`) + " " + t(`searchConfig.${type}BannerTitle_02`)} />
+            <SEO title={t(`searchConfig.${type}BannerTitle`)} />
             <Container>
                 <GoToTop />
                 <NavBar

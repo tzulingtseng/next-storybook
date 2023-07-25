@@ -132,7 +132,8 @@ const BannerHome = ({ locale }) => {
                         />
                         <BannerTextContainer $locale={locale}>
                             <div>
-                                <div className="title">{t('bannerHome.title')}</div>
+                                <div className="title">{t('bannerHome.title_01')}</div>
+                                {t('bannerHome.title_02') !== "" && <div className="title">{t('bannerHome.title_02')}</div>}
                                 <div className="sub_title">{t('bannerHome.sub_title')}</div>
                             </div>
                         </BannerTextContainer >
