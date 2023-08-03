@@ -217,7 +217,6 @@ const SearchResults = ({
                                 <CardSkeleton />
                             </StyledCardSkeletonContainer>
                         ))}
-                {/* status ==='error' */}
                 {status === 'success' && results.length === 0 && isEnd && (
                     <StyledNoResults>
                         <div>{t(`searchConfig.noResults`)}</div>
