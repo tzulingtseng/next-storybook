@@ -274,7 +274,7 @@ const Search = ({ type, area, keyword, classVal }) => {
                     type={type}
                     results={results}
                     status={status}
-                    isLoading={true}
+                    isLoading={isLoading}
                     isEnd={isEnd}
                     keyword={keyword}
                     area={area}

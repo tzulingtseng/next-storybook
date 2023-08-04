@@ -135,20 +135,17 @@ const Select = ({
         document.addEventListener('click', handleClickOutside);
 
         // 將列表滾動到選擇的縣市位置
-        if (open && selectedCountyIndex !== undefined) {
-            const liElement = countyOptionsRef.current.querySelector(
-                `ul > li:nth-child(${selectedCountyIndex + 1})`
-            );
-            if (liElement) {
-                liElement.scrollIntoView({
-                    behavior: 'auto',
-                    block: 'center',
-                });
-                // 進行微調，再多滾動 10px
-                const scrollContainer = countyOptionsRef.current;
-                scrollContainer.scrollTop += 30;
-            }
-        }
+        // if (open && selectedCountyIndex !== undefined) {
+        //     const liElement = countyOptionsRef.current.querySelector(
+        //         `ul > li:nth-child(${selectedCountyIndex + 1})`
+        //     );
+        //     if (liElement) {
+        //         liElement.scrollIntoView({
+        //             behavior: 'auto',
+        //             block: 'nearest',
+        //         });
+        //     }
+        // }
 
         return () => {
             document.removeEventListener('click', handleClickOutside);
