@@ -13,6 +13,7 @@ import BannerSearch from '@/features/search/components/BannerSearch';
 import SearchResults from '@/features/search/components/SearchResults';
 import GoToTop from '@/components/GoToTop';
 
+import { getAuthorizationHeader } from '@/utils/getAuthorizationHeader';
 import getActivityAPI from '@/api/getActivityAPI';
 import getScenicSpotAPI from '@/api/getScenicSpotAPI';
 import getRestaurantAPI from '@/api/getRestaurantAPI';
@@ -29,19 +30,20 @@ const Search = ({ type, area, keyword, classVal }) => {
     }).filter((item) => area === item.value)[0];
     let searchedCountyText = countyData ? countyData.name : '';
 
-    let fetchDataNumber = 12
+    let fetchDataNumber = 12;
 
     const [selectedValue, setSelectedValue] = useState(locale);
     const [inputValue, setInputValue] = useState('');
     const [selectedCountyText, setSelectedCountyText] = useState('');
     const [selectedCountyValue, setSelectedCountyValue] = useState('');
-    const [classValue, setClassValue] = useState('')
+    const [classValue, setClassValue] = useState('');
     const [results, setResults] = useState([]);
-    const [status, setStatus] = useState('')
+    const [status, setStatus] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [skip, setSkip] = useState(0);
     const [isEnd, setIsEnd] = useState(false);
-    const [TypeChange, setTypeChange] = useState(false)
+    const [TypeChange, setTypeChange] = useState(false);
+    const [accessToken, setAccessToken] = useState(null);
 
     const handleSearch = () => {
         setSkip(0);
@@ -66,12 +68,13 @@ const Search = ({ type, area, keyword, classVal }) => {
         router.push(url, undefined, {
             locale: selectedValue,
         });
-    }
+    };
 
     const fetchData = async () => {
         setIsLoading(true);
-        setStatus('')
+        setStatus('');
         try {
+            let accessToken = await getAuthorizationHeader();
             let response;
             switch (type) {
                 case 'activity':
@@ -79,8 +82,11 @@ const Search = ({ type, area, keyword, classVal }) => {
                         top: fetchDataNumber,
                         filter: keyword
                             ? `contains(ActivityName, '${keyword}')`
-                            : classVal ? `contains(Class1, '${classVal}') or contains(Class2, '${classVal}')` : null,
-                        area: area ? area : null,
+                            : classVal
+                            ? `contains(Class1, '${classVal}') or contains(Class2, '${classVal}')`
+                            : undefined,
+                        area: area ? area : undefined,
+                        accessToken,
                     });
                     break;
                 case 'scenicSpot':
@@ -88,8 +94,11 @@ const Search = ({ type, area, keyword, classVal }) => {
                         top: fetchDataNumber,
                         filter: keyword
                             ? `contains(ScenicSpotName, '${keyword}')`
-                            : classVal ? `contains(Class1, '${classVal}') or contains(Class2, '${classVal}') or contains(Class3, '${classVal}')` : null,
-                        area: area ? area : null,
+                            : classVal
+                            ? `contains(Class1, '${classVal}') or contains(Class2, '${classVal}') or contains(Class3, '${classVal}')`
+                            : undefined,
+                        area: area ? area : undefined,
+                        accessToken,
                     });
                     break;
                 case 'restaurant':
@@ -97,30 +106,37 @@ const Search = ({ type, area, keyword, classVal }) => {
                         top: fetchDataNumber,
                         filter: keyword
                             ? `contains(RestaurantName, '${keyword}')`
-                            : classVal ? `contains(Class, '${classVal}')` : null,
-                        area: area ? area : null,
+                            : classVal
+                            ? `contains(Class, '${classVal}')`
+                            : undefined,
+                        area: area ? area : undefined,
+                        accessToken,
                     });
                     break;
             }
             if (response.status === 'success') {
-                setResults(prevItems => [...prevItems, ...response.data]);
-                if (response.data.length === 0 || response.data.length < fetchDataNumber) {
+                setResults((prevItems) => [...prevItems, ...response.data]);
+                if (
+                    response.data.length === 0 ||
+                    response.data.length < fetchDataNumber
+                ) {
                     setIsEnd(true);
                 }
-                setStatus(response.status)
+                setStatus(response.status);
             }
         } catch (error) {
-            console.error(error)
+            console.error(error);
             setStatus(response?.status);
         } finally {
             setIsLoading(false);
         }
-    }
+    };
 
     const fetchMoreData = async () => {
         setIsLoading(true);
-        setStatus('')
+        setStatus('');
         try {
+            let accessToken = await getAuthorizationHeader();
             let response;
             switch (type) {
                 case 'activity':
@@ -129,8 +145,11 @@ const Search = ({ type, area, keyword, classVal }) => {
                         skip: skip,
                         filter: keyword
                             ? `contains(ActivityName, '${keyword}')`
-                            : classVal ? `contains(Class1, '${classVal}') or contains(Class2, '${classVal}')` : null,
-                        area: area ? area : null,
+                            : classVal
+                            ? `contains(Class1, '${classVal}') or contains(Class2, '${classVal}')`
+                            : undefined,
+                        area: area ? area : undefined,
+                        accessToken,
                     });
                     break;
                 case 'scenicSpot':
@@ -139,8 +158,11 @@ const Search = ({ type, area, keyword, classVal }) => {
                         skip: skip,
                         filter: keyword
                             ? `contains(ScenicSpotName, '${keyword}')`
-                            : classVal ? `contains(Class1, '${classVal}') or contains(Class2, '${classVal}') or contains(Class3, '${classVal}')` : null,
-                        area: area ? area : null,
+                            : classVal
+                            ? `contains(Class1, '${classVal}') or contains(Class2, '${classVal}') or contains(Class3, '${classVal}')`
+                            : undefined,
+                        area: area ? area : undefined,
+                        accessToken,
                     });
                     break;
                 case 'restaurant':
@@ -149,26 +171,31 @@ const Search = ({ type, area, keyword, classVal }) => {
                         skip: skip,
                         filter: keyword
                             ? `contains(RestaurantName, '${keyword}')`
-                            : classVal ? `contains(Class, '${classVal}')` : null,
-                        area: area ? area : null,
+                            : classVal
+                            ? `contains(Class, '${classVal}')`
+                            : undefined,
+                        area: area ? area : undefined,
+                        accessToken,
                     });
                     break;
             }
             if (response.status === 'success') {
-                setResults(prevItems => [...prevItems, ...response.data]);
-                if (response.data.length === 0 || response.data.length < fetchDataNumber) {
-                    console.log('setIsEnd');
+                setResults((prevItems) => [...prevItems, ...response.data]);
+                if (
+                    response.data.length === 0 ||
+                    response.data.length < fetchDataNumber
+                ) {
                     setIsEnd(true);
                 }
-                setStatus(response.status)
+                setStatus(response.status);
             }
         } catch (error) {
-            console.error(error)
+            console.error(error);
             setStatus(response?.status);
         } finally {
             setIsLoading(false);
         }
-    }
+    };
 
     const handleScroll = throttle(() => {
         const scrollBottom =
@@ -179,7 +206,9 @@ const Search = ({ type, area, keyword, classVal }) => {
         }
     }, 500);
 
-    useEffect(() => { fetchData() }, [area, keyword, classVal, type])
+    useEffect(() => {
+        fetchData();
+    }, [area, keyword, classVal, type]);
 
     useEffect(() => {
         let url = '/search?type=' + type;
@@ -201,21 +230,21 @@ const Search = ({ type, area, keyword, classVal }) => {
         router.push(url, undefined, {
             locale: selectedValue,
         });
-        setSkip(0)
-        setTypeChange(!TypeChange)
-        setResults([])
-        setIsEnd(false)
-        setSelectedCountyValue(area)
-        setSelectedCountyText(searchedCountyText)
-        setInputValue(keyword)
-        setClassValue(classVal)
-    }, [area, keyword, classVal, type])
+        setSkip(0);
+        setTypeChange(!TypeChange);
+        setResults([]);
+        setIsEnd(false);
+        setSelectedCountyValue(area);
+        setSelectedCountyText(searchedCountyText);
+        setInputValue(keyword);
+        setClassValue(classVal);
+    }, [area, keyword, classVal, type]);
 
     useEffect(() => {
         if (skip > 0) {
-            fetchMoreData()
+            fetchMoreData();
         }
-    }, [skip])
+    }, [skip]);
 
     useEffect(() => {
         let url = '/search?type=' + type;
@@ -238,7 +267,7 @@ const Search = ({ type, area, keyword, classVal }) => {
         router.push(url, undefined, {
             locale: selectedValue,
         });
-    }, [selectedValue])
+    }, [selectedValue]);
 
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);
@@ -303,9 +332,8 @@ export async function getServerSideProps({ query, locale }) {
             keyword: keyword || '',
             area: area || '',
             classVal: classVal || '',
-        }
-    }
-
+        },
+    };
 }
 
 export default Search;

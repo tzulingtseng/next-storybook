@@ -205,9 +205,9 @@ const HamburgerContainer = styled('div')`
     ${breakpoint.mediaSM} {
         left: -17.5rem;
         transform: ${(props) =>
-        props.$hamburgerContainerShow
-            ? 'translateX(17.5rem)'
-            : 'translateX(0px)'};
+            props.$hamburgerContainerShow
+                ? 'translateX(17.5rem)'
+                : 'translateX(0px)'};
         width: 17.5rem;
     }
 `;
@@ -219,15 +219,12 @@ const Mask = styled.div`
     left: 0%;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.8);
-    display:${(props) =>
-        props.$hamburgerContainerShow
-            ? 'block'
-            : 'none'};
+    background-color: rgba(0, 0, 0, 0.8);
+    display: ${(props) => (props.$hamburgerContainerShow ? 'block' : 'none')};
     ${breakpoint.mediaSM} {
-        display:none;
+        display: none;
     }
-`
+`;
 const ButtonCloseSection = styled('div')`
     position: relative;
     padding: 1.5rem 2rem 1rem;
@@ -292,7 +289,7 @@ const NavBar = ({
     ...props
 }) => {
     const { t } = useTranslation('common');
-    const router = useRouter()
+    const router = useRouter();
     const [hamburgerContainerShow, setHamburgerContainerShow] = useState(false);
     const [isCatgoryShow, setIsCatgoryShow] = useState(true);
     const [isHeaderShow, setIsHeaderShow] = useState(true);
@@ -313,22 +310,18 @@ const NavBar = ({
         return () => {
             window.removeEventListener('resize', handleResize);
         };
-
-    }, [])
+    }, []);
 
     useEffect(() => {
-
         if (hamburgerContainerShow && isMobile) {
-            console.log('hamburgerContainerShow && isMobile');
+            // console.log('hamburgerContainerShow && isMobile');
             document.body.style.overflowY = 'hidden';
             document.body.style.height = '100dvh';
-
         } else {
             document.body.style.overflow = 'initial';
             document.body.style.height = 'initial';
         }
-
-    }, [hamburgerContainerShow])
+    }, [hamburgerContainerShow]);
 
     // useEffect(() => {
     //     const handleScroll = () => {
@@ -424,7 +417,6 @@ const NavBar = ({
                                     selectedValue={selectedValue}
                                     setSelectedValue={setSelectedValue}
                                 />
-
                             </div>
                             {/* <IconContainer> */}
                             {/* TODO:how to use svg */}
@@ -464,7 +456,9 @@ const NavBar = ({
                         <MenuItems
                             locale={locale}
                             items={t('menuConfig', { returnObjects: true })}
-                            handleHamburgerContainerShow={handleHamburgerContainerShow}
+                            handleHamburgerContainerShow={
+                                handleHamburgerContainerShow
+                            }
                         ></MenuItems>
                     </Menu>
                     {/* <SocialIcons>

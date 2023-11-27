@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import moment from 'moment-timezone';
 
+import { getAuthorizationHeader } from '@/utils/getAuthorizationHeader';
 import getActivityAPI from '@/api/getActivityAPI';
 import getScenicSpotAPI from '@/api/getScenicSpotAPI';
 import getRestaurantAPI from '@/api/getRestaurantAPI';
@@ -47,7 +48,7 @@ const useGetNearybySpot = ({ queryType, position, spotId }) => {
      */
     useEffect(() => {
         const handleData = async () => {
-
+            let accessToken = await getAuthorizationHeader();
             let responseData;
 
             switch (queryType) {
@@ -60,6 +61,7 @@ const useGetNearybySpot = ({ queryType, position, spotId }) => {
                         spatialFilter: `nearby(${position.PositionLat},${position.PositionLon},20000)`,
                         select: 'ScenicSpotID,ScenicSpotName,Picture,Address,City,OpenTime',
                         filter: `Picture/PictureUrl1 ne null and ScenicSpotID ne '${spotId}'`,
+                        accessToken,
                     });
                     break;
 
@@ -72,19 +74,22 @@ const useGetNearybySpot = ({ queryType, position, spotId }) => {
                         spatialFilter: `nearby(${position.PositionLat},${position.PositionLon},20000)`,
                         select: 'RestaurantID,RestaurantName,Picture,Address,OpenTime',
                         filter: `Picture/PictureUrl1 ne null and RestaurantID ne '${spotId}'`,
+                        accessToken,
                     });
                     break;
                 // --------------------------------------------------------
                 // call API 取得附近觀光活動資料
                 case 'activity':
-                    const time = moment(new Date(), 'Asia/Taipei').format('YYYY-MM-DD');
+                    const time = moment(new Date(), 'Asia/Taipei').format(
+                        'YYYY-MM-DD'
+                    );
                     responseData = await getActivityAPI({
                         // signal: apiControllerRef.current.signal,
                         top: 10,
                         spatialFilter: `nearby(${position.PositionLat},${position.PositionLon},20000)`,
-                        select:
-                            'ActivityID,ActivityName,Picture,Address,City,StartTime,EndTime',
+                        select: 'ActivityID,ActivityName,Picture,Address,City,StartTime,EndTime',
                         filter: `Picture/PictureUrl1 ne null and ActivityID ne '${spotId}'`,
+                        accessToken,
                     });
                     break;
 

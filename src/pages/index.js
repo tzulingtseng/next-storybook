@@ -27,6 +27,7 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
+import { getAuthorizationHeader } from '@/utils/getAuthorizationHeader';
 import getScenicSpotAPI from '@/api/getScenicSpotAPI';
 import getActivityAPI from '@/api/getActivityAPI';
 import getRestaurantAPI from '@/api/getRestaurantAPI';
@@ -71,7 +72,7 @@ const Travel = ({
     const { locale, push } = useRouter();
     const [selectedValue, setSelectedValue] = useState(locale);
     const { t } = useTranslation('common');
-    const [hasPagination, setHasPagination] = useState(false)
+    const [hasPagination, setHasPagination] = useState(false);
 
     useEffect(() => {
         push('/', undefined, { locale: selectedValue });
@@ -81,24 +82,24 @@ const Travel = ({
     const handleType = (type) => {
         switch (type) {
             case 'activity':
-                return typeData = {
-                    'titleName': 'hotActivity', // 熱門活動
-                    'titleIcon': 'fa-solid fa-flag-checkered',
-                }
+                return (typeData = {
+                    titleName: 'hotActivity', // 熱門活動
+                    titleIcon: 'fa-solid fa-flag-checkered',
+                });
             case 'scenicSpot':
-                return typeData = {
-                    'titleName': 'hotScenicSpot', // 熱門景點
-                    'titleIcon': 'fa-solid fa-tower-observation',
-                }
+                return (typeData = {
+                    titleName: 'hotScenicSpot', // 熱門景點
+                    titleIcon: 'fa-solid fa-tower-observation',
+                });
             case 'restaurant':
-                return typeData = {
-                    'titleName': 'hotRestaurant', // 熱門美食
-                    'titleIcon': 'fa-regular fa-utensils',
-                }
+                return (typeData = {
+                    titleName: 'hotRestaurant', // 熱門美食
+                    titleIcon: 'fa-regular fa-utensils',
+                });
             default:
                 console.log('No match title');
         }
-    }
+    };
 
     return (
         <>
@@ -119,8 +120,16 @@ const Travel = ({
                     <Wrapper>
                         <StyledTitleContainer>
                             <StyledTitleText>
-                                {t(`carouselConfig.${handleType('scenicSpot').titleName}`)}
-                                <StyledTitleIcon icon={`${handleType('scenicSpot').titleIcon}`} />
+                                {t(
+                                    `carouselConfig.${
+                                        handleType('scenicSpot').titleName
+                                    }`
+                                )}
+                                <StyledTitleIcon
+                                    icon={`${
+                                        handleType('scenicSpot').titleIcon
+                                    }`}
+                                />
                             </StyledTitleText>
                             <StyledTitleLink>
                                 <Link href={`/search?type=scenicSpot`}>
@@ -136,8 +145,14 @@ const Travel = ({
                         />
                         <StyledTitleContainer>
                             <StyledTitleText>
-                                {t(`carouselConfig.${handleType('activity').titleName}`)}
-                                <StyledTitleIcon icon={`${handleType('activity').titleIcon}`} />
+                                {t(
+                                    `carouselConfig.${
+                                        handleType('activity').titleName
+                                    }`
+                                )}
+                                <StyledTitleIcon
+                                    icon={`${handleType('activity').titleIcon}`}
+                                />
                             </StyledTitleText>
                             <StyledTitleLink>
                                 <Link href={`/search?type=activity`}>
@@ -153,8 +168,16 @@ const Travel = ({
                         />
                         <StyledTitleContainer>
                             <StyledTitleText>
-                                {t(`carouselConfig.${handleType('restaurant').titleName}`)}
-                                <StyledTitleIcon icon={`${handleType('restaurant').titleIcon}`} />
+                                {t(
+                                    `carouselConfig.${
+                                        handleType('restaurant').titleName
+                                    }`
+                                )}
+                                <StyledTitleIcon
+                                    icon={`${
+                                        handleType('restaurant').titleIcon
+                                    }`}
+                                />
                             </StyledTitleText>
                             <StyledTitleLink>
                                 <Link href={`/search?type=restaurant`}>
@@ -166,7 +189,6 @@ const Travel = ({
                             lists={restaurantData}
                             type="restaurant"
                             status={restaurantStatus}
-
                         />
                     </Wrapper>
                     <Footer />
@@ -177,59 +199,66 @@ const Travel = ({
 };
 
 export async function getStaticProps({ locale }) {
-    let scenicSpotData, activityData, restaurantData;
-    const scenicSpotResponseData = await getScenicSpotAPI({
-        top: 10,
-        filter: 'Picture/PictureUrl1 ne null',
-    });
-    if (scenicSpotResponseData.status === 'success') {
-        scenicSpotData = scenicSpotResponseData;
-    } else {
+    const accessToken = await getAuthorizationHeader();
+
+    try {
+        const [
+            scenicSpotResponseData,
+            activityResponseData,
+            restaurantResponseData,
+        ] = await Promise.all([
+            getScenicSpotAPI({
+                top: 10,
+                filter: 'Picture/PictureUrl1 ne null',
+                accessToken,
+            }),
+            getActivityAPI({
+                top: 10,
+                filter: 'Picture/PictureUrl1 ne null',
+                accessToken,
+            }),
+            getRestaurantAPI({
+                top: 10,
+                filter: 'Picture/PictureUrl1 ne null',
+                accessToken,
+            }),
+        ]);
+
+        if (
+            scenicSpotResponseData.status === 'success' &&
+            activityResponseData.status === 'success' &&
+            restaurantResponseData.status === 'success'
+        ) {
+            const returnData = {
+                props: {
+                    ...(await serverSideTranslations(locale, [
+                        'api_mapping',
+                        'common',
+                        'activityData',
+                        'scenicSpotData',
+                        'restaurantData',
+                    ])),
+                    scenicSpotData: scenicSpotResponseData.data,
+                    scenicSpotStatus: scenicSpotResponseData.status,
+                    activityData: activityResponseData.data,
+                    activityStatus: activityResponseData.status,
+                    restaurantData: restaurantResponseData.data,
+                    restaurantStatus: restaurantResponseData.status,
+                },
+                revalidate: 100,
+            };
+            return returnData;
+        } else {
+            return {
+                notFound: true,
+            };
+        }
+    } catch (error) {
+        console.error('擷取資料時發生錯誤：', error);
         return {
             notFound: true,
         };
     }
-    const activityResponseData = await getActivityAPI({
-        top: 10,
-        filter: 'Picture/PictureUrl1 ne null',
-    });
-    if (activityResponseData.status === 'success') {
-        activityData = activityResponseData;
-    } else {
-        return {
-            notFound: true,
-        };
-    }
-    const restaurantResponseData = await getRestaurantAPI({
-        top: 10,
-        filter: 'Picture/PictureUrl1 ne null',
-    });
-    if (restaurantResponseData.status === 'success') {
-        restaurantData = restaurantResponseData;
-    } else {
-        return {
-            notFound: true,
-        };
-    }
-    const returnData = {
-        props: {
-            ...(await serverSideTranslations(locale, [
-                'api_mapping',
-                'common',
-                'activityData',
-                'scenicSpotData',
-                'restaurantData',
-            ])),
-            scenicSpotData: scenicSpotData.data,
-            scenicSpotStatus: scenicSpotData.status,
-            activityData: activityData.data,
-            activityStatus: activityData.status,
-            restaurantData: restaurantData.data,
-            restaurantStatus: restaurantData.status,
-        },
-        revalidate: 100,
-    };
-    return returnData;
 }
 
 export default Travel;

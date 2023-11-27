@@ -8,6 +8,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import transferTime from '@/utils/transferTime';
 import SEO from '@/utils/seo';
 
+import { getAuthorizationHeader } from '@/utils/getAuthorizationHeader';
 import getActivityAPI from '@/api/getActivityAPI';
 import getScenicSpotAPI from '@/api/getScenicSpotAPI';
 import getRestaurantAPI from '@/api/getRestaurantAPI';
@@ -32,10 +33,10 @@ const InfoContainer = styled.div`
 const InfoTitleBox = styled.div`
     display: block;
     align-items: baseline;
-    ${breakpoint.mediaMD}{
-        display: flex;  
+    ${breakpoint.mediaMD} {
+        display: flex;
     }
-`
+`;
 
 const InfoTitle = styled.div`
     margin: 1.5rem 0;
@@ -44,17 +45,17 @@ const InfoTitle = styled.div`
 `;
 
 const InfoBage = styled.div`
-    margin-bottom:1.5rem;
-    ${breakpoint.mediaMD}{
-        margin-bottom:0rem;
+    margin-bottom: 1.5rem;
+    ${breakpoint.mediaMD} {
+        margin-bottom: 0rem;
     }
-`
+`;
 
 const Badge = styled.span`
     // position: absolute;
     // left: 0.5rem;
     // bottom: 0.5rem;
-    margin-left:0.5rem;
+    margin-left: 0.5rem;
     font-size: 1rem;
     font-weight: 700;
     color: ${(props) => props.theme.colors.white};
@@ -62,12 +63,12 @@ const Badge = styled.span`
     padding: 0.1rem 0.5rem;
     border-radius: 1rem;
     background: linear-gradient(45deg, #ffaf1e, #ffd56e);
-    &:first-of-type{
-        margin-left:0rem;
+    &:first-of-type {
+        margin-left: 0rem;
     }
-    ${breakpoint.mediaMD}{
-        &:first-of-type{
-            margin-left:0.5rem;
+    ${breakpoint.mediaMD} {
+        &:first-of-type {
+            margin-left: 0.5rem;
         }
     }
 `;
@@ -84,14 +85,14 @@ const InfoBox = styled.div`
 const InfoImageContainer = styled.div`
     width: 100%;
     position: relative;
-    padding-bottom:68%;
+    padding-bottom: 68%;
     overflow: hidden;
     border-radius: 1rem;
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
     img {
-        position:absolute;
-        top:0;
-        left:0;
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
         height: 100%;
         display: block;
@@ -103,7 +104,7 @@ const InfoImageContainer = styled.div`
     }
     ${breakpoint.mediaMD} {
         width: 50%;
-        padding-bottom:34%;
+        padding-bottom: 34%;
     }
 `;
 
@@ -177,7 +178,7 @@ const Detail = ({ data }) => {
         UpdateTime,
         // ZipCode,
         ClassArr,
-        filterClass
+        filterClass,
     } = data.detailData;
 
     let convertImgUrl = convertGoogleDriveURL(Picture.PictureUrl1);
@@ -205,10 +206,15 @@ const Detail = ({ data }) => {
                             <InfoTitleBox>
                                 <InfoTitle>{SpotName}</InfoTitle>
                                 <InfoBage>
-                                    {ClassArr && ClassArr.map((item, i) =>
-                                        item && <Badge key={i}>
-                                            {item}
-                                        </Badge>)}
+                                    {ClassArr &&
+                                        ClassArr.map(
+                                            (item, i) =>
+                                                item && (
+                                                    <Badge key={i}>
+                                                        {item}
+                                                    </Badge>
+                                                )
+                                        )}
                                 </InfoBage>
                             </InfoTitleBox>
                             <InfoBox>
@@ -245,8 +251,8 @@ const Detail = ({ data }) => {
                                         {formattedTime === 'allDay'
                                             ? t('carouselConfig.allDay')
                                             : formattedTime === 'moreDetails'
-                                                ? t('carouselConfig.moreDetails')
-                                                : formattedTime}
+                                            ? t('carouselConfig.moreDetails')
+                                            : formattedTime}
                                     </div>
                                 </InfoDetailContainer>
                             </InfoBox>
@@ -265,7 +271,9 @@ const Detail = ({ data }) => {
                                     queryType={QueryType}
                                     position={Position}
                                     spotId={SpotID}
-                                    title={t(`detailConfig.${QueryType}NearByTitle`)}
+                                    title={t(
+                                        `detailConfig.${QueryType}NearByTitle`
+                                    )}
                                     bageText={filterClass}
                                 />
                             </NearByContainer>
@@ -283,16 +291,19 @@ export async function getServerSideProps({ params, query, locale }) {
     // TODO:為什麼要用 params
     const { id, type } = query;
     // console.log('type', type);
-    let detailData;
-    let responseData;
-    let classData, Class, Class1, Class2, Class3, classArr, filterClass
+    let detailData, responseData;
+    let classData, Class, Class1, Class2, Class3, classArr, filterClass;
+
+    let accessToken = await getAuthorizationHeader();
 
     switch (type) {
         // activitiy: call API 取得特定觀光活動資料
         case 'activity':
             responseData = await getActivityAPI({
                 filter: `ActivityID eq '${id}'`,
+                accessToken,
             });
+
             if (responseData?.status === 'success') {
                 // handle success (取得觀光活動資料)
                 let data = responseData?.data[0];
@@ -303,17 +314,19 @@ export async function getServerSideProps({ params, query, locale }) {
                     data?.EndTime
                 );
 
-                classData = ["遊憩活動", "年度活動", "藝文活動"]
-                classArr = []
-                Class = data?.Class ?? null
-                Class1 = data?.Class1 ?? null
-                Class2 = data?.Class2 ?? null
-                Class3 = data?.Class3 ?? null
+                classData = ['遊憩活動', '年度活動', '藝文活動'];
+                classArr = [];
+                Class = data?.Class ?? null;
+                Class1 = data?.Class1 ?? null;
+                Class2 = data?.Class2 ?? null;
+                Class3 = data?.Class3 ?? null;
 
                 if (Class || Class1 || Class2 || Class3) {
                     classArr.push(Class, Class1, Class2, Class3);
                 }
-                filterClass = classData && classData.filter(item => classArr.includes(item))[0];
+                filterClass =
+                    classData &&
+                    classData.filter((item) => classArr.includes(item))[0];
 
                 detailData = {
                     QueryType: type,
@@ -342,9 +355,13 @@ export async function getServerSideProps({ params, query, locale }) {
             break;
         // scenicSpot: call API 取得特定觀光景點資料
         case 'scenicSpot':
-            responseData = await getScenicSpotAPI({
-                filter: `ScenicSpotID eq '${id}'`,
-            });
+            if (accessToken) {
+                responseData = await getScenicSpotAPI({
+                    filter: `ScenicSpotID eq '${id}'`,
+                    accessToken,
+                });
+            }
+
             if (responseData?.status === 'success') {
                 // handle success (取得觀光活動資料)
                 let data = responseData?.data[0];
@@ -355,17 +372,19 @@ export async function getServerSideProps({ params, query, locale }) {
                     data?.EndTime
                 );
 
-                classData = ["文化類", "生態類", "遊憩類"]
-                classArr = []
-                Class = data?.Class ?? null
-                Class1 = data?.Class1 ?? null
-                Class2 = data?.Class2 ?? null
-                Class3 = data?.Class3 ?? null
+                classData = ['文化類', '生態類', '遊憩類'];
+                classArr = [];
+                Class = data?.Class ?? null;
+                Class1 = data?.Class1 ?? null;
+                Class2 = data?.Class2 ?? null;
+                Class3 = data?.Class3 ?? null;
 
                 if (Class || Class1 || Class2 || Class3) {
                     classArr.push(Class, Class1, Class2, Class3);
                 }
-                filterClass = classData && classData.filter(item => classArr.includes(item))[0];
+                filterClass =
+                    classData &&
+                    classData.filter((item) => classArr.includes(item))[0];
 
                 detailData = {
                     QueryType: type,
@@ -396,6 +415,7 @@ export async function getServerSideProps({ params, query, locale }) {
         case 'restaurant':
             responseData = await getRestaurantAPI({
                 filter: `RestaurantID eq '${id}'`,
+                accessToken,
             });
             if (responseData?.status === 'success') {
                 // handle success (取得觀光活動資料)
@@ -407,17 +427,19 @@ export async function getServerSideProps({ params, query, locale }) {
                     data?.EndTime
                 );
 
-                classData = ["地方特產", "異國料理", "中式美食"]
-                classArr = []
-                Class = data?.Class ?? null
-                Class1 = data?.Class1 ?? null
-                Class2 = data?.Class2 ?? null
-                Class3 = data?.Class3 ?? null
+                classData = ['地方特產', '異國料理', '中式美食'];
+                classArr = [];
+                Class = data?.Class ?? null;
+                Class1 = data?.Class1 ?? null;
+                Class2 = data?.Class2 ?? null;
+                Class3 = data?.Class3 ?? null;
 
                 if (Class || Class1 || Class2 || Class3) {
                     classArr.push(Class, Class1, Class2, Class3);
                 }
-                filterClass = classData && classData.filter(item => classArr.includes(item))[0];
+                filterClass =
+                    classData &&
+                    classData.filter((item) => classArr.includes(item))[0];
 
                 detailData = {
                     QueryType: type,
